@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     cout << "Read input file (dataset)..." << endl;
     vector<Item> dataset;
     dataset = read_dataset("./datasets/input_small_id", ' ');
-    Item item = dataset.at(0);
+    Item item = dataset.at(9999);
     cout << "Vector ID: " << item.id << endl;
     cout << "Vector Values: ";
     for (size_t i = 0; i < item.xij.size(); ++i)
