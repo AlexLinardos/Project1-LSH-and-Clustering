@@ -18,19 +18,20 @@ public:
 };
 
 // Συνάρτηση διαμέρισης γραμμής κειμένου στα ξεχωριστά στοιχεία της
-// βάσει ενός delimeter (πχ. space, tab, κλπ)
-void tokenize(string const &str, const char delim, vector<string> &out)
+vector<string> tokenize(string str)
 {
-    stringstream ss(str);
-    string s;
-    while (getline(ss, s, delim))
+    vector<string> tokens;
+    string tmp;
+    stringstream str_strm(str);
+    while (str_strm >> tmp)
     {
-        out.push_back(s);
+        tokens.push_back(tmp);
     }
+    return tokens;
 }
 
 // Συνάρτηση διαβάσματος dataset από αρχείο filename με delimiter delim
-vector<Item> read_dataset(string filename, const char delim)
+vector<Item> read_dataset(string filename)
 {
     vector<Item> data;
     string line;
@@ -54,7 +55,7 @@ vector<Item> read_dataset(string filename, const char delim)
         {
             line_count++;
             vector<string> out;
-            tokenize(line, delim, out);
+            out = tokenize(line);
             Item item;
             item.id = out[0];
 
@@ -68,7 +69,7 @@ vector<Item> read_dataset(string filename, const char delim)
                 }
                 catch (...)
                 {
-                    cout << "[Line:" << line_count << "] Here it is: " << out[i] << "." << endl;
+                    cout << "[Line:" << line_count << "] Here is the catch: " << out[i] << "." << endl;
                     cout << "[Line:" << line_count << "] Type: " << typeid(out[i]).name() << endl;
                     catch_count++;
                 }
@@ -84,7 +85,7 @@ vector<Item> read_dataset(string filename, const char delim)
         }
         */
     }
-    cout << "Catches: " << catch_count << endl;
+    // cout << "Catches: " << catch_count << endl;
 
     f.close();
     return data;

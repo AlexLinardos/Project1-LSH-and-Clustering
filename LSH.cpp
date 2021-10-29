@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     cout << "Check for command line arguments..." << endl;
     cout << "Read input file (dataset)..." << endl;
     vector<Item> dataset;
-    dataset = read_dataset("./datasets/input_small_id", ' ');
+    dataset = read_dataset("./datasets/input_small_id");
     Item item = dataset.at(9999);
     cout << "Vector ID: " << item.id << endl;
     cout << "Vector Values: ";
