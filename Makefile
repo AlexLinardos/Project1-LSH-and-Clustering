@@ -2,16 +2,13 @@ CC=g++
 
 CFLAGS=-O3
 
-all: final clean
+all: lsh clean
 
-final: LSH.o LSH_ui.o
-	$(CC) LSH.o LSH_ui.o -o final $(CFLAGS)
+lsh: LSH.o
+	$(CC) LSH.o -o lsh $(CFLAGS)
 
-LSH.o: LSH.cpp utilities.hpp
-	$(CC) -c LSH.cpp
-
-LSH_ui.o: LSH_ui.cpp LSH_ui.h
-	$(CC) -c LSH_ui.cpp
+LSH.o: LSH.cpp utilities.hpp LSH_ui.hpp
+	$(CC) -c LSH.cpp $(CFLAGS)
 
 clean:
 	rm *.o
