@@ -1,13 +1,13 @@
 #include <iostream>
 #include <vector>
 #include "utilities.hpp"
-#include "LSH_ui.hpp"
+#include "Cube_ui.hpp"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    LSH_params params;
+    Cube_params params;
 
     if (argc == 1) // Αν δεν έχουν δωθεί παράμετροι από το terminal τρέξε το interface με prompts
     {
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
             return -1; // Κλείσε το πρόγραμμα
         }
     }
-    print_LSH_params(params);
+    print_Cube_params(params);
     cout << "----------------------------------------" << endl;
     vector<Item> dataset;
     dataset = read_items(params.input_file);
@@ -46,6 +46,6 @@ int main(int argc, char *argv[])
         cout << item2.xij[i] << " ";
     }
     cout << endl;
-    cout << "Run LSH..." << endl;
+    cout << "Run Hypercube..." << endl;
     return 0;
 }

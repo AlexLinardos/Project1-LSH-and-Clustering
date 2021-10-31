@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// Κάθε γραμμή του dataset είναι ένα Item με id και ένα vector από ακεραίους
+// Κάθε γραμμή του dataset/query είναι ένα Item με id και ένα vector από ακεραίους
 class Item
 {
 public:
@@ -30,8 +30,8 @@ vector<string> tokenize(string str)
     return tokens;
 }
 
-// Συνάρτηση διαβάσματος dataset από αρχείο filename με delimiter delim
-vector<Item> read_dataset(string filename)
+// Συνάρτηση διαβάσματος dataset/query από αρχείο filename με delimiter delim
+vector<Item> read_items(string filename)
 {
     vector<Item> data;
     string line;
