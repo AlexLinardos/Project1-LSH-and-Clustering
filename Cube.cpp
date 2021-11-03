@@ -2,6 +2,7 @@
 #include <vector>
 #include "utilities.hpp"
 #include "Cube_ui.hpp"
+#include "hashing.hpp"
 
 using namespace std;
 

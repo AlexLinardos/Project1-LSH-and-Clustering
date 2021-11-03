@@ -2,6 +2,7 @@
 #include <vector>
 #include "utilities.hpp"
 #include "LSH_ui.hpp"
+#include "hashing.hpp"
 
 using namespace std;
 
@@ -44,6 +45,14 @@ int main(int argc, char *argv[])
     for (size_t i = 0; i < item2.xij.size(); ++i)
     {
         cout << item2.xij[i] << " ";
+    }
+    cout << endl;
+    cout << "----------------------------------------" << endl;
+    cout << "[HASH FUNCTION TESTING]" << endl;
+    H test_H = H(4, item2.xij.size());
+    for (int i = 0; i < 10; i++)
+    {
+        cout << test_H.produce_h(dataset[i]) << ", ";
     }
     cout << endl;
     cout << "Run LSH..." << endl;
