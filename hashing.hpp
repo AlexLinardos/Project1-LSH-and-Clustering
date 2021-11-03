@@ -23,8 +23,9 @@ public:
         default_random_engine eng{static_cast<long unsigned int>(time(0))}; // create a randomisation engine with time as seed
 
         vector<float> v;
-        normal_distribution<float> nd(0, 1);
+        normal_distribution<float> nd(0, 1); // create a normal distribution N(0,1)
 
+        // create a vector v whose points follow the normal distribution
         for (int i = 0; i < d; i++)
         {
             v.push_back(nd(eng));
