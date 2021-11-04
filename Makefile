@@ -18,3 +18,5 @@ Cube.o: Cube.cpp utilities.hpp Cube_ui.hpp hashing.hpp
 
 clean:
 	rm *.o
+#	rm *.exe*
+#	ls | grep -v "\." | grep -v Makefile | grep -v LICENSE | grep -v datasets | grep -v draft_files | xargs rm
