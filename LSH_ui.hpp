@@ -23,43 +23,45 @@ public:
 LSH_params Guided_Interface()
 {
     LSH_params params;
+    params.input_file = "./datasets/input_small_id";
+    params.query_file = "./datasets/query_small_id";
 
-    string answer;
-    cout << "Enter dataset file path: ";
-    cin >> answer;
-    params.input_file = answer;
-    cout << "Enter query file path: ";
-    cin >> answer;
-    params.query_file = answer;
+    // string answer;
+    // cout << "Enter dataset file path: ";
+    // cin >> answer;
+    // params.input_file = answer;
+    // cout << "Enter query file path: ";
+    // cin >> answer;
+    // params.query_file = answer;
 
-    cout << "Without command line parameters the program will run with default values:" << endl
-         << "k = 4 (hi functions)" << endl
-         << "L = 5 (hash tables)" << endl
-         << "N = 1 (number of nearest neighbors)" << endl
-         << "R = 10000 (search range)" << endl
-         << endl
-         << "Would you like to change these values; (y/n) ";
-    cin >> answer;
+    // cout << "Without command line parameters the program will run with default values:" << endl
+    //      << "k = 4 (hi functions)" << endl
+    //      << "L = 5 (hash tables)" << endl
+    //      << "N = 1 (number of nearest neighbors)" << endl
+    //      << "R = 10000 (search range)" << endl
+    //      << endl
+    //      << "Would you like to change these values; (y/n) ";
+    // cin >> answer;
 
-    if (answer == "y" || answer == "yes" || answer == "Y" || answer == "YES" || answer == "Yes")
-    {
-        int answer;
-        cout << "Enter new values" << endl;
-        cout << "k = ";
-        cin >> answer;
-        params.k = answer;
-        cout << "L = ";
-        cin >> answer;
-        params.L = answer;
-        cout << "N = ";
-        cin >> answer;
-        params.N = answer;
-        cout << "R = ";
-        double answer_R;
-        cin >> answer_R;
-        params.R = answer_R;
-        params.source = "custom";
-    }
+    // if (answer == "y" || answer == "yes" || answer == "Y" || answer == "YES" || answer == "Yes")
+    // {
+    //     int answer;
+    //     cout << "Enter new values" << endl;
+    //     cout << "k = ";
+    //     cin >> answer;
+    //     params.k = answer;
+    //     cout << "L = ";
+    //     cin >> answer;
+    //     params.L = answer;
+    //     cout << "N = ";
+    //     cin >> answer;
+    //     params.N = answer;
+    //     cout << "R = ";
+    //     double answer_R;
+    //     cin >> answer_R;
+    //     params.R = answer_R;
+    //     params.source = "custom";
+    // }
     return params;
 }
 
