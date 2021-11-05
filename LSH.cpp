@@ -49,20 +49,20 @@ int main(int argc, char *argv[])
     cout << endl;
     cout << "----------------------------------------" << endl;
     cout << "[HASH FUNCTION TESTING]" << endl;
-    // H test_H = H(4, item2.xij.size());
-    // vector<int> v;
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     cout << test_H.produce_h(dataset[i]) << ", ";
-    //     v= test_H.produce_k_h(dataset[0], 4);
-    //     for(int j=0; j<4;j++)
-    //     {
-    //         cout << v[j] << ", ";
-    //     }
-    //     cout << endl;
-    // }
-    G test_G = G(4, 1, 4, item2.xij.size());
-    test_G.produce_g(dataset[0]);
+    H test_H = H(4, item2.xij.size());
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        cout << test_H.produce_h(dataset[0]) << ", ";
+        // v= test_H.produce_k_h(dataset[0], 4);
+        // for(int j=0; j<4;j++)
+        // {
+        //     cout << v[j] << ", ";
+        // }
+        // cout << endl;
+    }
+    // G test_G = G(4, 1, 4, item2.xij.size());
+    // test_G.produce_g(dataset[0]);
     cout << endl;
     cout << "Run LSH..." << endl;
     return 0;
