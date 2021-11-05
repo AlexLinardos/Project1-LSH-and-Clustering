@@ -5,6 +5,7 @@
 #include <random>
 #include <ctime>
 #include <numeric>
+#include <chrono>
 #include "utilities.hpp"
 
 using namespace std;
@@ -20,7 +21,8 @@ public:
 
     int produce_h(Item p)
     {
-        default_random_engine eng{static_cast<long unsigned int>(time(0) + clock())}; // create a randomisation engine with time as seed
+        unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+        default_random_engine eng(seed); // create a randomisation engine with time as seed
 
         vector<float> v;
         normal_distribution<float> nd(0, 1); // create a normal distribution N(0,1)
@@ -80,7 +82,7 @@ public:
     {
         H test_H = H(w, d);
         vector<int> h_vector = test_H.produce_k_h(p, 4);
-        for(int j=0; j<4;j++)
+        for (int j = 0; j < 4; j++)
         {
             cout << h_vector[j] << ", ";
         }
@@ -97,7 +99,7 @@ public:
             r.push_back(nd(eng));
         }
 
-        long unsigned int m = (long unsigned int) (((long long)1 << 32) - (long long)5);
+        long unsigned int m = (long unsigned int)(((long long)1 << 32) - (long long)5);
         cout << m << endl;
         return 0;
     }
