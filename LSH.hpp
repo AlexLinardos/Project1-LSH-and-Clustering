@@ -16,25 +16,31 @@ public:
         default_random_engine eng(time(0)+clock()); // create a randomisation engine with time as seed
     };
 
-    int produce_g(Item p)
+    long unsigned int produce_g(Item p)
     {
         H test_H = H(w, d, k);
-        vector<int> h_vector = test_H.produce_k_h(p);
+        vector<int> h = test_H.produce_k_h(p);
         for (int j = 0; j < k; j++)
         {
-            cout << h_vector[j] << ", ";
+            cout << h[j] << ", ";
         }
         cout << endl;
 
-        vector<float> r;
-        uniform_real_distribution<double> urd(0, w); // create a uniform real distribution in [0,w)
+        vector<int> r;
+        std::uniform_int_distribution<int> uid(0, w-1);
 
         // create a vector v whose points follow the uniform real distribution
         for (int i = 0; i < k; i++)
         {
-            r.push_back(urd(eng));
+            r.push_back(uid(eng));
         }
 
-        return 0;
+        long unsigned int sum=0;
+        for(int i=0; i<k; i++)
+        {
+            sum = sum + (((long unsigned)r[i]*(long unsigned)h[i])%(m))%((long unsigned)tableSize);
+        }
+
+        return sum;
     }
 };
