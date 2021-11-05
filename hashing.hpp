@@ -20,7 +20,7 @@ public:
 
     int produce_h(Item p)
     {
-        default_random_engine eng{static_cast<long unsigned int>(time(0))}; // create a randomisation engine with time as seed
+        default_random_engine eng{static_cast<long unsigned int>(time(0) + clock())}; // create a randomisation engine with time as seed
 
         vector<float> v;
         normal_distribution<float> nd(0, 1); // create a normal distribution N(0,1)
