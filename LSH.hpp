@@ -20,11 +20,11 @@ public:
     {
         H test_H = H(w, d, k);
         vector<int> h = test_H.produce_k_h(p);
-        for (int j = 0; j < k; j++)
-        {
-            cout << h[j] << ", ";
-        }
-        cout << endl;
+        // for (int j = 0; j < k; j++)
+        // {
+        //     cout << h[j] << ", ";
+        // }
+        // cout << endl;
 
         vector<int> r;
         std::uniform_int_distribution<int> uid(0, w-1);
@@ -38,9 +38,26 @@ public:
         long unsigned int sum=0;
         for(int i=0; i<k; i++)
         {
-            sum = sum + (((long unsigned)r[i]*(long unsigned)h[i])%(m))%((long unsigned)tableSize);
+            /*
+            We are using the following formula to not achieve overflow:
+            (a$b)modM = ((amodM)$(bmodM))modM.
+            $ represents {+, -, *, /}
+            */
+            // Calculate a mod M
+            long unsigned int amodm = (long unsigned)r[i]%m;
+
+            // Calculate b mod M
+            long unsigned int bmodm = (long unsigned)h[i]%m;
+
+            // Calculate (amodM*bmodM)modM
+            long unsigned int resmodm = (amodm * bmodm)%m;
+
+            // Add the above into the sum
+            sum += resmodm;
         }
 
-        return sum;
+        sum = sum % m;
+        // cout << sum << ", " <<  tableSize << endl;
+        return sum%(long unsigned)tableSize;
     }
 };

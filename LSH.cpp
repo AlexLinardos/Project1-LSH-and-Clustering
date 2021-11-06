@@ -62,8 +62,12 @@ int main(int argc, char *argv[])
     //     cout << v[j] << ", ";
     // }
     // cout << endl;
-    G test_G = G(4, 1, 4, item2.xij.size());
-    test_G.produce_g(dataset[0]);
+    G test_G = G(4, dataset.size()/4, 4, item2.xij.size());
+    for (int i = 0; i < 100; i++)
+    {
+        //test_G.produce_g(dataset[i]);
+        cout << test_G.produce_g(dataset[i]) << ", ";
+    }
     cout << endl;
     cout << "Run LSH..." << endl;
     return 0;
