@@ -22,7 +22,7 @@ public:
     H(int window, int dimensions, int k) : w(window), d(dimensions), k(k)
     {
         unsigned int seed = chrono::system_clock::now().time_since_epoch().count();
-        default_random_engine eng(time(0)+clock()); // create a randomisation engine with time as seed
+        default_random_engine eng(seed); // create a randomisation engine with time as seed
     };
 
     int produce_h(Item p)

@@ -62,10 +62,10 @@ int main(int argc, char *argv[])
     //     cout << v[j] << ", ";
     // }
     // cout << endl;
-    G test_G = G(4, dataset.size()/4, 4, item2.xij.size());
+    G test_G = G(4, dataset.size() / 4, 4, item2.xij.size());
     for (int i = 0; i < 100; i++)
     {
-        //test_G.produce_g(dataset[i]);
+        // test_G.produce_g(dataset[i]);
         cout << test_G.produce_g(dataset[i]) << ", ";
     }
     cout << endl;
