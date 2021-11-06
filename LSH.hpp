@@ -59,6 +59,7 @@ public:
         }
 
         sum = sum % m;
+        p.id = sum;
         // cout << sum << ", " <<  tableSize << endl;
         return sum % (long unsigned)tableSize;
     }

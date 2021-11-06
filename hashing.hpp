@@ -17,18 +17,15 @@ class H
     int w; // window
     int d; // vector dimensions
     default_random_engine eng;
+    normal_distribution<float> nd;
+    uniform_real_distribution<double> urd;
 
 public:
-    H(int window, int dimensions, int k) : w(window), d(dimensions), k(k)
-    {
-        unsigned int seed = chrono::system_clock::now().time_since_epoch().count();
-        default_random_engine eng(seed); // create a randomisation engine with time as seed
-    };
+    H(int window, int dimensions, int k) : w(window), d(dimensions), k(k), eng(chrono::system_clock::now().time_since_epoch().count()), nd(0, 1), urd(0, w){};
 
     int produce_h(Item p)
     {
         vector<float> v;
-        normal_distribution<float> nd(0, 1); // create a normal distribution N(0,1)
 
         // create a vector v whose points follow the normal distribution
         for (int i = 0; i < d; i++)
@@ -36,7 +33,6 @@ public:
             v.push_back(nd(eng));
         }
 
-        uniform_real_distribution<double> urd(0, w); // create a uniform real distribution in [0,w)
         float t = urd(eng);
 
         return floor(((inner_product(p.xij.begin(), p.xij.end(), v.begin(), 0)) + t) / this->w);
