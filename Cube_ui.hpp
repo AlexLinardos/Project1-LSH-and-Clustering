@@ -24,7 +24,10 @@ public:
 Cube_params Guided_Interface()
 {
     Cube_params params;
+    params.input_file = "./datasets/input_small_id";
+    params.query_file = "./datasets/query_small_id";
 
+    /*
     string answer;
     cout << "Enter dataset file path: ";
     cin >> answer;
@@ -65,6 +68,7 @@ Cube_params Guided_Interface()
         params.R = answer_R;
         params.source = "custom";
     }
+    */
     return params;
 }
 
@@ -98,8 +102,6 @@ Cube_params CMD_Interface(int argc, char *argv[])
     return params;
 }
 
-#endif
-
 void print_Cube_params(Cube_params params)
 {
     cout << "[Current parameters for Hypercube]" << endl
@@ -112,3 +114,5 @@ void print_Cube_params(Cube_params params)
          << "R: " << params.R << endl
          << "Output file: " << params.out_file << endl;
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef LSH_HPP
+#define LSH_HPP
 #include "hashing.hpp"
 
 class G
@@ -13,7 +15,7 @@ public:
     G(int k, int tableSize, int window, int dimensions) : k(k), tableSize(tableSize), w(window), d(dimensions)
     {
         m = (long unsigned int)(((long long)1 << 32) - (long long)5);
-        default_random_engine eng(time(0)+clock()); // create a randomisation engine with time as seed
+        default_random_engine eng(time(0) + clock()); // create a randomisation engine with time as seed
     };
 
     long unsigned int produce_g(Item p)
@@ -27,7 +29,7 @@ public:
         // cout << endl;
 
         vector<int> r;
-        std::uniform_int_distribution<int> uid(0, w-1);
+        std::uniform_int_distribution<int> uid(0, w - 1);
 
         // create a vector v whose points follow the uniform real distribution
         for (int i = 0; i < k; i++)
@@ -35,8 +37,8 @@ public:
             r.push_back(uid(eng));
         }
 
-        long unsigned int sum=0;
-        for(int i=0; i<k; i++)
+        long unsigned int sum = 0;
+        for (int i = 0; i < k; i++)
         {
             /*
             We are using the following formula to not achieve overflow:
@@ -44,13 +46,13 @@ public:
             $ represents {+, -, *, /}
             */
             // Calculate a mod M
-            long unsigned int amodm = (long unsigned)r[i]%m;
+            long unsigned int amodm = (long unsigned)r[i] % m;
 
             // Calculate b mod M
-            long unsigned int bmodm = (long unsigned)h[i]%m;
+            long unsigned int bmodm = (long unsigned)h[i] % m;
 
             // Calculate (amodM*bmodM)modM
-            long unsigned int resmodm = (amodm * bmodm)%m;
+            long unsigned int resmodm = (amodm * bmodm) % m;
 
             // Add the above into the sum
             sum += resmodm;
@@ -58,6 +60,8 @@ public:
 
         sum = sum % m;
         // cout << sum << ", " <<  tableSize << endl;
-        return sum%(long unsigned)tableSize;
+        return sum % (long unsigned)tableSize;
     }
 };
+
+#endif
