@@ -49,39 +49,56 @@ int main(int argc, char *argv[])
     }
     cout << endl;
     cout << "----------------------------------------" << endl;
-    cout << "[HASH FUNCTION TESTING]" << endl;
-    H test_H = H(4, item2.xij.size(), 4);
-    vector<int> v;
-    for (int i = 0; i < params.k; i++)
-    {
-        cout << test_H.produce_h(dataset[0]) << ", ";
-    }
+    int tableSize=dataset.size()/4;
+    //cout << tableSize << endl;
+    // cout << "[HASH FUNCTION TESTING]" << endl;
+    // H test_H = H(4, item2.xij.size(), 4);
+    // vector<int> v;
+    // for (int i = 0; i < params.k; i++)
+    // {
+    //     cout << test_H.produce_h(dataset[0]) << ", ";
+    // }
     // v= test_H.produce_k_h(dataset[0]);
     // for(int j=0; j<4;j++)
     // {
     //     cout << v[j] << ", ";
     // }
     // cout << endl;
-    // int tableSize=dataset.size()/4;
     // G test_G = G(4, tableSize, 4, item2.xij.size());
     // for (int i = 0; i < 100; i++)
     // {
     //     //test_G.produce_g(dataset[i]);
     //     cout << test_G.produce_g(dataset[i]) << ", ";
     // }
-
-    // // Initialize L hash tables and L g-HashFunctions
-    // std::vector<Item*>** hashTables= new std::vector<Item *>*[params.L];
-    // G** g = new G*[params.L];
-
-    // for (int i = 0; i < params.L; i++) // for every hashTable
-    // {
-    //     hashTables[i]=new std::vector<Item*>[tableSize];
-    //     g[i] = new G(params.k, tableSize, 4, item2.xij.size());
-    //     cout << g[i]->produce_g(dataset[0]) << endl;
-    // }
-    cout << endl;
     cout << "Run LSH..." << endl;
+
+    // Initialize L hash tables and L g-HashFunctions
+    std::vector<Item>** hashTables= new std::vector<Item>*[params.L];
+    G** g = new G*[params.L];
+
+    for (int i = 0; i < params.L; i++) // for every hashTable
+    {
+        hashTables[i]=new std::vector<Item>[tableSize];
+        g[i] = new G(params.k, tableSize, 4, item2.xij.size());
+        cout << g[i]->produce_g(dataset[0]) << " ";
+    }
+    cout << endl;
+
+    // Hash all items in training set and insert them into their buckets
+    for (int a = 0; a < dataset.size(); a++) {
+        for (int i = 0; i < params.L; i++) {
+            unsigned int g_hash = g[i]->produce_g(dataset[a]);
+            hashTables[i][g_hash].push_back(dataset[a]);
+        }
+    }
+
+    for (int i = 0; i < params.L; i++) // for every hashTable
+    {
+        delete[] hashTables[i];
+        delete g[i];
+    }
+    delete[] hashTables;
+    delete[] g;
     
     return 0;
 }

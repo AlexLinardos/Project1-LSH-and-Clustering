@@ -10,15 +10,15 @@ class G
     int d; // dimension of vector
     long unsigned int m;
     default_random_engine eng;
+    uniform_int_distribution<int> uid;
 
 public:
-    G(int k, int tableSize, int window, int dimensions) : k(k), tableSize(tableSize), w(window), d(dimensions)
+    G(int k, int tableSize, int window, int dimensions) : k(k), tableSize(tableSize), w(window), d(dimensions), eng(time(0) + clock()), uid(0, w - 1)
     {
         m = (long unsigned int)(((long long)1 << 32) - (long long)5);
-        default_random_engine eng(time(0) + clock()); // create a randomisation engine with time as seed
     };
 
-    long unsigned int produce_g(Item p)
+    unsigned int produce_g(Item p)
     {
         H test_H = H(w, d, k);
         vector<int> h = test_H.produce_k_h(p);
@@ -29,7 +29,6 @@ public:
         // cout << endl;
 
         vector<int> r;
-        std::uniform_int_distribution<int> uid(0, w - 1);
 
         // create a vector v whose points follow the uniform real distribution
         for (int i = 0; i < k; i++)
@@ -59,9 +58,10 @@ public:
         }
 
         sum = sum % m;
-        p.id = sum;
-        // cout << sum << ", " <<  tableSize << endl;
-        return sum % (long unsigned)tableSize;
+        // p.id = sum;
+
+        sum = sum % (long unsigned)tableSize;
+        return (unsigned int)sum;
     }
 };
 
