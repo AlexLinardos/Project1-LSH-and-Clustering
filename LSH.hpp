@@ -2,6 +2,7 @@
 #define LSH_HPP
 #include "hashing.hpp"
 #include <algorithm>
+#include <cmath> 
 
 class G
 {
@@ -59,9 +60,8 @@ public:
         }
 
         sum = sum % m;
-        // p.id = sum;
 
-        sum = sum % (long unsigned)tableSize;
+        // sum = sum % (long unsigned)tableSize;
         return (unsigned int)sum;
     }
 };
@@ -90,7 +90,7 @@ public:
         tableSize = dataset.size()/divisor_for_tableSize;
         dimension = dataset[0].xij.size();
 
-        // Initialize L hash tables and g_hashFunctions
+        // Initialize L hashTables and g_hashFunctions
         hashTables= new std::vector<Item*>*[params.L];
         g = new G*[params.L];
         for (int i = 0; i < params.L; i++) // for every hashTable
@@ -104,7 +104,7 @@ public:
         // Hash all items in training set and insert them into their buckets
         for (int a = 0; a < dataset.size(); a++) {
             for (int i = 0; i < params.L; i++) {
-                unsigned int bucket = g[i]->produce_g(dataset[a]);
+                unsigned int bucket = g[i]->produce_g(dataset[a]) % (long unsigned)tableSize;
                 hashTables[i][bucket].push_back(&dataset[a]);
             }
         }
@@ -121,7 +121,7 @@ public:
     }
 
     std::vector<std::pair<int, Item*>> kNN (Item* query, int N, int thresh = 0) {
-        // At first initalize the vector itself
+        // At first initalize the result vector of <distanceFromQuery, item> pairs
         std::vector<std::pair<int, Item*>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
@@ -129,51 +129,112 @@ public:
 
         // For each hash table...
         int itemsSearched = 0;
-        for (int i = 0; i < params.L; i++) {
+        for (int i = 0; i < params.L; i++) 
+        {
             // Calculate the bucket to which the query item corresponds
-            int bucket = g[i]->produce_g(queries[0]);
+            long unsigned id = g[i]->produce_g(*query);
+            long unsigned bucket = id % (long unsigned)tableSize;
 
             // For each item inside the bucket...
-            for (int j = 0; j < hashTables[i][bucket].size(); j++) {
-            /*
-            Check if the current item is already inserted into the KNNs vector
-            (it is possible since it may have been inserted from a previous hash table loop)
-            */
-            bool alreadyExists = false;
-            for (int a = 0; a < N; a++)
-                if (knns[a].second->id == hashTables[i][bucket][j]->id)
-                alreadyExists = true;
+            for (int j = 0; j < hashTables[i][bucket].size(); j++) 
+            {
+                /*
+                Check if the current item is already inserted into the KNNs vector from a previous hash table.
+                */
+                bool alreadyExists = false;
+                for (int a = 0; a < N; a++)
+                    if (knns[a].second->id == hashTables[i][bucket][j]->id)
+                    alreadyExists = true;
 
-            if (alreadyExists)
-                continue;
+                if (alreadyExists)
+                    continue;
 
-            // Since it does not exist in the vector, calculate its distance to the query item
-            int distance = EuclideanDistance(&queries[0], hashTables[i][bucket][j], dimension);
+                // Querying trick (from Lecture Slides): ID is locality sensitive. Avoid computing Euclidean distance for all elements in bucket.
+                if(abs((int)(g[i]->produce_g(*hashTables[i][bucket][j])-id))>1000)
+                    continue;
 
-            /*
-            If the distance is less than the last pair's in the vector,
-            replace the pair with the new distance and the current item.
-            Then, sort the vector by ascending order based on distance.
-            This is done so that whenever we find a good neighbor candidate,
-            we replace the least similar neighbor in the vector
-            */
-            if (distance < knns[N-1].first) {
-                knns[N-1].first = distance;
-                if (knns[N-1].second->null && knns[N-1].second->id=="-1") // if it is a null item created just to initialize the N pairs
-                    delete knns[N-1].second;
-                knns[N-1].second = hashTables[i][bucket][j];
-                std::sort(knns.begin(), knns.end(), comparePairs);
-            }
+                // Calculate item's distance to the query item
+                int distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
 
-            /*
-            If a certain threshold of items traversed is reached, return the vector.
-            If thresh == 0 it indicates that the user does not want to add a threshold.
-            */
-            if (thresh != 0 && ++itemsSearched >= thresh)
-                return knns;
+                /*
+                The last pair in the N-sized vector is the worst out of the N
+                best candidates till now. If a better candidate is found,
+                replace the last pair with the new one and re-sort the vector.
+                */
+                if (distance < knns[N-1].first) {
+                    knns[N-1].first = distance;
+                    if (knns[N-1].second->null && knns[N-1].second->id=="-1") // if it is a null item created just to initialize the N pairs of the vector.
+                        delete knns[N-1].second;
+                    knns[N-1].second = hashTables[i][bucket][j];
+                    std::sort(knns.begin(), knns.end(), comparePairs);
+                }
+
+                /*
+                If a certain threshold of items traversed is reached, return the vector.
+                If thresh == 0 it indicates that the user does not want to add a threshold.
+                */
+                if (thresh != 0 && ++itemsSearched >= thresh)
+                    return knns;
             }
         }
         return knns;
+    }
+
+    /*
+    Each neighbor is represented as a pair of <distanceToQuery, neighborItem*>
+    The following function returns a vector of these pairs
+    */
+    std::vector<std::pair<int, Item*>> RangeSearch (Item* query, double radius, int thresh = 0) {
+        // Initialize the vector
+        std::vector<std::pair<int, Item*>> d;
+        /*
+        In this method, we do not need to sort the vector, also its size is not constant.
+        Hence, we do not need to initalize its values.
+        Simply, whenever a neighbor has distance less than radius, we add it to the vector
+        */
+
+        // For each hash table...
+        int itemsSearched = 0;
+        for (int i = 0; i < params.L; i++) {
+        // Calculate the bucket to which the query item corresponds
+            long unsigned id = g[i]->produce_g(*query);
+            long unsigned bucket = id % (long unsigned)tableSize;
+
+            // For each item inside the bucket...
+            for (int j = 0; j < hashTables[i][bucket].size(); j++) {
+                // Check if the current item is already inserted into the vector
+                bool alreadyExists = false;
+                for (int a = 0; a < d.size(); a++)
+                if (d[a].second->id == hashTables[i][bucket][j]->id)
+                    alreadyExists = true;
+
+                /*
+                The "marked" condition will only be met whenever this function is used by
+                reverse assignment in clustering. When LSH is used for ANN, it will have no effect.
+                In reverse assignment, to avoid fetching the same items, we "mark" them when inserted
+                to a cluster so as to indicate that they are already assigned.
+                */
+                if (alreadyExists /*|| hashTables[i][bucket][j]->marked*/)
+                continue;
+
+                int distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
+
+                // If the distance is less than radius, insert the pair into the return vector
+                if (distance < radius) {
+                std::pair<int, Item*> tmpPair = std::make_pair(distance, hashTables[i][bucket][j]);
+                d.push_back(tmpPair);
+                }
+
+                // If a certain threshold of items traversed is reached, return the vector.
+                if (thresh != 0 && ++itemsSearched >= thresh)
+                {
+                    std::sort(d.begin(), d.end(), comparePairs);
+                    return d;
+                }
+            }
+        }
+        std::sort(d.begin(), d.end(), comparePairs);
+        return d;
     }
 };
 

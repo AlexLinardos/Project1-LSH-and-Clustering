@@ -74,12 +74,23 @@ int main(int argc, char *argv[])
 
     LSH lsh = LSH(params, 4, 4);
 
+    cout << "kNN" << endl;
+
     std::vector<std::pair<int, Item*>> knns = lsh.kNN(&queries[0], params.N, 0);
 
 
     for (int a = 0; a < params.N; a++)
     {
         cout << knns[a].first << ", " << knns[a].second->id << endl;
+    }
+
+    cout << "RangeSearch" << endl;
+
+    std::vector<std::pair<int, Item*>> r = lsh.RangeSearch(&queries[0], params.R, 0);
+
+    for (int a = 0; a < r.size(); a++)
+    {
+        cout << r[a].first << ", " << r[a].second->id << endl;
     }
     
     return 0;
