@@ -49,7 +49,6 @@ int main(int argc, char *argv[])
     }
     cout << endl;
     cout << "----------------------------------------" << endl;
-    int tableSize=dataset.size()/4;
     //cout << tableSize << endl;
     // cout << "[HASH FUNCTION TESTING]" << endl;
     // H test_H = H(4, item2.xij.size(), 4);
@@ -70,35 +69,18 @@ int main(int argc, char *argv[])
     //     //test_G.produce_g(dataset[i]);
     //     cout << test_G.produce_g(dataset[i]) << ", ";
     // }
+    // cout << "----------------------------------------" << endl;
     cout << "Run LSH..." << endl;
 
-    // Initialize L hash tables and L g-HashFunctions
-    std::vector<Item>** hashTables= new std::vector<Item>*[params.L];
-    G** g = new G*[params.L];
+    LSH lsh = LSH(params, 4, 4);
 
-    for (int i = 0; i < params.L; i++) // for every hashTable
+    std::vector<std::pair<int, Item*>> knns = lsh.kNN(&queries[0], params.N, 0);
+
+
+    for (int a = 0; a < params.N; a++)
     {
-        hashTables[i]=new std::vector<Item>[tableSize];
-        g[i] = new G(params.k, tableSize, 4, item2.xij.size());
-        cout << g[i]->produce_g(dataset[0]) << " ";
+        cout << knns[a].first << ", " << knns[a].second->id << endl;
     }
-    cout << endl;
-
-    // Hash all items in training set and insert them into their buckets
-    for (int a = 0; a < dataset.size(); a++) {
-        for (int i = 0; i < params.L; i++) {
-            unsigned int g_hash = g[i]->produce_g(dataset[a]);
-            hashTables[i][g_hash].push_back(dataset[a]);
-        }
-    }
-
-    for (int i = 0; i < params.L; i++) // for every hashTable
-    {
-        delete[] hashTables[i];
-        delete g[i];
-    }
-    delete[] hashTables;
-    delete[] g;
     
     return 0;
 }

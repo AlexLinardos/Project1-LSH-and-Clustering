@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <typeinfo>
+#include <cmath>
 
 using namespace std;
 
@@ -15,6 +16,15 @@ class Item
 public:
     string id;
     vector<int> xij;
+    
+    bool null= false; // Flag if is NULL
+    Item () 
+    {
+        id = "-1";
+        null = true;
+    }
+
+    Item (string id, vector<int> xij) : id(id), xij(xij) {null = false;}
 };
 
 // Συνάρτηση διαμέρισης γραμμής κειμένου στα ξεχωριστά στοιχεία της
@@ -58,6 +68,7 @@ vector<Item> read_items(string filename)
             out = tokenize(line);
             Item item;
             item.id = out[0];
+            item.null = false;
 
             // Μετατροπή των values του διανύσματος από string σε int
             for (size_t i = 1; i < out.size(); ++i)
@@ -89,6 +100,22 @@ vector<Item> read_items(string filename)
 
     f.close();
     return data;
+}
+
+/* function that computes the Euclidean Distance between 2 points of dimension d */
+double EuclideanDistance(Item* p, Item* q, const uint16_t& d)
+{
+    double sum = 0;
+    for (int i = 0.0; i < d; i++)
+    {
+    sum += (p->xij[i] - q->xij[i]) * (p->xij[i] - q->xij[i]);
+    }
+
+    return sqrt(sum);
+}
+
+bool comparePairs (std::pair<int, Item*> x, std::pair<int, Item*> y) {
+    return (x.first < y.first);
 }
 
 #endif
