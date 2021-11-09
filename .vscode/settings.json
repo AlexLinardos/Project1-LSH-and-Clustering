@@ -40,6 +40,8 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "random": "cpp",
-        "chrono": "cpp"
-    }
+        "chrono": "cpp",
+        "list": "cpp"
+    },
+    "cmake.configureOnOpen": true
 }

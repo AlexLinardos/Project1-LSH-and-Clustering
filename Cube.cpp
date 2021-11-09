@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     cout << endl;
     unsigned int seed = chrono::system_clock::now().time_since_epoch().count();
     default_random_engine eng(seed);
-    F test_f = F(14);
+    F test_f = F();
     for (int i = 0; i < 10; i++)
     {
         test_f.produce_f(i);

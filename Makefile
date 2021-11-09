@@ -2,7 +2,7 @@ CC=g++
 
 CFLAGS=-O3
 
-all: lsh cube clean
+all: lsh cube cluster clean
 
 lsh: LSH.o
 	$(CC) LSH.o -o lsh $(CFLAGS)
@@ -15,6 +15,12 @@ cube: Cube.o
 
 Cube.o: Cube.cpp utilities.hpp Cube_ui.hpp hashing.hpp
 	$(CC) -c Cube.cpp $(CFLAGS)
+
+cluster: Clustering.o
+	$(CC) Clustering.o -o cluster $(CFLAGS)
+
+Clustering.o: Clustering.cpp utilities.hpp Clustering_ui.hpp
+	$(CC) -c Clustering.cpp $(CFLAGS)
 
 clean:
 	rm *.o
