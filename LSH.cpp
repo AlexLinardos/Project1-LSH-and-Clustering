@@ -4,6 +4,7 @@
 #include "LSH_ui.hpp"
 #include "hashing.hpp"
 #include "LSH.hpp"
+#include <chrono>
 
 using namespace std;
 
@@ -76,34 +77,43 @@ int main(int argc, char *argv[])
 
     ofstream output_file;
     output_file.open ("LSH_output.txt");
-    output_file << "Writing this to a file.\n";
 
-    output_file << "kNN" << endl;
+    std::vector<std::pair<int, Item*>> knns;
+    std::vector<std::pair<int, Item*>> true_knns;
+    std::vector<std::pair<int, Item*>> r;
 
-    std::vector<std::pair<int, Item*>> knns = lsh.kNN(&queries[0], params.N, 0);
+    std::chrono::steady_clock::time_point lsh_begin;
+    std::chrono::steady_clock::time_point lsh_end;
+    std::chrono::steady_clock::time_point true_begin;
+    std::chrono::steady_clock::time_point true_end;
 
-
-    for (int a = 0; a < params.N; a++)
+    for (int i =0; i<queries.size(); i++)
     {
-        output_file << knns[a].first << ", " << knns[a].second->id << endl;
-    }
+        output_file << "Query: " << queries[i].id << endl;
+        
+        lsh_begin = std::chrono::steady_clock::now();
+        knns = lsh.kNN(&queries[0], params.N, 0);
+        lsh_end = std::chrono::steady_clock::now();
+        
+        true_begin = std::chrono::steady_clock::now();
+        true_knns = lsh.brute_force_search(&queries[i], params.N);
+        true_end = std::chrono::steady_clock::now();
 
-    output_file << "brute_force_search" << endl;
+        for (int j = 0; j < params.N; j++)
+        {
+            output_file << "Nearest neighbor-" << j+1 << ": " << knns[j].second->id << endl;
+            output_file << "distanceLSH: " << knns[j].first << endl;
+            output_file << "distanceTrue: " << true_knns[j].first << endl;
+        }
+        output_file << "tLSH: " <<  (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) /1000000.0  <<std::endl;
+        output_file << "tTrue: " <<  (std::chrono::duration_cast<std::chrono::microseconds>(true_end - true_begin).count()) /1000000.0  <<std::endl;
 
-    std::vector<std::pair<int, Item*>> b = lsh.brute_force_search(&queries[0], params.N);
-
-    for (int a = 0; a < params.N; a++)
-    {
-        output_file << b[a].first << ", " << b[a].second->id << endl;
-    }
-
-    output_file << "R-near neighbors:" << endl;
-
-    std::vector<std::pair<int, Item*>> r = lsh.RangeSearch(&queries[0], params.R, 0);
-
-    for (int a = 0; a < r.size(); a++)
-    {
-        output_file << r[a].second->id << endl;
+        output_file << "R-near neighbors:" << endl;
+        r = lsh.RangeSearch(&queries[0], params.R, 0);
+        for (int a = 0; a < r.size(); a++)
+        {
+            output_file << r[a].second->id << ", " << r[a].first << endl;
+        }
     }
     
     output_file.close();

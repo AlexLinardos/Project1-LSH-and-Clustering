@@ -233,7 +233,7 @@ public:
                 }
             }
         }
-        std::sort(d.begin(), d.end(), comparePairs);
+        // std::sort(d.begin(), d.end(), comparePairs);
         return d;
     }
 
