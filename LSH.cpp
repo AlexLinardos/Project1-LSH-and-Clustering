@@ -74,33 +74,38 @@ int main(int argc, char *argv[])
 
     LSH lsh = LSH(params, 4, 4);
 
-    cout << "kNN" << endl;
+    ofstream output_file;
+    output_file.open ("LSH_output.txt");
+    output_file << "Writing this to a file.\n";
+
+    output_file << "kNN" << endl;
 
     std::vector<std::pair<int, Item*>> knns = lsh.kNN(&queries[0], params.N, 0);
 
 
     for (int a = 0; a < params.N; a++)
     {
-        cout << knns[a].first << ", " << knns[a].second->id << endl;
+        output_file << knns[a].first << ", " << knns[a].second->id << endl;
     }
 
-    cout << "RangeSearch" << endl;
-
-    std::vector<std::pair<int, Item*>> r = lsh.RangeSearch(&queries[0], params.R, 0);
-
-    for (int a = 0; a < r.size(); a++)
-    {
-        cout << r[a].first << ", " << r[a].second->id << endl;
-    }
-
-    cout << "brute_force_search" << endl;
+    output_file << "brute_force_search" << endl;
 
     std::vector<std::pair<int, Item*>> b = lsh.brute_force_search(&queries[0], params.N);
 
     for (int a = 0; a < params.N; a++)
     {
-        cout << b[a].first << ", " << b[a].second->id << endl;
+        output_file << b[a].first << ", " << b[a].second->id << endl;
+    }
+
+    output_file << "R-near neighbors:" << endl;
+
+    std::vector<std::pair<int, Item*>> r = lsh.RangeSearch(&queries[0], params.R, 0);
+
+    for (int a = 0; a < r.size(); a++)
+    {
+        output_file << r[a].second->id << endl;
     }
     
+    output_file.close();
     return 0;
 }

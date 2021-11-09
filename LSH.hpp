@@ -121,7 +121,7 @@ public:
     }
 
     std::vector<std::pair<int, Item*>> kNN (Item* query, int N, int thresh = 0) {
-        // At first initalize the result vector of <distanceFromQuery, item> pairs
+        // initialize a vector of N best candidates and distances represented as c++ pairs
         std::vector<std::pair<int, Item*>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
@@ -238,7 +238,7 @@ public:
     }
 
     std::vector<std::pair<int, Item*>> brute_force_search (Item* query, int N) {
-        // At first initalize the result vector of <distanceFromQuery, item> pairs
+        // initialize a vector of N best candidates and distances represented as c++ pairs
         std::vector<std::pair<int, Item*>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)

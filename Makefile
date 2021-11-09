@@ -24,5 +24,5 @@ Clustering.o: Clustering.cpp utilities.hpp Clustering_ui.hpp
 
 clean:
 	rm *.o
+	rm *.txt
 	ls | grep -v "\." | grep -v Makefile | grep -v LICENSE | grep -v datasets | grep -v draft_files | xargs rm
-#	rm *.exe*
