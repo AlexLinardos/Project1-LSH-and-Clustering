@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    LSH_params params;
+    LSH_params params ;
 
     if (argc == 1) // Αν δεν έχουν δωθεί παράμετροι από το terminal τρέξε το interface με prompts
     {
@@ -91,6 +91,15 @@ int main(int argc, char *argv[])
     for (int a = 0; a < r.size(); a++)
     {
         cout << r[a].first << ", " << r[a].second->id << endl;
+    }
+
+    cout << "brute_force_search" << endl;
+
+    std::vector<std::pair<int, Item*>> b = lsh.brute_force_search(&queries[0], params.N);
+
+    for (int a = 0; a < params.N; a++)
+    {
+        cout << b[a].first << ", " << b[a].second->id << endl;
     }
     
     return 0;

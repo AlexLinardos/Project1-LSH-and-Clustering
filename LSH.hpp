@@ -236,6 +236,35 @@ public:
         std::sort(d.begin(), d.end(), comparePairs);
         return d;
     }
+
+    std::vector<std::pair<int, Item*>> brute_force_search (Item* query, int N) {
+        // At first initalize the result vector of <distanceFromQuery, item> pairs
+        std::vector<std::pair<int, Item*>> knns;
+        // Then initialize each pair with distance -> (max integer) and a null item
+        for (int i = 0; i < N; i++)
+            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), new Item()));
+
+        // For each item in dataset
+        for (int j = 0; j < dataset.size(); j++) 
+        {
+            // Calculate item's distance to the query item
+            int distance = EuclideanDistance(query, &dataset[j], dimension);
+
+            /*
+            The last pair in the N-sized vector is the worst out of the N
+            best candidates till now. If a better candidate is found,
+            replace the last pair with the new one and re-sort the vector.
+            */
+            if (distance < knns[N-1].first) {
+                knns[N-1].first = distance;
+                if (knns[N-1].second->null && knns[N-1].second->id=="-1") // if it is a null item created just to initialize the N pairs of the vector.
+                    delete knns[N-1].second;
+                knns[N-1].second = &dataset[j];
+                std::sort(knns.begin(), knns.end(), comparePairs);
+            }
+        }
+        return knns;
+    }
 };
 
 #endif
