@@ -7,6 +7,7 @@
 #include <sstream>
 #include <typeinfo>
 #include <cmath>
+#include <unordered_map>
 
 using namespace std;
 
@@ -137,6 +138,28 @@ int extract_int_from_string(string str)
     }
     ss.str(string());
     return -1;
+}
+
+template <typename K, typename V>
+void print_map(std::unordered_map<K, V> const &m)
+{
+    for (auto const &pair : m)
+    {
+        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+    }
+}
+
+int HammingDistance(unsigned int i1, unsigned int i2)
+{
+    int x = i1 ^ i2;
+    int setBits = 0;
+
+    while (x > 0)
+    {
+        setBits += x & 1;
+        x >>= 1;
+    }
+    return setBits;
 }
 
 #endif
