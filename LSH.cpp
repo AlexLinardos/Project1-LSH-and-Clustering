@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     cout << "Run LSH..." << endl;
 
-    LSH lsh = LSH(params, 4, 8);
+    LSH lsh = LSH(params, 3, 8);
 
     std::vector<std::pair<int, Item*>> knns;
     std::vector<std::pair<int, Item*>> true_knns;
@@ -90,8 +90,10 @@ int main(int argc, char *argv[])
 
     ofstream output_file;
     output_file.open ("LSH_output.txt");
-
-    clock_t begin = clock();
+    double lsh_elapsed=0;
+    double brute_elapsed=0;
+    clock_t begin;
+    clock_t end;
 
     for (int i =0; i<queries.size(); i++)
     {
@@ -99,13 +101,19 @@ int main(int argc, char *argv[])
         
         //cout << "[k-ANN]" << endl;
         lsh_begin = std::chrono::steady_clock::now();
-        knns = lsh.kNN(&queries[0], params.N, dataset.size()/4);
+        begin = clock();
+        knns = lsh.kNN(&queries[i], params.N, dataset.size()/4);
+        end = clock();
         lsh_end = std::chrono::steady_clock::now();
+        lsh_elapsed += double(end - begin);
         
         //cout << "[Brute Force]" << endl;
         true_begin = std::chrono::steady_clock::now();
+        begin = clock();
         true_knns = lsh.brute_force_search(&queries[i], params.N);
+        end = clock();
         true_end = std::chrono::steady_clock::now();
+        brute_elapsed += double(end - begin);
 
         for (int j = 0; j < params.N; j++)
         {
@@ -127,11 +135,11 @@ int main(int argc, char *argv[])
          error=0;
     }
 
-    cout << "[METRICS]" << endl;
+    cout << "[EVALUATION]" << endl;
 
-    clock_t end = clock();
-    double elapsed = double(end - begin) / CLOCKS_PER_SEC;
-    cout << "duration (total): " << elapsed << " sec" << endl;
+    lsh_elapsed = lsh_elapsed / CLOCKS_PER_SEC;
+    brute_elapsed = brute_elapsed / CLOCKS_PER_SEC;
+    cout << "tlSH/tTrue: " << (lsh_elapsed*(double)1000000) / (brute_elapsed*(double)1000000)  << endl;
 
     meso_error=meso_error/(double)queries.size();
 

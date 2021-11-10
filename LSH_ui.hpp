@@ -27,6 +27,8 @@ LSH_params Guided_Interface()
     params.query_file = "./datasets/query_small_id";
     params.N = 5;
     params.R = 500;
+    // params.L = 7;
+    // params.k = 5; 
 
     // string answer;
     // cout << "Enter dataset file path: ";
