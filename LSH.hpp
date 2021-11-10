@@ -1,8 +1,9 @@
 #ifndef LSH_HPP
 #define LSH_HPP
 #include "hashing.hpp"
+#include "LSH_ui.hpp"
 #include <algorithm>
-#include <cmath> 
+#include <cmath>
 
 class G
 {
@@ -83,12 +84,32 @@ class LSH
     G** g;
 
 public:
-    LSH(LSH_params params, int windowSize, int divisor_for_tableSize): windowSize(windowSize), params(params)
+    LSH(LSH_params params, int factor_for_windowSize, int divisor_for_tableSize): params(params)
     {
+        // tune windowSize
         dataset = read_items(params.input_file);
         queries = read_items(params.query_file);
         tableSize = dataset.size()/divisor_for_tableSize;
         dimension = dataset[0].xij.size();
+
+        std::random_device rd;     // only used once to initialise (seed) engine
+        std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+        std::uniform_int_distribution<int> uni(0,dataset.size()-1); // guaranteed unbiased
+        int item_index_1;
+        int item_index_2;
+        double distance=0;
+        
+        for(int i=0; i<dataset.size()/4; i++)
+        {
+            item_index_1 = uni(rng);
+            item_index_2 = uni(rng);
+            while(item_index_1==item_index_2)
+                item_index_2 = uni(rng);
+            distance += (EuclideanDistance(&dataset[item_index_1], &dataset[item_index_2], dimension))/(double)(dataset.size()/4);
+        }
+
+        windowSize = factor_for_windowSize*(int)distance;
+        // cout << "w " << w << endl;
 
         // Initialize L hashTables and g_hashFunctions
         hashTables= new std::vector<Item*>*[params.L];
@@ -125,7 +146,10 @@ public:
         std::vector<std::pair<int, Item*>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
-            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), new Item()));
+        {
+            Item item = Item();
+            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), &item));
+        }
 
         // For each hash table...
         int itemsSearched = 0;
@@ -149,9 +173,9 @@ public:
                 if (alreadyExists)
                     continue;
 
-                // Querying trick (from Lecture Slides): ID is locality sensitive. Avoid computing Euclidean distance for all elements in bucket.
-                if(abs((int)(g[i]->produce_g(*hashTables[i][bucket][j])-id))>1000)
-                    continue;
+                // // // Querying trick (from Lecture Slides): ID is locality sensitive. Avoid computing Euclidean distance for all elements in bucket.
+                // if(g[i]->produce_g(*(hashTables[i][bucket][j]))!=id)
+                //     continue;
 
                 // Calculate item's distance to the query item
                 int distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
@@ -163,8 +187,8 @@ public:
                 */
                 if (distance < knns[N-1].first) {
                     knns[N-1].first = distance;
-                    if (knns[N-1].second->null && knns[N-1].second->id=="-1") // if it is a null item created just to initialize the N pairs of the vector.
-                        delete knns[N-1].second;
+                    // if (knns[N-1].second->null) // if it is a null item created just to initialize the N pairs of the vector.
+                    //     delete knns[N-1].second;
                     knns[N-1].second = hashTables[i][bucket][j];
                     std::sort(knns.begin(), knns.end(), comparePairs);
                 }

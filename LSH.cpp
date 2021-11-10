@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include "utilities.hpp"
-#include "LSH_ui.hpp"
 #include "hashing.hpp"
 #include "LSH.hpp"
 #include <chrono>
+#include <random>
 
 using namespace std;
 
@@ -71,12 +71,10 @@ int main(int argc, char *argv[])
     //     cout << test_G.produce_g(dataset[i]) << ", ";
     // }
     // cout << "----------------------------------------" << endl;
+
     cout << "Run LSH..." << endl;
 
-    LSH lsh = LSH(params, 4, 4);
-
-    ofstream output_file;
-    output_file.open ("LSH_output.txt");
+    LSH lsh = LSH(params, 4, 8);
 
     std::vector<std::pair<int, Item*>> knns;
     std::vector<std::pair<int, Item*>> true_knns;
@@ -86,15 +84,25 @@ int main(int argc, char *argv[])
     std::chrono::steady_clock::time_point lsh_end;
     std::chrono::steady_clock::time_point true_begin;
     std::chrono::steady_clock::time_point true_end;
+    
+    double error=0;
+    double meso_error=0;
+
+    ofstream output_file;
+    output_file.open ("LSH_output.txt");
+
+    clock_t begin = clock();
 
     for (int i =0; i<queries.size(); i++)
     {
         output_file << "Query: " << queries[i].id << endl;
         
+        //cout << "[k-ANN]" << endl;
         lsh_begin = std::chrono::steady_clock::now();
-        knns = lsh.kNN(&queries[0], params.N, 0);
+        knns = lsh.kNN(&queries[0], params.N, dataset.size()/4);
         lsh_end = std::chrono::steady_clock::now();
         
+        //cout << "[Brute Force]" << endl;
         true_begin = std::chrono::steady_clock::now();
         true_knns = lsh.brute_force_search(&queries[i], params.N);
         true_end = std::chrono::steady_clock::now();
@@ -104,17 +112,30 @@ int main(int argc, char *argv[])
             output_file << "Nearest neighbor-" << j+1 << ": " << knns[j].second->id << endl;
             output_file << "distanceLSH: " << knns[j].first << endl;
             output_file << "distanceTrue: " << true_knns[j].first << endl;
+            error+= (knns[j].first/(double)true_knns[j].first);
         }
         output_file << "tLSH: " <<  (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) /1000000.0  <<std::endl;
         output_file << "tTrue: " <<  (std::chrono::duration_cast<std::chrono::microseconds>(true_end - true_begin).count()) /1000000.0  <<std::endl;
 
-        output_file << "R-near neighbors:" << endl;
-        r = lsh.RangeSearch(&queries[0], params.R, 0);
-        for (int a = 0; a < r.size(); a++)
-        {
-            output_file << r[a].second->id << ", " << r[a].first << endl;
-        }
+        // output_file << "R-near neighbors:" << endl;
+        // r = lsh.RangeSearch(&queries[i], params.R, 0);
+        // for (int a = 0; a < r.size(); a++)
+        // {
+        //     output_file << r[a].second->id << ", " << r[a].first << endl;
+        // }
+         meso_error+= error/(double)params.N;
+         error=0;
     }
+
+    cout << "[METRICS]" << endl;
+
+    clock_t end = clock();
+    double elapsed = double(end - begin) / CLOCKS_PER_SEC;
+    cout << "duration (total): " << elapsed << " sec" << endl;
+
+    meso_error=meso_error/(double)queries.size();
+
+    cout << "distLSH/distTrue (avg): " << meso_error << endl;
     
     output_file.close();
     return 0;
