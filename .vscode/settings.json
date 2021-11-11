@@ -61,7 +61,10 @@
         "numeric": "cpp",
         "optional": "cpp",
         "ratio": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "bitset": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp"
     },
     "cmake.configureOnOpen": true
 }
