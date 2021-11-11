@@ -67,7 +67,8 @@ Cluster_params CMD_Interface(int argc, char *argv[])
     {
         cout << "Something went wrong with the given input." << endl
              << "Input should follow the following template:" << endl
-             << "$./cluster -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
+             << "$./Clustering -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
+        exit(-1);
     }
     return params;
 }

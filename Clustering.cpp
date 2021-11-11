@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "utilities.hpp"
-#include "Clustering_ui.hpp"
+#include "Clustering.hpp"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     if (argc == 1)
     {
         cout << "Run program from command line following the format below: " << endl;
-        cout << "$./cluster -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
+        cout << "$./Clustering -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
         return -1;
     }
     else
