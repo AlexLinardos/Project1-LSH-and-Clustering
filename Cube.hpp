@@ -7,6 +7,7 @@
 #include <random>
 #include <algorithm>
 #include <typeinfo>
+#include <chrono>
 #include "hashing.hpp"
 #include "Cube_ui.hpp"
 #include "utilities.hpp"
