@@ -47,12 +47,23 @@ namespace Alekos
                     sum_prob += p[k];
                 }
                 cout << "THIS MUST BE 1.0 : " << sum_prob << endl;
-                break;
-                //
-                // here goes the code to assign next centroid (instead of break)
-                //
+
+                std::discrete_distribution<> distribution{p.begin(), p.end()};
+                int pick = distribution(eng);
+                centroids.push_back(dataset[pick]);
+                cout << "New centroid is point with id: " << dataset[pick].id << " and it had a probabillity of " << p[pick] << endl;
+                double max_p = 0.0;
+                for (int z = 0; z < p.size(); ++z)
+                {
+                    if (p[z] > max_p)
+                    {
+                        max_p = p[z];
+                    }
+                }
+                cout << "Max probabillity was " << max_p << endl
+                     << endl;
             }
-            cout << "CENTROIDS CREATED= " << centroids.size() << endl;
+            cout << "CENTROIDS CREATED = " << centroids.size() << endl;
         }
 
         void calculate_min_dists(vector<Item> &centroids, vector<double> &d, double &dist_sum)
@@ -101,7 +112,7 @@ namespace Alekos
         {
             for (int i = 0; i < d.size(); ++i)
             {
-                p[i] = d[i] / dist_sum;
+                p[i] = pow(d[i], 2.0) / dist_sum;
             }
             cout << endl;
         }

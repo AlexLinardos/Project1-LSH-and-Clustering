@@ -4,7 +4,9 @@
 #include "Clustering_ui.hpp"
 #include "Clustering.hpp"
 #include "Clustering2.hpp"
-
+#include <map>
+#include <random>
+#include <chrono>
 using namespace std;
 
 int main(int argc, char *argv[])
