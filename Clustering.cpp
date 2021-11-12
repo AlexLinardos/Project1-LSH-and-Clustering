@@ -41,9 +41,10 @@ int main(int argc, char *argv[])
     }
 
     vector<Item> dataset = read_items(params.input_file);
-    Alekos::Clustering lloyds = Alekos::Clustering(params, dataset);
+    Alekos::Clustering cluster = Alekos::Clustering(params, dataset);
 
-    lloyds.initialize_pp();
+    cluster.initialize_pp();
+    cluster.Lloyds();
 
     return 0;
 }
