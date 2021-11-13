@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <cmath>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
@@ -115,7 +116,7 @@ double EuclideanDistance(Item *p, Item *q, const uint16_t &d)
     return sqrt(sum);
 }
 
-bool comparePairs(std::pair<int, Item *> x, std::pair<int, Item *> y)
+bool comparePairs(std::pair<double, Item *> x, std::pair<double, Item *> y)
 {
     return (x.first < y.first);
 }
@@ -171,6 +172,39 @@ vector<double> vector_addition(vector<double> &v1, vector<double> v2, int dimens
         result[i] = v1[i] + v2[i];
     }
     return result;
+}
+
+std::vector<std::pair<double, Item *>> brute_force_search(vector<Item> &dataset, Item *query, int N)
+{
+        int dimension = dataset[0].xij.size();
+
+    // initialize a vector of N best candidates and distances represented as c++ pairs
+    std::vector<std::pair<double, Item *>> knns;
+    // Then initialize each pair with distance -> (max integer) and a null item
+    for (int i = 0; i < N; i++)
+        knns.push_back(std::make_pair(std::numeric_limits<double>::max(), new Item()));
+
+    // For each item in dataset
+    for (int j = 0; j < dataset.size(); j++)
+    {
+        // Calculate item's distance to the query item
+        double distance = EuclideanDistance(query, &dataset[j], dimension);
+
+        /*
+        The last pair in the N-sized vector is the worst out of the N
+        best candidates till now. If a better candidate is found,
+        replace the last pair with the new one and re-sort the vector.
+        */
+        if (distance < knns[N - 1].first)
+        {
+            knns[N - 1].first = distance;
+            if (knns[N - 1].second->null && knns[N - 1].second->id == "-1") // if it is a null item created just to initialize the N pairs of the vector.
+                delete knns[N - 1].second;
+            knns[N - 1].second = &dataset[j];
+            std::sort(knns.begin(), knns.end(), comparePairs);
+        }
+    }
+    return knns;
 }
 
 #endif

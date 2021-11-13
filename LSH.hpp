@@ -143,15 +143,15 @@ public:
         delete[] g;
     }
 
-    std::vector<std::pair<int, Item *>> kNN(Item *query, int N, int thresh = 0)
+    std::vector<std::pair<double, Item *>> kNN(Item *query, int N, int thresh = 0)
     {
         // initialize a vector of N best candidates and distances represented as c++ pairs
-        std::vector<std::pair<int, Item *>> knns;
+        std::vector<std::pair<double, Item *>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
         {
             Item item = Item();
-            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), &item));
+            knns.push_back(std::make_pair(std::numeric_limits<double>::max(), &item));
         }
 
         // For each hash table...
@@ -212,10 +212,10 @@ public:
     Each neighbor is represented as a pair of <distanceToQuery, neighborItem*>
     The following function returns a vector of these pairs
     */
-    std::vector<std::pair<int, Item *>> RangeSearch(Item *query, double radius, int thresh = 0)
+    std::vector<std::pair<double, Item *>> RangeSearch(Item *query, double radius, int thresh = 0)
     {
         // Initialize the vector
-        std::vector<std::pair<int, Item *>> d;
+        std::vector<std::pair<double, Item *>> d;
         /*
         In this method, we do not need to sort the vector, also its size is not constant.
         Hence, we do not need to initalize its values.
@@ -253,7 +253,7 @@ public:
                 // If the distance is less than radius, insert the pair into the return vector
                 if (distance < radius)
                 {
-                    std::pair<int, Item *> tmpPair = std::make_pair(distance, hashTables[i][bucket][j]);
+                    std::pair<double, Item *> tmpPair = std::make_pair(distance, hashTables[i][bucket][j]);
                     d.push_back(tmpPair);
                 }
 
@@ -267,37 +267,6 @@ public:
         }
         // std::sort(d.begin(), d.end(), comparePairs);
         return d;
-    }
-
-    std::vector<std::pair<int, Item *>> brute_force_search(Item *query, int N)
-    {
-        // initialize a vector of N best candidates and distances represented as c++ pairs
-        std::vector<std::pair<int, Item *>> knns;
-        // Then initialize each pair with distance -> (max integer) and a null item
-        for (int i = 0; i < N; i++)
-            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), new Item()));
-
-        // For each item in dataset
-        for (int j = 0; j < dataset.size(); j++)
-        {
-            // Calculate item's distance to the query item
-            double distance = EuclideanDistance(query, &dataset[j], dimension);
-
-            /*
-            The last pair in the N-sized vector is the worst out of the N
-            best candidates till now. If a better candidate is found,
-            replace the last pair with the new one and re-sort the vector.
-            */
-            if (distance < knns[N - 1].first)
-            {
-                knns[N - 1].first = distance;
-                if (knns[N - 1].second->null && knns[N - 1].second->id == "-1") // if it is a null item created just to initialize the N pairs of the vector.
-                    delete knns[N - 1].second;
-                knns[N - 1].second = &dataset[j];
-                std::sort(knns.begin(), knns.end(), comparePairs);
-            }
-        }
-        return knns;
     }
 };
 
