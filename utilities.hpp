@@ -163,12 +163,12 @@ int HammingDistance(unsigned int i1, unsigned int i2)
 }
 
 // performs the operation of vector addition
-vector<double> vector_addition(vector<double> &v1, vector<double> v2, int dimensions)
+vector<double> vector_mean(vector<double> &v1, vector<double> v2, int dimensions, int T)
 {
     vector<double> result(dimensions, 0);
     for (int i = 0; i < dimensions; ++i)
     {
-        result[i] = v1[i] + v2[i];
+        result[i] = v1[i] + (v2[i] / T);
     }
     return result;
 }

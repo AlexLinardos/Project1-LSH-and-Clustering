@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
 
     LSH lsh = LSH(params, 3, 8);
 
-    std::vector<std::pair<int, Item *>> knns;
-    std::vector<std::pair<int, Item *>> true_knns;
-    std::vector<std::pair<int, Item *>> r;
+    std::vector<std::pair<double, Item *>> knns;
+    std::vector<std::pair<double, Item *>> true_knns;
+    std::vector<std::pair<double, Item *>> r;
 
     std::chrono::steady_clock::time_point lsh_begin;
     std::chrono::steady_clock::time_point lsh_end;
