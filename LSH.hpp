@@ -70,9 +70,9 @@ public:
 class LSH
 {
     int dimension; // Data dimension
-    
+
     int windowSize; // windowSize
-    
+
     int tableSize; // hashtableSize
 
     LSH_params params; // k, L, N, R
@@ -80,57 +80,59 @@ class LSH
     vector<Item> dataset;
     vector<Item> queries;
 
-    std::vector<Item*>** hashTables;
-    G** g;
+    std::vector<Item *> **hashTables;
+    G **g;
 
 public:
-    LSH(LSH_params params, int factor_for_windowSize, int divisor_for_tableSize): params(params)
+    LSH(LSH_params params, int factor_for_windowSize, int divisor_for_tableSize) : params(params)
     {
         // tune windowSize
         dataset = read_items(params.input_file);
         queries = read_items(params.query_file);
-        tableSize = dataset.size()/divisor_for_tableSize;
+        tableSize = dataset.size() / divisor_for_tableSize;
         dimension = dataset[0].xij.size();
 
-        std::random_device rd;     // only used once to initialise (seed) engine
-        std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-        std::uniform_int_distribution<int> uni(0,dataset.size()-1); // guaranteed unbiased
+        std::random_device rd;                                         // only used once to initialise (seed) engine
+        std::mt19937 rng(rd());                                        // random-number engine used (Mersenne-Twister in this case)
+        std::uniform_int_distribution<int> uni(0, dataset.size() - 1); // guaranteed unbiased
         int item_index_1;
         int item_index_2;
-        double distance=0;
-        
-        for(int i=0; i<dataset.size()/4; i++)
+        double distance = 0;
+
+        for (int i = 0; i < dataset.size() / 4; i++)
         {
             item_index_1 = uni(rng);
             item_index_2 = uni(rng);
-            while(item_index_1==item_index_2)
+            while (item_index_1 == item_index_2)
                 item_index_2 = uni(rng);
-            distance += (EuclideanDistance(&dataset[item_index_1], &dataset[item_index_2], dimension))/(double)(dataset.size()/4);
+            distance += (EuclideanDistance(&dataset[item_index_1], &dataset[item_index_2], dimension)) / (double)(dataset.size() / 4);
         }
 
-        windowSize = factor_for_windowSize*(int)distance;
+        windowSize = factor_for_windowSize * (int)distance;
         // cout << "w " << w << endl;
 
         // Initialize L hashTables and g_hashFunctions
-        hashTables= new std::vector<Item*>*[params.L];
-        g = new G*[params.L];
+        hashTables = new std::vector<Item *> *[params.L];
+        g = new G *[params.L];
         for (int i = 0; i < params.L; i++) // for every hashTable
         {
-            hashTables[i]=new std::vector<Item*>[tableSize];
+            hashTables[i] = new std::vector<Item *>[tableSize];
             g[i] = new G(params.k, tableSize, windowSize, dimension);
             // cout << g[i]->produce_g(dataset[0]) << " ";
         }
         // cout << endl;
 
         // Hash all items in training set and insert them into their buckets
-        for (int a = 0; a < dataset.size(); a++) {
-            for (int i = 0; i < params.L; i++) {
+        for (int a = 0; a < dataset.size(); a++)
+        {
+            for (int i = 0; i < params.L; i++)
+            {
                 unsigned int bucket = g[i]->produce_g(dataset[a]) % (long unsigned)tableSize;
                 hashTables[i][bucket].push_back(&dataset[a]);
             }
         }
     }
-    ~LSH () 
+    ~LSH()
     {
         for (int i = 0; i < params.L; i++) // for every hashTable
         {
@@ -141,9 +143,10 @@ public:
         delete[] g;
     }
 
-    std::vector<std::pair<int, Item*>> kNN (Item* query, int N, int thresh = 0) {
+    std::vector<std::pair<int, Item *>> kNN(Item *query, int N, int thresh = 0)
+    {
         // initialize a vector of N best candidates and distances represented as c++ pairs
-        std::vector<std::pair<int, Item*>> knns;
+        std::vector<std::pair<int, Item *>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
         {
@@ -153,14 +156,14 @@ public:
 
         // For each hash table...
         int itemsSearched = 0;
-        for (int i = 0; i < params.L; i++) 
+        for (int i = 0; i < params.L; i++)
         {
             // Calculate the bucket to which the query item corresponds
             long unsigned id = g[i]->produce_g(*query);
             long unsigned bucket = id % (long unsigned)tableSize;
 
             // For each item inside the bucket...
-            for (int j = 0; j < hashTables[i][bucket].size(); j++) 
+            for (int j = 0; j < hashTables[i][bucket].size(); j++)
             {
                 /*
                 Check if the current item is already inserted into the KNNs vector from a previous hash table.
@@ -168,7 +171,7 @@ public:
                 bool alreadyExists = false;
                 for (int a = 0; a < N; a++)
                     if (knns[a].second->id == hashTables[i][bucket][j]->id)
-                    alreadyExists = true;
+                        alreadyExists = true;
 
                 if (alreadyExists)
                     continue;
@@ -178,18 +181,19 @@ public:
                 //     continue;
 
                 // Calculate item's distance to the query item
-                int distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
+                double distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
 
                 /*
                 The last pair in the N-sized vector is the worst out of the N
                 best candidates till now. If a better candidate is found,
                 replace the last pair with the new one and re-sort the vector.
                 */
-                if (distance < knns[N-1].first) {
-                    knns[N-1].first = distance;
+                if (distance < knns[N - 1].first)
+                {
+                    knns[N - 1].first = distance;
                     // if (knns[N-1].second->null) // if it is a null item created just to initialize the N pairs of the vector.
                     //     delete knns[N-1].second;
-                    knns[N-1].second = hashTables[i][bucket][j];
+                    knns[N - 1].second = hashTables[i][bucket][j];
                     std::sort(knns.begin(), knns.end(), comparePairs);
                 }
 
@@ -208,9 +212,10 @@ public:
     Each neighbor is represented as a pair of <distanceToQuery, neighborItem*>
     The following function returns a vector of these pairs
     */
-    std::vector<std::pair<int, Item*>> RangeSearch (Item* query, double radius, int thresh = 0) {
+    std::vector<std::pair<int, Item *>> RangeSearch(Item *query, double radius, int thresh = 0)
+    {
         // Initialize the vector
-        std::vector<std::pair<int, Item*>> d;
+        std::vector<std::pair<int, Item *>> d;
         /*
         In this method, we do not need to sort the vector, also its size is not constant.
         Hence, we do not need to initalize its values.
@@ -219,18 +224,20 @@ public:
 
         // For each hash table...
         int itemsSearched = 0;
-        for (int i = 0; i < params.L; i++) {
-        // Calculate the bucket to which the query item corresponds
+        for (int i = 0; i < params.L; i++)
+        {
+            // Calculate the bucket to which the query item corresponds
             long unsigned id = g[i]->produce_g(*query);
             long unsigned bucket = id % (long unsigned)tableSize;
 
             // For each item inside the bucket...
-            for (int j = 0; j < hashTables[i][bucket].size(); j++) {
+            for (int j = 0; j < hashTables[i][bucket].size(); j++)
+            {
                 // Check if the current item is already inserted into the vector
                 bool alreadyExists = false;
                 for (int a = 0; a < d.size(); a++)
-                if (d[a].second->id == hashTables[i][bucket][j]->id)
-                    alreadyExists = true;
+                    if (d[a].second->id == hashTables[i][bucket][j]->id)
+                        alreadyExists = true;
 
                 /*
                 The "marked" condition will only be met whenever this function is used by
@@ -239,14 +246,15 @@ public:
                 to a cluster so as to indicate that they are already assigned.
                 */
                 if (alreadyExists /*|| hashTables[i][bucket][j]->marked*/)
-                continue;
+                    continue;
 
-                int distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
+                double distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
 
                 // If the distance is less than radius, insert the pair into the return vector
-                if (distance < radius) {
-                std::pair<int, Item*> tmpPair = std::make_pair(distance, hashTables[i][bucket][j]);
-                d.push_back(tmpPair);
+                if (distance < radius)
+                {
+                    std::pair<int, Item *> tmpPair = std::make_pair(distance, hashTables[i][bucket][j]);
+                    d.push_back(tmpPair);
                 }
 
                 // If a certain threshold of items traversed is reached, return the vector.
@@ -261,29 +269,31 @@ public:
         return d;
     }
 
-    std::vector<std::pair<int, Item*>> brute_force_search (Item* query, int N) {
+    std::vector<std::pair<int, Item *>> brute_force_search(Item *query, int N)
+    {
         // initialize a vector of N best candidates and distances represented as c++ pairs
-        std::vector<std::pair<int, Item*>> knns;
+        std::vector<std::pair<int, Item *>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < N; i++)
             knns.push_back(std::make_pair(std::numeric_limits<int>::max(), new Item()));
 
         // For each item in dataset
-        for (int j = 0; j < dataset.size(); j++) 
+        for (int j = 0; j < dataset.size(); j++)
         {
             // Calculate item's distance to the query item
-            int distance = EuclideanDistance(query, &dataset[j], dimension);
+            double distance = EuclideanDistance(query, &dataset[j], dimension);
 
             /*
             The last pair in the N-sized vector is the worst out of the N
             best candidates till now. If a better candidate is found,
             replace the last pair with the new one and re-sort the vector.
             */
-            if (distance < knns[N-1].first) {
-                knns[N-1].first = distance;
-                if (knns[N-1].second->null && knns[N-1].second->id=="-1") // if it is a null item created just to initialize the N pairs of the vector.
-                    delete knns[N-1].second;
-                knns[N-1].second = &dataset[j];
+            if (distance < knns[N - 1].first)
+            {
+                knns[N - 1].first = distance;
+                if (knns[N - 1].second->null && knns[N - 1].second->id == "-1") // if it is a null item created just to initialize the N pairs of the vector.
+                    delete knns[N - 1].second;
+                knns[N - 1].second = &dataset[j];
                 std::sort(knns.begin(), knns.end(), comparePairs);
             }
         }

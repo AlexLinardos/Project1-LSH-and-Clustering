@@ -85,15 +85,6 @@ public:
             unsigned int bucket = concat_f_values(f_values);
             hash_table[bucket].push_back(dataset[i]);
         }
-
-        for (int i = 0; i < 20; ++i)
-        {
-
-            for (int j = 0; j < hash_table[i].size(); ++j)
-            {
-                Item test = hash_table[i][j];
-            }
-        }
     }
 
     ~Hypercube() {}
@@ -208,7 +199,7 @@ public:
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
                 cout << "Item " << hash_table[curr_bucket][j].id << " in ";
-                int dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
+                double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
                 cout << "distance " << dist << " | ";
 
                 if (dist < knns[N - 1].first)
@@ -259,7 +250,7 @@ public:
                 // Το αφήνω να το βάλεις εσύ καλύτερα
 
                 cout << "Item " << hash_table[curr_bucket][j].id << " in ";
-                int dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
+                double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
                 cout << "distance " << dist << " | ";
 
                 if (dist < this->R)
