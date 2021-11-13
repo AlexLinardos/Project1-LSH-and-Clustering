@@ -174,7 +174,7 @@ vector<double> vector_mean(vector<double> &v1, vector<double> v2, int dimensions
     vector<double> result(dimensions, 0);
     for (int i = 0; i < dimensions; ++i)
     {
-        result[i] = v1[i] + (v2[i] / T);
+        result[i] = v1[i] + v2[i];
     }
     return result;
 }

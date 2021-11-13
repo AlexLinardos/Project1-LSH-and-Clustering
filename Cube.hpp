@@ -99,6 +99,7 @@ public:
             H h(w, d, k);
             vector<int> h_functions = h.produce_k_h(dataset[i]);
             vector<int> f_values(k);
+
             for (int j = 0; j < k; ++j)
             {
                 f_values.push_back(f.produce_f(j, h_functions[j]));
@@ -144,7 +145,7 @@ public:
     {
         for (int i = 0; i < num; ++i)
         {
-            cout << "Bucket " << i << " has " << hash_table[i].size() << " items." << endl;
+            // cout << "Bucket " << i << " has " << hash_table[i].size() << " items." << endl;
         }
     }
 
@@ -173,7 +174,7 @@ public:
             // cout << "DISTANCE" << i << ": ";
             for (int j = 0; j < p_in_dist.size(); ++j)
             {
-                cout << p_in_dist[j] << " ";
+                // cout << p_in_dist[j] << " ";
             }
             // cout << endl;
 
