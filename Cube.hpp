@@ -51,14 +51,12 @@ public:
     int d;                 // Διαστάσεις αντικειμένων
     int w;                 // Window
     unsigned int vertices; // Hypercube vertices
-    vector<Item> dataset;
     vector<unordered_map<int, int>> h_maps;
     vector<vector<Item>> hash_table;
     F f;
 
-    Hypercube(Cube_params params, int factor_for_windowSize, vector<Item> dataset, vector<unordered_map<int, int>> h_maps) : h_maps(h_maps), f(params.k)
+    Hypercube(Cube_params params, vector<Item> &dataset, int factor_for_windowSize, vector<unordered_map<int, int>> h_maps) : h_maps(h_maps), f(params.k)
     {
-        dataset = read_items(params.input_file);
         d = dataset[0].xij.size();
         std::random_device rd;                                         // only used once to initialise (seed) engine
         std::mt19937 rng(rd());                                        // random-number engine used (Mersenne-Twister in this case)

@@ -25,56 +25,13 @@ int main(int argc, char *argv[])
         }
     }
     print_LSH_params(params);
-    cout << "----------------------------------------" << endl;
-    vector<Item> dataset;
-    dataset = read_items(params.input_file);
-    Item item = dataset.at(9999);
-    cout << "[DATASET VECTOR TEST PRINT]" << endl;
-    cout << "Vector ID: " << item.id << endl;
-    cout << "Vector Values: ";
-    for (size_t i = 0; i < item.xij.size(); ++i)
-    {
-        cout << item.xij[i] << " ";
-    }
-    cout << endl;
-    cout << "----------------------------------------" << endl;
-    vector<Item> queries;
-    queries = read_items(params.query_file);
-    Item item2 = queries.at(99);
-    cout << "[QUERY VECTOR TEST PRINT]" << endl;
-    cout << "Vector ID: " << item2.id << endl;
-    cout << "Vector Values: ";
-    for (size_t i = 0; i < item2.xij.size(); ++i)
-    {
-        cout << item2.xij[i] << " ";
-    }
-    cout << endl;
-    cout << "----------------------------------------" << endl;
-    // cout << tableSize << endl;
-    //  cout << "[HASH FUNCTION TESTING]" << endl;
-    //  H test_H = H(4, item2.xij.size(), 4);
-    //  vector<int> v;
-    //  for (int i = 0; i < params.k; i++)
-    //  {
-    //      cout << test_H.produce_h(dataset[0]) << ", ";
-    //  }
-    //  v= test_H.produce_k_h(dataset[0]);
-    //  for(int j=0; j<4;j++)
-    //  {
-    //      cout << v[j] << ", ";
-    //  }
-    //  cout << endl;
-    //  G test_G = G(4, tableSize, 4, item2.xij.size());
-    //  for (int i = 0; i < 100; i++)
-    //  {
-    //      //test_G.produce_g(dataset[i]);
-    //      cout << test_G.produce_g(dataset[i]) << ", ";
-    //  }
-    //  cout << "----------------------------------------" << endl;
+    
+    vector<Item> dataset = read_items(params.input_file);
+    vector<Item> queries = read_items(params.query_file);
 
-    cout << "Run LSH..." << endl;
+    cout << "[RUN LSH]" << endl;
 
-    LSH lsh = LSH(params, 3, 8);
+    LSH lsh = LSH(params, dataset, 3, 8);
 
     std::vector<std::pair<double, Item *>> knns;
     std::vector<std::pair<double, Item *>> true_knns;

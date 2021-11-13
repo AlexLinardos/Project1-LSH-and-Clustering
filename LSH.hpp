@@ -77,18 +77,13 @@ class LSH
 
     LSH_params params; // k, L, N, R
 
-    vector<Item> dataset;
-    vector<Item> queries;
-
     std::vector<Item *> **hashTables;
     G **g;
 
 public:
-    LSH(LSH_params params, int factor_for_windowSize, int divisor_for_tableSize) : params(params)
+    LSH(LSH_params params, vector<Item> &dataset, int factor_for_windowSize, int divisor_for_tableSize) : params(params)
     {
         // tune windowSize
-        dataset = read_items(params.input_file);
-        queries = read_items(params.query_file);
         tableSize = dataset.size() / divisor_for_tableSize;
         dimension = dataset[0].xij.size();
 
