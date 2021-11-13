@@ -153,33 +153,43 @@ namespace Alekos
             // now we must calculate mean per cluster and make it the new center
             for (int i = 0; i < this->centers.size(); ++i)
             {
-                vector<int> sum(v_dimension, 0);
+                vector<double> mean(v_dimension, 0.0);
                 int T = this->clusters[i].size(); // number of objects in cluster
 
-                // calculate sum
-                for (int j = 0; j < T; ++j)
-                {
-                    // δεν είναι optimal (πολλοί copy constructors)
-                    sum = vector_addition(sum, this->clusters[i][j].xij, v_dimension); // using vector_addition from utilities.hpp
-                }
-
-                vector<double> mean(v_dimension, 0.0);
                 // calculate mean
                 for (int j = 0; j < T; ++j)
                 {
-                    mean[j] = sum[j] / T;
+                    mean = vector_mean(mean, this->clusters[i][j].xij, v_dimension, T); // using vector_addition from utilities.hpp
                 }
 
-                // εδώ θα γίνει μπότσα λόγω int->double
-                this->centers[i] = mean;
+                cout << "Sample mean: ";
+                for (int m = 0; m < 20; ++m)
+                {
+                    cout << mean[m] << " ";
+                }
+                cout << endl;
+
+                this->centers[i].xij = mean;
                 this->clusters[i].clear();
             }
+            cout << "New centers assigned" << endl;
+            cout << ".........................................." << endl;
         }
 
-        void Lloyds()
+        void Lloyds(int max_iter)
         {
+            int iter = 1; // iterations
             vector<int> assignments = assign_centers();
             update_centers(assignments);
+            vector<int> last_assignments(assignments.size());
+            do
+            {
+                last_assignments = assignments;
+                assignments = assign_centers();
+                update_centers(assignments);
+                iter++;
+            } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) || iter >= max_iter);
+            cout << "Lloyd's algorithm ended after " << iter << " iterations." << endl;
         }
     };
 }
