@@ -27,7 +27,7 @@ class Clustering
 public:
     Clustering(Cluster_params params) : params(params)
     {
-        dataset = read_items(params.input_file);
+        read_items(dataset, params.input_file);
         dimension = dataset[0].xij.size();
     };
 
@@ -40,8 +40,8 @@ public:
 
         int item_index = uni(rng);
 
-        ClusterCenter *cc = new ClusterCenter(dataset[item_index].xij);
-        clusterCenters.push_back(*cc);
+        // ClusterCenter *cc = new ClusterCenter(dataset[item_index].xij);
+        // clusterCenters.push_back(*cc);
     }
 };
 

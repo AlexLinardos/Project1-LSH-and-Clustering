@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
         print_Cluster_params(params);
     }
 
-    vector<Item> dataset = read_items(params.input_file);
+    vector<Item> dataset;
+    read_items(dataset, params.input_file);
     Alekos::Clustering cluster = Alekos::Clustering(params, dataset);
 
     cluster.initialize_pp();
