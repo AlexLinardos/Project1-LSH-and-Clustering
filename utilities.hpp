@@ -16,7 +16,7 @@ class Item
 {
 public:
     string id;
-    vector<int> xij;
+    vector<double> xij;
 
     bool null = false; // Flag if is NULL
     Item()
@@ -25,7 +25,7 @@ public:
         null = true;
     }
 
-    Item(string id, vector<int> xij) : id(id), xij(xij) { null = false; }
+    Item(string id, vector<double> xij) : id(id), xij(xij) { null = false; }
 };
 
 // Συνάρτηση διαμέρισης γραμμής κειμένου στα ξεχωριστά στοιχεία της
@@ -76,7 +76,7 @@ vector<Item> read_items(string filename)
             {
                 try
                 {
-                    int xij_int = stoi(out[i]);
+                    int xij_int = stod(out[i]);
                     item.xij.push_back(xij_int);
                 }
                 catch (...)
@@ -163,9 +163,9 @@ int HammingDistance(unsigned int i1, unsigned int i2)
 }
 
 // performs the operation of vector addition
-vector<int> vector_addition(vector<int> v1, vector<int> v2, int dimensions)
+vector<double> vector_addition(vector<double> &v1, vector<double> v2, int dimensions)
 {
-    vector<int> result(dimensions, 0);
+    vector<double> result(dimensions, 0);
     for (int i = 0; i < dimensions; ++i)
     {
         result[i] = v1[i] + v2[i];

@@ -160,7 +160,7 @@ namespace Alekos
                 for (int j = 0; j < T; ++j)
                 {
                     // δεν είναι optimal (πολλοί copy constructors)
-                    sum = vector_addition(this->clusters[i][j].xij, sum, v_dimension); // using vector_addition from utilities.hpp
+                    sum = vector_addition(sum, this->clusters[i][j].xij, v_dimension); // using vector_addition from utilities.hpp
                 }
 
                 vector<double> mean(v_dimension, 0.0);
