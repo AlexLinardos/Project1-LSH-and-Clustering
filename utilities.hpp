@@ -162,4 +162,15 @@ int HammingDistance(unsigned int i1, unsigned int i2)
     return setBits;
 }
 
+// performs the operation of vector addition
+vector<int> vector_addition(vector<int> v1, vector<int> v2, int dimensions)
+{
+    vector<int> result(dimensions, 0);
+    for (int i = 0; i < dimensions; ++i)
+    {
+        result[i] = v1[i] + v2[i];
+    }
+    return result;
+}
+
 #endif

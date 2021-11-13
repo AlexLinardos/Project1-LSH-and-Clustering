@@ -19,6 +19,7 @@ namespace Alekos
         default_random_engine eng;
         uniform_int_distribution<int> uid;
         vector<Item> centers; // cluster centers initialized in initialize_pp()
+        vector<vector<Item>> clusters;
 
         Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1) {}
 
@@ -66,6 +67,7 @@ namespace Alekos
             }
             cout << "CENTROIDS CREATED = " << centroids.size() << endl;
             this->centers = centroids;
+            this->clusters.resize(centroids.size());
         }
 
         void calculate_min_dists(vector<Item> &centroids, vector<double> &d, double &dist_sum)
@@ -139,6 +141,7 @@ namespace Alekos
                     }
                 }
                 assignments[i] = nearest_cntr;
+                this->clusters[nearest_cntr].push_back(this->dataset[i]); // push it into a cluster based on assigned center
             }
             return assignments;
         }
@@ -146,33 +149,30 @@ namespace Alekos
         // update centers (maximization)
         void update_centers(vector<int> assignments)
         {
-            vector<int> T(this->centers.size(), 0); // number of objects per cluster
-            vector<vector<Item>> clusters(this->centers.size());
-            for (int i = 0; i < this->centers.size(); ++i)
-            {
-                for (int j = 0; j < assignments.size(); ++j)
-                {
-                    if (assignments[j] == i)
-                    {
-                        T[i]++;
-                        clusters[i].push_back(this->dataset[i]);
-                    }
-                }
-            }
-            for (int k = 0; k < T.size(); ++k)
-            {
-                cout << "Cluster " << k << " has " << T[k] << " objects" << endl;
-            }
-            cout << endl;
-
+            int v_dimension = this->dataset[0].xij.size();
             // now we must calculate mean per cluster and make it the new center
             for (int i = 0; i < this->centers.size(); ++i)
             {
-                // vector<double> mean;
-                // for (int j = 0; j < clusters[i].size(); ++j)
-                // {
+                vector<int> sum(v_dimension, 0);
+                int T = this->clusters[i].size(); // number of objects in cluster
 
-                // }
+                // calculate sum
+                for (int j = 0; j < T; ++j)
+                {
+                    // δεν είναι optimal (πολλοί copy constructors)
+                    sum = vector_addition(this->clusters[i][j].xij, sum, v_dimension); // using vector_addition from utilities.hpp
+                }
+
+                vector<double> mean(v_dimension, 0.0);
+                // calculate mean
+                for (int j = 0; j < T; ++j)
+                {
+                    mean[j] = sum[j] / T;
+                }
+
+                // εδώ θα γίνει μπότσα λόγω int->double
+                this->centers[i] = mean;
+                this->clusters[i].clear();
             }
         }
 
