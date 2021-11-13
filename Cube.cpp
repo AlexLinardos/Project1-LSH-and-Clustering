@@ -26,8 +26,10 @@ int main(int argc, char *argv[])
     }
     print_Cube_params(params);
     
-    vector<Item> dataset = read_items(params.input_file);
-    vector<Item> queries = read_items(params.query_file);
+    vector<Item> dataset;
+    read_items(dataset, params.input_file);
+    vector<Item> queries;
+    read_items(queries, params.query_file);
 
     F f = F(params.k);
     Hypercube cube = Hypercube(params, dataset, 3, f.h_maps);

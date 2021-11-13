@@ -43,9 +43,8 @@ vector<string> tokenize(string str)
 }
 
 // used to read our dataset/query files
-vector<Item> read_items(string filename)
+void read_items(vector<Item> &data, string filename)
 {
-    vector<Item> data;
     string line;
     ifstream f;
     f.open(filename);
@@ -101,7 +100,7 @@ vector<Item> read_items(string filename)
     // cout << "Catches: " << catch_count << endl;
 
     f.close();
-    return data;
+    return;
 }
 
 // computes the Euclidean Distance between 2 points of dimension d

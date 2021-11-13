@@ -25,9 +25,11 @@ int main(int argc, char *argv[])
         }
     }
     print_LSH_params(params);
-    
-    vector<Item> dataset = read_items(params.input_file);
-    vector<Item> queries = read_items(params.query_file);
+
+    vector<Item> dataset;
+    read_items(dataset, params.input_file);
+    vector<Item> queries;
+    read_items(queries, params.query_file);
 
     cout << "[RUN LSH]" << endl;
 
