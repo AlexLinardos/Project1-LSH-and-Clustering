@@ -26,3 +26,4 @@ clean:
 	rm *.o
 	rm *.txt
 	ls | grep -v "\." | grep -v Makefile | grep -v LICENSE | grep -v datasets | grep -v draft_files | xargs rm
+    # rm *.exe

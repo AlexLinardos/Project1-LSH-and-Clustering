@@ -20,9 +20,11 @@ namespace Alekos
         uniform_int_distribution<int> uid;
         vector<Item> centers; // cluster centers initialized in initialize_pp()
         vector<vector<Item>> clusters;
+        vector<int> assignments; // shows the cluster to which each point is assigned to
 
-        Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1) {}
+        Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1), assignments(dataset.size()) {}
 
+        // initialization ++
         void initialize_pp()
         {
             vector<Item> centroids;
@@ -40,7 +42,7 @@ namespace Alekos
                 vector<double> p(dataset.size(), 0.0); // probabilities of points to be chosen as next centroid
 
                 calculate_min_dists(centroids, d, dist_sum); // calculate min distance of all points to the closest centroid for them
-                cout << "SUM (after normalization) = " << dist_sum << endl;
+                // cout << "SUM (after normalization) = " << dist_sum << endl;
 
                 calculate_probs(d, dist_sum, p); // calculate probability of each point to be chosen as next centroid
                 double sum_prob = 0.0;
@@ -48,12 +50,12 @@ namespace Alekos
                 {
                     sum_prob += p[k];
                 }
-                cout << "THIS MUST BE 1.0 : " << sum_prob << endl;
+                // cout << "THIS MUST BE 1.0 : " << sum_prob << endl;
 
                 std::discrete_distribution<> distribution{p.begin(), p.end()};
                 int pick = distribution(eng);
                 centroids.push_back(dataset[pick]);
-                cout << "New centroid is point with id: " << dataset[pick].id << " and it had a probabillity of " << p[pick] << endl;
+                // cout << "New centroid is point with id: " << dataset[pick].id << " and it had a probabillity of " << p[pick] << endl;
                 double max_p = 0.0;
                 for (int z = 0; z < p.size(); ++z)
                 {
@@ -62,14 +64,15 @@ namespace Alekos
                         max_p = p[z];
                     }
                 }
-                cout << "Max probabillity was " << max_p << endl
-                     << endl;
+                // cout << "Max probabillity was " << max_p << endl
+                //      << endl;
             }
-            cout << "CENTROIDS CREATED = " << centroids.size() << endl;
+            // cout << "CENTROIDS CREATED = " << centroids.size() << endl;
             this->centers = centroids;
             this->clusters.resize(centroids.size());
         }
 
+        // calculate distance of each point from its nearest centroid
         void calculate_min_dists(vector<Item> &centroids, vector<double> &d, double &dist_sum)
         {
             int dimension = this->dataset[0].xij.size();
@@ -97,7 +100,7 @@ namespace Alekos
                 }
                 d[i] = min_dist;
             }
-            cout << "MAX = " << max_d << endl;
+            // cout << "MAX = " << max_d << endl;
 
             // normalize data
             for (int j = 0; j < d.size(); ++j)
@@ -112,6 +115,7 @@ namespace Alekos
             }
         }
 
+        // calculate probability of each point to be picked as next centroid
         void calculate_probs(vector<double> d, double dist_sum, vector<double> &p)
         {
             for (int i = 0; i < d.size(); ++i)
@@ -121,11 +125,9 @@ namespace Alekos
             cout << endl;
         }
 
-        // assign a nearest center to each point
-        vector<int> assign_centers()
+        // assign a nearest center to each point (part 1 of Lloyd's algorithm)
+        void assign_centers()
         {
-            vector<int> assignments(this->dataset.size());
-
             int dimension = this->dataset[0].xij.size();
             for (int i = 0; i < this->dataset.size(); ++i)
             {
@@ -140,14 +142,13 @@ namespace Alekos
                         nearest_cntr = c;
                     }
                 }
-                assignments[i] = nearest_cntr;
+                this->assignments[i] = nearest_cntr;
                 this->clusters[nearest_cntr].push_back(this->dataset[i]); // push it into a cluster based on assigned center
             }
-            return assignments;
         }
 
-        // update centers (maximization)
-        void update_centers(vector<int> assignments)
+        // update centers (part 2 of Lloyd's algorithm)
+        void update_centers()
         {
             int v_dimension = this->dataset[0].xij.size();
             // now we must calculate mean per cluster and make it the new center
@@ -162,35 +163,108 @@ namespace Alekos
                     mean = vector_mean(mean, this->clusters[i][j].xij, v_dimension, T); // using vector_addition from utilities.hpp
                 }
 
-                cout << "Sample mean: ";
-                for (int m = 0; m < 20; ++m)
-                {
-                    cout << mean[m] << " ";
-                }
-                cout << endl;
+                // cout << "Sample mean: ";
+                // for (int m = 0; m < 20; ++m)
+                // {
+                //     cout << mean[m] << " ";
+                // }
+                // cout << endl;
 
                 this->centers[i].xij = mean;
                 this->clusters[i].clear();
             }
-            cout << "New centers assigned" << endl;
-            cout << ".........................................." << endl;
+            // cout << "New centers assigned" << endl;
+            // cout << ".........................................." << endl;
         }
 
+        // Lloyd's classic clustering algorithm
         void Lloyds(int max_iter)
         {
             int iter = 1; // iterations
-            vector<int> assignments = assign_centers();
-            update_centers(assignments);
-            vector<int> last_assignments(assignments.size());
+            assign_centers();
+            update_centers();
+            vector<int> last_assignments(this->assignments.size());
             do
             {
-                last_assignments = assignments;
-                assignments = assign_centers();
-                update_centers(assignments);
+                last_assignments = this->assignments;
+                assign_centers();
+                update_centers();
                 iter++;
+                // iterate until assignments don't change or until we reach max_iter threshold
             } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) || iter >= max_iter);
             cout << "Lloyd's algorithm ended after " << iter << " iterations." << endl;
         }
+
+        // Silhouette of object at index i
+        double silhouette(int i)
+        {
+            vector<Item> cluster = this->clusters[this->assignments[i]]; // find out at which cluster this item is assigned to
+
+            // calculate a(i) = average distance of i to objects in same cluster
+            vector<double> distances;
+            int dimension = cluster[0].xij.size();
+            for (int j = 0; j < cluster.size(); ++j)
+            {
+                double dist = EuclideanDistance(&this->dataset[i], &cluster[j], dimension);
+                distances.push_back(dist);
+            }
+            double a = 0.0;
+            for (int j = 0; j < distances.size(); ++j)
+            {
+                a += distances[j] / distances.size();
+            }
+
+            // calculate b(i) = average distance of i to objects in next best (neighbor) cluster, i.e. cluster of 2nd closest centroid
+            // first find the index of the next best cluster
+            int best;
+            double best_dist = std::numeric_limits<double>::max();
+            for (int j = 0; j < this->centers.size(); ++j)
+            {
+                if (j != this->assignments[i])
+                {
+                    double dist = EuclideanDistance(&this->dataset[i], &this->centers[j], dimension);
+                    if (dist < best_dist)
+                    {
+                        best_dist = dist;
+                        best = j;
+                    }
+                }
+            }
+            // now perform the calculations
+            distances.clear();
+            cluster = this->clusters[best];
+            for (int j = 0; j < cluster.size(); ++j)
+            {
+                double dist = EuclideanDistance(&this->dataset[i], &cluster[j], dimension);
+                distances.push_back(dist);
+            }
+            double b = 0.0;
+            for (int j = 0; j < distances.size(); ++j)
+            {
+                b += distances[j] / distances.size();
+            }
+
+            // find max between a(i) and b(i)
+            double max = a;
+            if (b > a)
+            {
+                max = b;
+            }
+            // finally calculate and return silhouette
+            return (b - a) / max;
+        }
+
+        // metric to evaluate specific cluster (c_index = the index of said cluster)
+        double eval_specific_cluster(int c_index)
+        {
+            double average = 0.0;
+            for (int i = 0; i < this->dataset.size(); ++i)
+            {
+                if (this->assignments[i])
+            }
+        }
+
+        // metric to evaluate overall clustering
     };
 }
 

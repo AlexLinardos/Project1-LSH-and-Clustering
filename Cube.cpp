@@ -33,21 +33,102 @@ int main(int argc, char *argv[])
     queries = read_items(params.query_file);
 
     F f = F(params.k);
-    Hypercube cube = Hypercube(params, dataset[0].xij.size(), 6, dataset, f.h_maps);
+    Hypercube cube = Hypercube(params, 3, dataset, f.h_maps);
 
     cout << "----------------------------------------" << endl;
-    cout << "[Now running kNN]" << endl;
-    std::vector<std::pair<int, Item *>> knns = cube.kNN(queries[0]);
-    for (int a = 0; a < params.N; a++)
+    // cout << "[Now running kNN]" << endl;
+    // std::vector<std::pair<int, Item *>> knns = cube.kNN(queries[0]);
+    // for (int a = 0; a < params.N; a++)
+    // {
+    //     cout << knns[a].first << ", " << knns[a].second->id << endl;
+    // }
+    // cout << "----------------------------------------" << endl;
+    // cout << "[Now running Range Search]" << endl;
+    // std::vector<std::pair<int, Item *>> rns = cube.RangeSearch(queries[0]);
+    // for (int a = 0; a < params.N; a++)
+    // {
+    //     cout << rns[a].first << ", " << rns[a].second->id << endl;
+    // }
+
+    std::vector<std::pair<double, Item *>> knns;
+    std::vector<std::pair<double, Item *>> true_knns;
+    std::vector<std::pair<double, Item *>> r;
+
+    std::chrono::steady_clock::time_point lsh_begin;
+    std::chrono::steady_clock::time_point lsh_end;
+    std::chrono::steady_clock::time_point true_begin;
+    std::chrono::steady_clock::time_point true_end;
+
+    double error = 0;
+    double meso_error = 0;
+
+    ofstream output_file;
+    output_file.open("LSH_output.txt");
+    double lsh_elapsed = 0;
+    double brute_elapsed = 0;
+    clock_t begin;
+    clock_t end;
+
+    for (int i = 0; i < queries.size(); i++)
     {
-        cout << knns[a].first << ", " << knns[a].second->id << endl;
+        output_file << "Query: " << queries[i].id << endl;
+
+        // cout << "[k-ANN]" << endl;
+        lsh_begin = std::chrono::steady_clock::now();
+        begin = clock();
+        knns = cube.kNN(queries[i]);
+        end = clock();
+        lsh_end = std::chrono::steady_clock::now();
+        lsh_elapsed += double(end - begin);
+
+        // cout << "[Brute Force]" << endl;
+        true_begin = std::chrono::steady_clock::now();
+        begin = clock();
+        true_knns = brute_force_search(dataset, &queries[i], params.N);
+        end = clock();
+        true_end = std::chrono::steady_clock::now();
+        brute_elapsed += double(end - begin);
+        int neighboors_returned = 0;
+
+        for (int j = 0; j < params.N; j++)
+        {
+            if (knns[j].second->id == "-1")
+            {
+                output_file << "Nearest neighbor-" << j + 1 << ": "
+                            << "NOT FOUND" << endl;
+                continue;
+            }
+            output_file << "Nearest neighbor-" << j + 1 << ": " << knns[j].second->id << endl;
+            output_file << "distanceLSH: " << knns[j].first << endl;
+            output_file << "distanceTrue: " << true_knns[j].first << endl;
+            error += (knns[j].first / true_knns[j].first);
+            // cout << "error: "  << error << endl;
+            neighboors_returned++;
+        }
+        output_file << "tLSH: " << (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) / 1000000.0 << std::endl;
+        output_file << "tTrue: " << (std::chrono::duration_cast<std::chrono::microseconds>(true_end - true_begin).count()) / 1000000.0 << std::endl;
+
+        // output_file << "R-near neighbors:" << endl;
+        // r = cube.RangeSearch(queries[i]);
+        // for (int a = 0; a < r.size(); a++)
+        // {
+        //     output_file << r[a].second->id << ", " << r[a].first << endl;
+        // }
+        meso_error += error / (double)neighboors_returned;
+        error = 0;
+        // cout << meso_error << endl;
     }
-    cout << "----------------------------------------" << endl;
-    cout << "[Now running Range Search]" << endl;
-    std::vector<std::pair<int, Item *>> rns = cube.RangeSearch(queries[0]);
-    for (int a = 0; a < params.N; a++)
-    {
-        cout << rns[a].first << ", " << rns[a].second->id << endl;
-    }
+
+    cout << "[EVALUATION]" << endl;
+
+    lsh_elapsed = lsh_elapsed / CLOCKS_PER_SEC;
+    brute_elapsed = brute_elapsed / CLOCKS_PER_SEC;
+    cout << "tCUBE/tTrue: " << (lsh_elapsed * (double)1000000) / (brute_elapsed * (double)1000000) << endl;
+
+    meso_error = meso_error / (double)queries.size();
+
+    cout << "distCUBE/distTrue (avg): " << meso_error << endl;
+
+    output_file.close();
     return 0;
 }

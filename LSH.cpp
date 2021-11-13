@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
         // cout << "[Brute Force]" << endl;
         true_begin = std::chrono::steady_clock::now();
         begin = clock();
-        true_knns = lsh.brute_force_search(&queries[i], params.N);
+        true_knns = brute_force_search(dataset, &queries[i], params.N);
         end = clock();
         true_end = std::chrono::steady_clock::now();
         brute_elapsed += double(end - begin);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
             output_file << "Nearest neighbor-" << j + 1 << ": " << knns[j].second->id << endl;
             output_file << "distanceLSH: " << knns[j].first << endl;
             output_file << "distanceTrue: " << true_knns[j].first << endl;
-            error += (knns[j].first / (double)true_knns[j].first);
+            error += (knns[j].first / true_knns[j].first);
         }
         output_file << "tLSH: " << (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) / 1000000.0 << std::endl;
         output_file << "tTrue: " << (std::chrono::duration_cast<std::chrono::microseconds>(true_end - true_begin).count()) / 1000000.0 << std::endl;

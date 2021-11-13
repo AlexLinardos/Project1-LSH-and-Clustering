@@ -56,8 +56,29 @@ public:
     vector<vector<Item>> hash_table;
     F f;
 
-    Hypercube(Cube_params params, int d, int w, vector<Item> dataset, vector<unordered_map<int, int>> h_maps) : d(d), w(w), dataset(dataset), h_maps(h_maps), f(params.k)
+    Hypercube(Cube_params params, int factor_for_windowSize, vector<Item> dataset, vector<unordered_map<int, int>> h_maps) : h_maps(h_maps), f(params.k)
     {
+        dataset = read_items(params.input_file);
+        d = dataset[0].xij.size();
+        std::random_device rd;                                         // only used once to initialise (seed) engine
+        std::mt19937 rng(rd());                                        // random-number engine used (Mersenne-Twister in this case)
+        std::uniform_int_distribution<int> uni(0, dataset.size() - 1); // guaranteed unbiased
+        int item_index_1;
+        int item_index_2;
+        double distance = 0;
+        double length = (double)(dataset.size() / 4);
+
+        for (int i = 0; i < length; i++)
+        {
+            item_index_1 = uni(rng);
+            item_index_2 = uni(rng);
+            while (item_index_1 == item_index_2)
+                item_index_2 = uni(rng);
+            distance += EuclideanDistance(&dataset[item_index_1], &dataset[item_index_2], d) / length;
+        }
+
+        w = factor_for_windowSize * distance;
+
         this->k = params.k;
         this->M = params.M;
         this->probes = params.probes;
@@ -66,7 +87,7 @@ public:
         this->vertices = pow(2, k);
 
         hash_table = vector<vector<Item>>(vertices);
-        cout << "INITIALIZED HASH TABLE OF SIZE: " << hash_table.size() << endl;
+        // cout << "INITIALIZED HASH TABLE OF SIZE: " << hash_table.size() << endl;
         for (int i = 0; i < vertices; ++i)
         {
             vector<Item> dummy_vec;
@@ -149,12 +170,12 @@ public:
         for (int i = 0; i < this->vertices; ++i)
         {
             vector<int> p_in_dist = get_probes_in_distance(i, bucket);
-            cout << "DISTANCE" << i << ": ";
+            // cout << "DISTANCE" << i << ": ";
             for (int j = 0; j < p_in_dist.size(); ++j)
             {
                 cout << p_in_dist[j] << " ";
             }
-            cout << endl;
+            // cout << endl;
 
             for (int j = 0; j < p_in_dist.size(); ++j)
             {
@@ -162,45 +183,45 @@ public:
                 probes_reached++;
                 if (probes_reached >= this->probes)
                 {
-                    cout << "Ended early at " << probes_reached << " probes." << endl;
+                    // cout << "Ended early at " << probes_reached << " probes." << endl;
                     return result;
                 }
             }
         }
-        cout << "I reached " << probes_reached << " instead of " << this->probes << endl;
+        // cout << "I reached " << probes_reached << " instead of " << this->probes << endl;
         return result;
     }
 
-    std::vector<std::pair<int, Item *>> kNN(Item query)
+    std::vector<std::pair<double, Item *>> kNN(Item query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
-        std::vector<std::pair<int, Item *>> knns;
+        std::vector<std::pair<double, Item *>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
         for (int i = 0; i < this->N; i++)
-            knns.push_back(std::make_pair(std::numeric_limits<int>::max(), new Item()));
+            knns.push_back(std::make_pair(std::numeric_limits<double>::max(), new Item()));
 
         unsigned int q_bucket = find_bucket(query);
-        cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
+        // cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
         vector<int> search_probes = get_probes_in_threshold(q_bucket);
 
-        cout << "-----------------------------------------------------" << endl;
+        // cout << "-----------------------------------------------------" << endl;
         int items_searched = 0;
         for (int i = 0; i < search_probes.size(); ++i)
         {
             int curr_bucket = search_probes[i];
-            cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
-            cout << "BUCKET " << curr_bucket << ": ";
-            for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
-            {
-                cout << hash_table[curr_bucket][j].id << ", ";
-            }
-            cout << endl;
+            // cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
+            // cout << "BUCKET " << curr_bucket << ": ";
+            //  for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
+            //  {
+            //      cout << hash_table[curr_bucket][j].id << ", ";
+            //  }
+            //  cout << endl;
 
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
-                cout << "Item " << hash_table[curr_bucket][j].id << " in ";
+                // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
                 double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
-                cout << "distance " << dist << " | ";
+                // cout << "distance " << dist << " | ";
 
                 if (dist < knns[N - 1].first)
                 {
@@ -217,45 +238,45 @@ public:
                     return knns;
                 }
             }
-            cout << endl;
-            cout << "...................." << endl;
+            // cout << endl;
+            // cout << "...................." << endl;
         }
         return knns;
     }
 
-    std::vector<std::pair<int, Item *>> RangeSearch(Item query)
+    std::vector<std::pair<double, Item *>> RangeSearch(Item query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
-        std::vector<std::pair<int, Item *>> rns;
+        std::vector<std::pair<double, Item *>> rns;
         unsigned int q_bucket = find_bucket(query);
-        cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
+        // cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
         vector<int> search_probes = get_probes_in_threshold(q_bucket);
 
-        cout << "-----------------------------------------------------" << endl;
+        // cout << "-----------------------------------------------------" << endl;
         int items_searched = 0;
         for (int i = 0; i < search_probes.size(); ++i)
         {
             int curr_bucket = search_probes[i];
-            cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
-            cout << "BUCKET " << curr_bucket << ": ";
-            for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
-            {
-                cout << hash_table[curr_bucket][j].id << ", ";
-            }
-            cout << endl;
+            // cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
+            // cout << "BUCKET " << curr_bucket << ": ";
+            // for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
+            // {
+            //     cout << hash_table[curr_bucket][j].id << ", ";
+            // }
+            // cout << endl;
 
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
                 // Εδώ κάνεις κάποια plays με ένα alreadyExists που δεν έχω ιδεά τι είναι
                 // Το αφήνω να το βάλεις εσύ καλύτερα
 
-                cout << "Item " << hash_table[curr_bucket][j].id << " in ";
+                // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
                 double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
-                cout << "distance " << dist << " | ";
+                // cout << "distance " << dist << " | ";
 
                 if (dist < this->R)
                 {
-                    std::pair<int, Item *> tmp_pair = std::make_pair(dist, &hash_table[curr_bucket][j]);
+                    std::pair<double, Item *> tmp_pair = std::make_pair(dist, &hash_table[curr_bucket][j]);
                     rns.push_back(tmp_pair);
                 }
 
@@ -265,8 +286,8 @@ public:
                     return rns;
                 }
             }
-            cout << endl;
-            cout << "...................." << endl;
+            // cout << endl;
+            // cout << "...................." << endl;
         }
         return rns;
     }
