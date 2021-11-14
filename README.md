@@ -2,7 +2,7 @@
 
 ## Μέλη ομάδας
 Αλέξανδρος Λινάρδος (sdi1600093@di.uoa.gr) <br>
-Αντώνης Μήλιος (sdi1600100@di.uoa.gr)
+Αντώνης Μήλιος (sdi1600100@di.uoa.gr) <br>
 Github repo: https://github.com/AlexLinardos/Project1-LSH-and-Clustering
 
 ## Περιγραφή project
@@ -11,7 +11,7 @@ Github repo: https://github.com/AlexLinardos/Project1-LSH-and-Clustering
 2. Συσταδοποίηση των δεδομένων με τρείς διαφορετικές μεθόδους του αλγορίθμου k-means: Lloyd's algorithm, Reverse Assignment with LSH Range Search και Reverse Assignment with Hypercube Range Search. Η απόδοσή τους αξιολογείται με την μετρική Silhouette.
 
 ## Αρχεία κώδικα / επικεφαλίδων
-!!! Δεν προλάβαμε να φτιάξουμε τα paths έτσι ώστε να δουλεύουν τα προγράμματα εντός φακέλων!!!
+!!! Δεν προλάβαμε να φτιάξουμε τα paths έτσι ώστε να δουλεύουν τα προγράμματα εντός φακέλων!!! <br>
 <b>Makefile > </b> Αρχείο makefile που χρησιμοποιείται για τη μεταγλώττιση των προγραμμάτων.
 
 <b>cluster.conf > </b> Ενδεικτικό αρχείο όπου ορίζονται οι παράμετροι της συσταδοποίησης (clustering). Μετά τις άνω-κάτω τελείες και πριν την εκάστοτε αριθμητική τιμή πρέπει να υπάρχει κενό για να διαβαστεί σωστά ένα configuration file.
