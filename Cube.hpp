@@ -14,10 +14,11 @@
 
 using namespace std;
 
+// function that assigns values produced from H family functions to {0,1} uniformly
 class F
 {
 public:
-    int k; // Διάσταση στην οποία προβάλλονται τα σημεία
+    int k; // dimension at which points will be projected
     vector<unordered_map<int, int>> h_maps;
     default_random_engine eng;
     uniform_int_distribution<int> uid;
@@ -43,17 +44,16 @@ public:
 class Hypercube
 {
 public:
-    int k;                 // Διάσταση στην οποία προβάλλονται τα σημεία
-    int M;                 // Μέγιστο πλήθος υποψήφιων σημείων που θα ελεγχθούν
-    int probes;            // Μέγιστο επιτρεπόμενο πλήθος κορυφών που θα ελεγχθούν
-    int N;                 // Αριθμός πλησιέστερων γειτόνων
-    double R;              // Ακτίνα αναζήτησης
-    int d;                 // Διαστάσεις αντικειμένων
+    int k;                 // dimension at which points will be projected
+    int M;                 // maximum number of points to be checked
+    int probes;            // maximum number of vertices(probes) to be checked
+    int N;                 // number of nearest neighbors to be found
+    double R;              // search range
+    int d;                 // dimensions of points (items)
     int w;                 // Window
     unsigned int vertices; // Hypercube vertices
-    //vector<unordered_map<int, int>> h_maps;
-    // vector<vector<Item>> hash_table;
-    std::vector<Item *> * hash_table;
+
+    std::vector<Item *> *hash_table;
     F f;
 
     Hypercube(const Cube_params &params, vector<Item> &dataset, int factor_for_windowSize, vector<unordered_map<int, int>> &h_maps) : f(params.k)
@@ -67,6 +67,7 @@ public:
         double distance = 0;
         double length = (double)(dataset.size() / 4);
 
+        // calculate window w according to our dataset
         for (int i = 0; i < length; i++)
         {
             item_index_1 = uni(rng);
@@ -85,7 +86,7 @@ public:
         this->R = params.R;
         this->vertices = pow(2, k);
 
-        hash_table = new std::vector<Item*>[vertices];
+        hash_table = new std::vector<Item *>[vertices];
 
         // hash_table = vector<vector<Item>>(vertices);
         // cout << "INITIALIZED HASH TABLE OF SIZE: " << hash_table.size() << endl;
@@ -97,15 +98,19 @@ public:
 
         for (int i = 0; i < dataset.size(); ++i)
         {
+            // produce the needed H hash functions for each point
             H h(w, d, k);
             vector<int> h_functions = h.produce_k_h(dataset[i]);
             vector<int> f_values(k);
 
+            // assign H values to {0,1} using F function
             for (int j = 0; j < k; ++j)
             {
                 f_values.push_back(f.produce_f(j, h_functions[j]));
             }
+            // concatenate f values to create a bitstring
             unsigned int bucket = concat_f_values(f_values);
+            // assign item to the corresponding bucket using the above bitstring
             hash_table[bucket].push_back(&dataset[i]);
         }
     }
@@ -114,6 +119,7 @@ public:
         delete[] hash_table;
     }
 
+    // calculates the bucket (vertex) at which query should be assigned to
     unsigned int find_bucket(const Item &q)
     {
         H h(w, d, k);
@@ -126,7 +132,8 @@ public:
         return concat_f_values(f_values);
     }
 
-    unsigned int concat_f_values(const vector<int> &f_values)const
+    // concatenates a series of values {0,1} using them as bits to create an unsigned integer
+    unsigned int concat_f_values(const vector<int> &f_values) const
     {
         unsigned int num = 0;
         for (int i = 0; i < f_values.size(); ++i)
@@ -144,15 +151,8 @@ public:
         return num;
     }
 
-    void print_buckets(int num)const
-    {
-        for (int i = 0; i < num; ++i)
-        {
-            // cout << "Bucket " << i << " has " << hash_table[i].size() << " items." << endl;
-        }
-    }
-
-    vector<int> get_probes_in_distance(int dist, unsigned int bucket)const
+    // returns probes at Hamming distance dist of given bucket (vertex)
+    vector<int> get_probes_in_distance(int dist, unsigned int bucket) const
     {
         vector<int> result;
 
@@ -166,7 +166,9 @@ public:
         return result;
     }
 
-    vector<int> get_probes_in_threshold(unsigned int bucket)const
+    // returns all probes until it reaches threshold parameter
+    // begins from the closests and continues by incrementing the distance if needed
+    vector<int> get_probes_in_threshold(unsigned int bucket) const
     {
         vector<int> result;
 
@@ -196,6 +198,7 @@ public:
         return result;
     }
 
+    // performs the kNN algorithm using Hypercube randomized projection
     std::vector<std::pair<double, Item *>> kNN(Item *query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
@@ -250,7 +253,8 @@ public:
         return knns;
     }
 
-    std::vector<std::pair<double, Item *>> RangeSearch(Item * query)
+    // performs the Range Search algorithm using Hypercube randomized projection
+    std::vector<std::pair<double, Item *>> RangeSearch(Item *query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
         std::vector<std::pair<double, Item *>> rns;
@@ -277,7 +281,7 @@ public:
                 /* In the "reverse assignment with range search" clustering algorithm we mark items when they are
                 assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
                 has no effect */
-                if(hash_table[curr_bucket][j]->marked)
+                if (hash_table[curr_bucket][j]->marked)
                     continue;
 
                 // cout << "Item " << hash_table[curr_bucket][j].id << " in ";

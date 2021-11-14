@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// class to hold parameters for clustering
 class Cluster_params
 {
 public:
@@ -24,6 +25,7 @@ public:
     int probes;                                      // number of probes of Hypercube (default=2)
 };
 
+// processes command line arguments needed to run clustering
 Cluster_params CMD_Interface(int argc, char *argv[])
 {
     Cluster_params params;
@@ -73,6 +75,7 @@ Cluster_params CMD_Interface(int argc, char *argv[])
     return params;
 }
 
+// used to read parameters from configuration file (cluster.conf)
 int configuration(Cluster_params &params)
 {
     string line;
@@ -97,16 +100,19 @@ int configuration(Cluster_params &params)
 
             if (line_count == 0)
             {
+                // if program could not read numeric value
                 if (extraction == -1)
                 {
                     cout << "Could not find configuration value in line " << line_count + 1 << " of configuration file." << endl
                          << "Please check that there is a space after the colon." << endl;
-                    return -1;
+                    return -1; // parameter numer_of_clusters is mandatory
                 }
+
                 config_values[line_count] = extraction;
             }
             else
             {
+                // if program could not read numeric value
                 if (extraction == -1)
                 {
                     cout << "Could not find configuration value in line " << line_count + 1 << " of configuration file. Setting default value." << endl
@@ -130,6 +136,7 @@ int configuration(Cluster_params &params)
     return 0;
 }
 
+// prints all of the given parameters
 void print_Cluster_params(Cluster_params params)
 {
     cout << "[Current parameters for Clustering]" << endl

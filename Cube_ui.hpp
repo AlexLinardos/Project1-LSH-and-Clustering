@@ -6,21 +6,22 @@
 
 using namespace std;
 
-// Κλάση που κρατάει τις παραμέτρους του υπερκύβου
+// class to hold parameters of Hypercube algorithm
 class Cube_params
 {
 public:
     string input_file = "./datasets/input_small_id";
     string query_file = "./datasets/query_small_id";
     string out_file = "./";
-    int k = 14;                // Διάσταση στην οποία προβάλλονται τα σημεία
-    int M = 1000;              // Μέγιστο πλήθος υποψήφιων σημέιων που θα ελεγχθούν
-    int probes = 20;           // Μέγιστο επιτρεπόμενο πλήθος κορυφών που θα ελεγχθούν
-    int N = 5;                 // Αριθμός πλησιέστερων γειτόνων
-    double R = 1000;           // Ακτίνα αναζήτησης
-    string source = "default"; // Δείχνει αν οι παράμετροι είναι οι default ή αν έχουν αλλάξει (τιμές: "default", "custom")
+    int k = 14;                // dimension at which points will be projected
+    int M = 10;                // maximum number of points to be checked
+    int probes = 2;            // maximum number of vertices(probes) to be checked
+    int N = 1;                 // number of nearest neighbors to be found
+    double R = 1000;           // search range
+    string source = "default"; // shows if parameters are default or if they chenged (values: "default", "custom")
 };
 
+// interface used when no command line arguments are given at execution
 Cube_params Guided_Interface()
 {
     Cube_params params;
@@ -72,6 +73,7 @@ Cube_params Guided_Interface()
     return params;
 }
 
+// interface used when program is executed with command line arguments
 Cube_params CMD_Interface(int argc, char *argv[])
 {
     Cube_params params;
