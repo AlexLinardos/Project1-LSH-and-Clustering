@@ -6,20 +6,21 @@
 
 using namespace std;
 
-// Κλάση που κρατάει τις παραμέτρους της LSH
+// class to hold parameters of LSH algorithm
 class LSH_params
 {
 public:
     string input_file = "./datasets/input_small_id";
     string query_file = "./datasets/query_small_id";
     string out_file = "./";
-    int k = 4;                 // Πλήθος συναρτήσεων hi
-    int L = 5;                 // Αριθμός πινάκων κατακερματισμού
-    int N = 1;                 // Αριθμός πλησιέστερων γειτόνων
-    double R = 10000;          // Ακτίνα αναζήτησης
-    string source = "default"; // Δείχνει αν οι παράμετροι είναι οι default ή αν έχουν αλλάξει (τιμές: "default", "custom")
+    int k = 4;                 // number of hi functions
+    int L = 5;                 // number of hash tables
+    int N = 1;                 // number of nearest neighbors to be found
+    double R = 10000;          // search range
+    string source = "default"; // shows if parameters are default or if they chenged (values: "default", "custom")
 };
 
+// interface used when no command line arguments are given at execution
 LSH_params Guided_Interface()
 {
     LSH_params params;
@@ -28,7 +29,7 @@ LSH_params Guided_Interface()
     params.N = 5;
     params.R = 500;
     // params.L = 7;
-    // params.k = 5; 
+    // params.k = 5;
 
     // string answer;
     // cout << "Enter dataset file path: ";
@@ -69,6 +70,7 @@ LSH_params Guided_Interface()
     return params;
 }
 
+// interface used when program is executed with command line arguments
 LSH_params CMD_Interface(int argc, char *argv[])
 {
     LSH_params params;

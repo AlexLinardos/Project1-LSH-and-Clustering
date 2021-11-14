@@ -21,6 +21,7 @@ namespace Alekos
         vector<Item> centers; // cluster centers initialized in initialize_pp()
         vector<vector<Item>> clusters;
         vector<int> assignments; // shows the cluster to which each point is assigned to
+                                 // (example: if assignments[4]=2 then item at index 4 of dataset is assigned to cluster at index 2)
 
         Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1), assignments(dataset.size()) {}
 
@@ -162,13 +163,6 @@ namespace Alekos
                 {
                     mean = vector_mean(mean, this->clusters[i][j].xij, v_dimension, T); // using vector_addition from utilities.hpp
                 }
-
-                // // cout << "Sample mean: ";
-                // for (int m = 0; m < 20; ++m)
-                // {
-                //     cout << mean[m] << " ";
-                // }
-                // cout << endl;
 
                 this->centers[i].xij = mean;
             }
