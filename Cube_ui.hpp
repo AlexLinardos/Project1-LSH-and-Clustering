@@ -26,10 +26,7 @@ namespace cubeui
     Cube_params Guided_Interface()
     {
         Cube_params params;
-        params.input_file = "./datasets/input_small_id";
-        params.query_file = "./datasets/query_small_id";
 
-        /*
         string answer;
         cout << "Enter dataset file path: ";
         cin >> answer;
@@ -70,7 +67,7 @@ namespace cubeui
             params.R = answer_R;
             params.source = "custom";
         }
-        */
+
         return params;
     }
 

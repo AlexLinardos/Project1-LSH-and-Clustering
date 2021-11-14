@@ -13,21 +13,9 @@ int main(int argc, char *argv[])
     Cluster_params params;
     if (argc == 1)
     {
-        // cout << "Run program from command line following the format below: " << endl;
-        // cout << "$./cluster -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
-        // return -1;
-        params.input_file = "./datasets/input_small_id";
-        params.conf_file = "./cluster.conf";
-        params.out_file = "./out.txt";
-        params.complete = false;
-        params.method = "LSH";
-        params.clusters = 5;
-        params.L = 3;
-        params.k_LSH = 4;
-        params.M = 10;
-        params.k_HC = 3;
-        params.probes = 2;
-        print_Cluster_params(params);
+        cout << "Run program from command line following the format below: " << endl;
+        cout << "$./cluster -i <input file> -c <configuration file> -o <output file> -complete <optional> -m <method: Classic OR LSH or Hypercube>" << endl;
+        return -1;
     }
     else
     {
@@ -49,14 +37,14 @@ int main(int argc, char *argv[])
     clock_t begin;
     clock_t end;
 
-    if(params.method=="Classic")
-    {   
+    if (params.method == "Classic")
+    {
         begin = clock();
         cluster->Lloyds(1000);
         end = clock();
     }
     else
-    {   
+    {
         begin = clock();
         cluster->Reverse_Assignment_Cluestering();
         end = clock();
@@ -67,17 +55,17 @@ int main(int argc, char *argv[])
     ofstream output_file;
     output_file.open("CLUSTERING_output.txt");
 
-    if(params.complete)
+    if (params.complete)
     {
         for (int i = 0; i < params.clusters; i++)
         {
-            output_file << "CLUSTER-" << i+1 << " {centroid: [";
-            for(int j=0; j< dimension; j++)
+            output_file << "CLUSTER-" << i + 1 << " {centroid: [";
+            for (int j = 0; j < dimension; j++)
             {
                 output_file << cluster->centers[i].xij[j] << ",";
             }
             output_file << "]";
-            for(int j=0; j< cluster->clusters[i].size(); j++)
+            for (int j = 0; j < cluster->clusters[i].size(); j++)
             {
                 output_file << ", " << cluster->clusters[i][j].id;
             }
@@ -88,8 +76,8 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < params.clusters; i++)
         {
-            output_file << "CLUSTER-" << i+1 << " {size: " << cluster->clusters[i].size() << ", centroid: [";
-            for(int j=0; j< dimension; j++)
+            output_file << "CLUSTER-" << i + 1 << " {size: " << cluster->clusters[i].size() << ", centroid: [";
+            for (int j = 0; j < dimension; j++)
             {
                 output_file << cluster->centers[i].xij[j] << ",";
             }
@@ -105,7 +93,7 @@ int main(int argc, char *argv[])
             // cout << i << endl;
             output_file << cluster->eval_specific_cluster(i) << ", ";
         }
-        output_file << cluster->eval_clustering() << "]" << endl;    
+        output_file << cluster->eval_clustering() << "]" << endl;
     }
     else
     {
