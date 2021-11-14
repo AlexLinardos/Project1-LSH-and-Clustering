@@ -122,12 +122,12 @@ namespace Alekos
             {
                 p[i] = pow(d[i], 2.0) / dist_sum;
             }
-            cout << endl;
         }
 
         // assign a nearest center to each point (part 1 of Lloyd's algorithm)
         void assign_centers()
         {
+            // cout << "ASSIGNING" << endl;
             int dimension = this->dataset[0].xij.size();
             for (int i = 0; i < this->dataset.size(); ++i)
             {
@@ -163,7 +163,7 @@ namespace Alekos
                     mean = vector_mean(mean, this->clusters[i][j].xij, v_dimension, T); // using vector_addition from utilities.hpp
                 }
 
-                // cout << "Sample mean: ";
+                // // cout << "Sample mean: ";
                 // for (int m = 0; m < 20; ++m)
                 // {
                 //     cout << mean[m] << " ";
@@ -171,7 +171,6 @@ namespace Alekos
                 // cout << endl;
 
                 this->centers[i].xij = mean;
-                this->clusters[i].clear();
             }
             // cout << "New centers assigned" << endl;
             // cout << ".........................................." << endl;
@@ -183,35 +182,56 @@ namespace Alekos
             int iter = 1; // iterations
             assign_centers();
             update_centers();
+
             vector<int> last_assignments(this->assignments.size());
             do
             {
+                for (int i = 0; i < this->clusters.size(); ++i)
+                {
+                    this->clusters[i].clear(); // clear clusters so we can reassign the items
+                }
                 last_assignments = this->assignments;
                 assign_centers();
                 update_centers();
                 iter++;
                 // iterate until assignments don't change or until we reach max_iter threshold
-            } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) || iter >= max_iter);
-            cout << "Lloyd's algorithm ended after " << iter << " iterations." << endl;
+            } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) && iter < max_iter);
+            cout << "............................................" << endl;
+            cout << "Lloyd's algorithm ended after " << iter << " iterations" << endl;
+
+            if (this->centers.size() > 1)
+            {
+                for (int c = 0; c < this->clusters.size(); ++c)
+                {
+                    cout << "C" << c + 1 << " Silhouette: " << eval_specific_cluster(c) << endl;
+                }
+                cout << "Overall Silhouette: " << eval_clustering() << endl;
+            }
+            else
+            {
+                cout << "Silhouette can only be computed when there are 2 or more clusters." << endl;
+            }
         }
 
         // Silhouette of object at index i
         double silhouette(int i)
         {
-            vector<Item> cluster = this->clusters[this->assignments[i]]; // find out at which cluster this item is assigned to
+            vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
 
-            // calculate a(i) = average distance of i to objects in same cluster
+            //  calculate a(i) = average distance of i to objects in same cluster
             vector<double> distances;
-            int dimension = cluster[0].xij.size();
-            for (int j = 0; j < cluster.size(); ++j)
+            int dimension = (*cluster)[0].xij.size();
+
+            for (int j = 0; j < (*cluster).size(); ++j)
             {
-                double dist = EuclideanDistance(&this->dataset[i], &cluster[j], dimension);
+                double dist = EuclideanDistance(&this->dataset[i], &((*cluster)[j]), dimension);
                 distances.push_back(dist);
             }
+
             double a = 0.0;
             for (int j = 0; j < distances.size(); ++j)
             {
-                a += distances[j] / distances.size();
+                a += distances[j] / (double)distances.size();
             }
 
             // calculate b(i) = average distance of i to objects in next best (neighbor) cluster, i.e. cluster of 2nd closest centroid
@@ -230,20 +250,20 @@ namespace Alekos
                     }
                 }
             }
+
             // now perform the calculations
             distances.clear();
-            cluster = this->clusters[best];
-            for (int j = 0; j < cluster.size(); ++j)
+            cluster = &(this->clusters[best]);
+            for (int j = 0; j < (*cluster).size(); ++j)
             {
-                double dist = EuclideanDistance(&this->dataset[i], &cluster[j], dimension);
+                double dist = EuclideanDistance(&this->dataset[i], &((*cluster)[j]), dimension);
                 distances.push_back(dist);
             }
             double b = 0.0;
             for (int j = 0; j < distances.size(); ++j)
             {
-                b += distances[j] / distances.size();
+                b += distances[j] / (double)distances.size();
             }
-
             // find max between a(i) and b(i)
             double max = a;
             if (b > a)
@@ -257,14 +277,34 @@ namespace Alekos
         // metric to evaluate specific cluster (c_index = the index of said cluster)
         double eval_specific_cluster(int c_index)
         {
+            // cout << "Evaluating cluster: " << c_index << endl;
             double average = 0.0;
+            double s = 0.0;
+            int n = this->clusters[c_index].size();
             for (int i = 0; i < this->dataset.size(); ++i)
             {
-                if (this->assignments[i])
+                if (this->assignments[i] == c_index)
+                {
+                    s = silhouette(i);
+                    average += s / (double)n;
+                }
             }
+            return s;
         }
 
         // metric to evaluate overall clustering
+        double eval_clustering()
+        {
+            double average = 0.0;
+            double s = 0.0;
+            int n = this->dataset.size();
+            for (int i = 0; i < n; ++i)
+            {
+                s = silhouette(i);
+                average += s / (double)n;
+            }
+            return s;
+        }
     };
 }
 

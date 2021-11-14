@@ -2,7 +2,6 @@
 #include <vector>
 #include "utilities.hpp"
 #include "Clustering_ui.hpp"
-#include "Clustering.hpp"
 #include "Clustering2.hpp"
 #include <map>
 #include <random>
@@ -44,7 +43,7 @@ int main(int argc, char *argv[])
     Alekos::Clustering cluster = Alekos::Clustering(params, dataset);
 
     cluster.initialize_pp();
-    cluster.Lloyds();
+    cluster.Lloyds(1000);
 
     return 0;
 }

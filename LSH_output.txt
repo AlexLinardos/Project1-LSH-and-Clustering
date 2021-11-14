@@ -1,0 +1,1800 @@
+Query: 1
+Nearest neighbor-1: 3753
+distanceLSH: 277.496
+distanceTrue: 276.782
+Nearest neighbor-2: 2838
+distanceLSH: 284.596
+distanceTrue: 277.496
+Nearest neighbor-3: 3616
+distanceLSH: 309.293
+distanceTrue: 282.315
+Nearest neighbor-4: 1273
+distanceLSH: 316.003
+distanceTrue: 283.637
+Nearest neighbor-5: 5308
+distanceLSH: 317.871
+distanceTrue: 284.596
+tLSH: 0.004504
+tTrue: 0.016515
+Query: 2
+Nearest neighbor-1: 958
+distanceLSH: 323.809
+distanceTrue: 256.852
+Nearest neighbor-2: 3752
+distanceLSH: 328.678
+distanceTrue: 259.913
+Nearest neighbor-3: 131
+distanceLSH: 387.393
+distanceTrue: 262.895
+Nearest neighbor-4: 2416
+distanceLSH: 398.635
+distanceTrue: 262.926
+Nearest neighbor-5: 8952
+distanceLSH: 423.251
+distanceTrue: 264.932
+tLSH: 0.001001
+tTrue: 0.015513
+Query: 3
+Nearest neighbor-1: 2699
+distanceLSH: 222.551
+distanceTrue: 206.737
+Nearest neighbor-2: 6996
+distanceLSH: 241.754
+distanceTrue: 219.461
+Nearest neighbor-3: 6802
+distanceLSH: 243.928
+distanceTrue: 222.551
+Nearest neighbor-4: 5788
+distanceLSH: 251.237
+distanceTrue: 227.726
+Nearest neighbor-5: 5454
+distanceLSH: 258.314
+distanceTrue: 241.754
+tLSH: 0.005504
+tTrue: 0.016014
+Query: 4
+Nearest neighbor-1: 148
+distanceLSH: 266.053
+distanceTrue: 215.177
+Nearest neighbor-2: 125
+distanceLSH: 272.033
+distanceTrue: 216.843
+Nearest neighbor-3: 3887
+distanceLSH: 274.228
+distanceTrue: 236.138
+Nearest neighbor-4: 147
+distanceLSH: 274.702
+distanceTrue: 242.207
+Nearest neighbor-5: 2309
+distanceLSH: 277.316
+distanceTrue: 249.622
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 5
+Nearest neighbor-1: 4720
+distanceLSH: 250.509
+distanceTrue: 250.509
+Nearest neighbor-2: 5165
+distanceLSH: 257.538
+distanceTrue: 257.538
+Nearest neighbor-3: 1539
+distanceLSH: 267.277
+distanceTrue: 265.068
+Nearest neighbor-4: 4765
+distanceLSH: 282.361
+distanceTrue: 267.277
+Nearest neighbor-5: 5776
+distanceLSH: 284.659
+distanceTrue: 279.383
+tLSH: 0.005004
+tTrue: 0.015514
+Query: 6
+Nearest neighbor-1: 1098
+distanceLSH: 275.151
+distanceTrue: 275.151
+Nearest neighbor-2: 1240
+distanceLSH: 287.503
+distanceTrue: 287.503
+Nearest neighbor-3: 3228
+distanceLSH: 300.525
+distanceTrue: 293.82
+Nearest neighbor-4: 2608
+distanceLSH: 311.488
+distanceTrue: 300.525
+Nearest neighbor-5: 4061
+distanceLSH: 313.287
+distanceTrue: 304.816
+tLSH: 0.005003
+tTrue: 0.016014
+Query: 7
+Nearest neighbor-1: 9806
+distanceLSH: 336.761
+distanceTrue: 246.609
+Nearest neighbor-2: 990
+distanceLSH: 348.237
+distanceTrue: 252.816
+Nearest neighbor-3: 1751
+distanceLSH: 354.591
+distanceTrue: 255.805
+Nearest neighbor-4: 1689
+distanceLSH: 363.773
+distanceTrue: 256.105
+Nearest neighbor-5: 1071
+distanceLSH: 370.747
+distanceTrue: 258.337
+tLSH: 0.001
+tTrue: 0.016014
+Query: 8
+Nearest neighbor-1: 4202
+distanceLSH: 346.567
+distanceTrue: 173.948
+Nearest neighbor-2: 504
+distanceLSH: 413.989
+distanceTrue: 177.727
+Nearest neighbor-3: 7646
+distanceLSH: 423.444
+distanceTrue: 196.403
+Nearest neighbor-4: 3622
+distanceLSH: 451.99
+distanceTrue: 197.56
+Nearest neighbor-5: 3986
+distanceLSH: 469.704
+distanceTrue: 205.093
+tLSH: 0.001501
+tTrue: 0.016014
+Query: 9
+Nearest neighbor-1: 3383
+distanceLSH: 256.215
+distanceTrue: 248.473
+Nearest neighbor-2: 3913
+distanceLSH: 266.009
+distanceTrue: 256.215
+Nearest neighbor-3: 74
+distanceLSH: 270.965
+distanceTrue: 259.012
+Nearest neighbor-4: 550
+distanceLSH: 274.722
+distanceTrue: 259.137
+Nearest neighbor-5: 4305
+distanceLSH: 275.234
+distanceTrue: 263.945
+tLSH: 0.005505
+tTrue: 0.016514
+Query: 10
+Nearest neighbor-1: 4765
+distanceLSH: 250.014
+distanceTrue: 250.014
+Nearest neighbor-2: 4720
+distanceLSH: 251.722
+distanceTrue: 251.722
+Nearest neighbor-3: 1539
+distanceLSH: 263.374
+distanceTrue: 254.68
+Nearest neighbor-4: 7124
+distanceLSH: 271.072
+distanceTrue: 262.717
+Nearest neighbor-5: 1047
+distanceLSH: 281.269
+distanceTrue: 263.374
+tLSH: 0.005005
+tTrue: 0.015513
+Query: 11
+Nearest neighbor-1: 1219
+distanceLSH: 293.883
+distanceTrue: 293.883
+Nearest neighbor-2: 646
+distanceLSH: 308.914
+distanceTrue: 308.914
+Nearest neighbor-3: 282
+distanceLSH: 316.778
+distanceTrue: 309.307
+Nearest neighbor-4: 4061
+distanceLSH: 321.969
+distanceTrue: 311.014
+Nearest neighbor-5: 4371
+distanceLSH: 322.5
+distanceTrue: 312.784
+tLSH: 0.005003
+tTrue: 0.016014
+Query: 12
+Nearest neighbor-1: 1360
+distanceLSH: 227.398
+distanceTrue: 172.163
+Nearest neighbor-2: 1527
+distanceLSH: 229.024
+distanceTrue: 206.608
+Nearest neighbor-3: 5526
+distanceLSH: 234.29
+distanceTrue: 224.484
+Nearest neighbor-4: 4648
+distanceLSH: 236.419
+distanceTrue: 225.109
+Nearest neighbor-5: 4778
+distanceLSH: 237.792
+distanceTrue: 227.337
+tLSH: 0.004505
+tTrue: 0.016013
+Query: 13
+Nearest neighbor-1: 2114
+distanceLSH: 238.55
+distanceTrue: 238.55
+Nearest neighbor-2: 1363
+distanceLSH: 255.656
+distanceTrue: 250.072
+Nearest neighbor-3: 121
+distanceLSH: 258.414
+distanceTrue: 251.239
+Nearest neighbor-4: 1835
+distanceLSH: 261.446
+distanceTrue: 252.567
+Nearest neighbor-5: 289
+distanceLSH: 267.656
+distanceTrue: 252.737
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 14
+Nearest neighbor-1: 1565
+distanceLSH: 262.134
+distanceTrue: 244.677
+Nearest neighbor-2: 1532
+distanceLSH: 272.156
+distanceTrue: 256.739
+Nearest neighbor-3: 2493
+distanceLSH: 276.123
+distanceTrue: 259.675
+Nearest neighbor-4: 2782
+distanceLSH: 278.192
+distanceTrue: 262.134
+Nearest neighbor-5: 121
+distanceLSH: 291.913
+distanceTrue: 268.373
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 15
+Nearest neighbor-1: 715
+distanceLSH: 278.307
+distanceTrue: 273.317
+Nearest neighbor-2: 4152
+distanceLSH: 303.724
+distanceTrue: 278.307
+Nearest neighbor-3: 4832
+distanceLSH: 310.521
+distanceTrue: 282.74
+Nearest neighbor-4: 2827
+distanceLSH: 312.248
+distanceTrue: 288.399
+Nearest neighbor-5: 723
+distanceLSH: 313.56
+distanceTrue: 291.307
+tLSH: 0.005004
+tTrue: 0.016013
+Query: 16
+Nearest neighbor-1: 5327
+distanceLSH: 253.683
+distanceTrue: 253.683
+Nearest neighbor-2: 3819
+distanceLSH: 256.753
+distanceTrue: 254.823
+Nearest neighbor-3: 5776
+distanceLSH: 260.025
+distanceTrue: 256.753
+Nearest neighbor-4: 3
+distanceLSH: 262.168
+distanceTrue: 257.422
+Nearest neighbor-5: 1601
+distanceLSH: 268.762
+distanceTrue: 259.079
+tLSH: 0.004505
+tTrue: 0.016014
+Query: 17
+Nearest neighbor-1: 2579
+distanceLSH: 255.317
+distanceTrue: 248.2
+Nearest neighbor-2: 320
+distanceLSH: 260.931
+distanceTrue: 248.324
+Nearest neighbor-3: 1518
+distanceLSH: 262.8
+distanceTrue: 250.667
+Nearest neighbor-4: 471
+distanceLSH: 264.562
+distanceTrue: 255.19
+Nearest neighbor-5: 3625
+distanceLSH: 271.884
+distanceTrue: 255.317
+tLSH: 0.004505
+tTrue: 0.016013
+Query: 18
+Nearest neighbor-1: 4064
+distanceLSH: 279.809
+distanceTrue: 254.635
+Nearest neighbor-2: 1273
+distanceLSH: 281.757
+distanceTrue: 260.852
+Nearest neighbor-3: 4321
+distanceLSH: 284.756
+distanceTrue: 263.279
+Nearest neighbor-4: 4302
+distanceLSH: 285.813
+distanceTrue: 263.431
+Nearest neighbor-5: 173
+distanceLSH: 285.844
+distanceTrue: 263.676
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 19
+Nearest neighbor-1: 6369
+distanceLSH: 331.371
+distanceTrue: 266.889
+Nearest neighbor-2: 3369
+distanceLSH: 341.486
+distanceTrue: 268.527
+Nearest neighbor-3: 720
+distanceLSH: 342.408
+distanceTrue: 274.341
+Nearest neighbor-4: 4409
+distanceLSH: 351.508
+distanceTrue: 275.601
+Nearest neighbor-5: 9528
+distanceLSH: 357.961
+distanceTrue: 276.523
+tLSH: 0.001001
+tTrue: 0.016013
+Query: 20
+Nearest neighbor-1: 3138
+distanceLSH: 244.461
+distanceTrue: 224.751
+Nearest neighbor-2: 412
+distanceLSH: 245.337
+distanceTrue: 230.213
+Nearest neighbor-3: 2457
+distanceLSH: 253
+distanceTrue: 233.495
+Nearest neighbor-4: 2114
+distanceLSH: 254.5
+distanceTrue: 236.901
+Nearest neighbor-5: 3531
+distanceLSH: 259.8
+distanceTrue: 239.552
+tLSH: 0.005006
+tTrue: 0.016013
+Query: 21
+Nearest neighbor-1: 4850
+distanceLSH: 265.748
+distanceTrue: 192.984
+Nearest neighbor-2: 6746
+distanceLSH: 289.665
+distanceTrue: 193.249
+Nearest neighbor-3: 1611
+distanceLSH: 342.072
+distanceTrue: 196.008
+Nearest neighbor-4: 5684
+distanceLSH: 342.882
+distanceTrue: 198.842
+Nearest neighbor-5: 3500
+distanceLSH: 344.437
+distanceTrue: 199.84
+tLSH: 0.001001
+tTrue: 0.016013
+Query: 22
+Nearest neighbor-1: 5138
+distanceLSH: 272.795
+distanceTrue: 80.8455
+Nearest neighbor-2: 434
+distanceLSH: 287.145
+distanceTrue: 87.7325
+Nearest neighbor-3: 8223
+distanceLSH: 296.106
+distanceTrue: 207.302
+Nearest neighbor-4: 1641
+distanceLSH: 319.396
+distanceTrue: 218.577
+Nearest neighbor-5: 3769
+distanceLSH: 341.713
+distanceTrue: 220.42
+tLSH: 0.001502
+tTrue: 0.015513
+Query: 23
+Nearest neighbor-1: 169
+distanceLSH: 289.325
+distanceTrue: 173.052
+Nearest neighbor-2: 3979
+distanceLSH: 291.136
+distanceTrue: 175.642
+Nearest neighbor-3: 5630
+distanceLSH: 373.814
+distanceTrue: 182.642
+Nearest neighbor-4: 6866
+distanceLSH: 394.764
+distanceTrue: 199.427
+Nearest neighbor-5: 3652
+distanceLSH: 406.973
+distanceTrue: 199.582
+tLSH: 0.001
+tTrue: 0.016014
+Query: 24
+Nearest neighbor-1: 4673
+distanceLSH: 264.447
+distanceTrue: 253.941
+Nearest neighbor-2: 5294
+distanceLSH: 265.151
+distanceTrue: 254.876
+Nearest neighbor-3: 166
+distanceLSH: 266.447
+distanceTrue: 256.677
+Nearest neighbor-4: 5289
+distanceLSH: 269.336
+distanceTrue: 260.042
+Nearest neighbor-5: 247
+distanceLSH: 272.085
+distanceTrue: 261.576
+tLSH: 0.005504
+tTrue: 0.016014
+Query: 25
+Nearest neighbor-1: 4555
+distanceLSH: 156.547
+distanceTrue: 154.227
+Nearest neighbor-2: 653
+distanceLSH: 232.08
+distanceTrue: 156.547
+Nearest neighbor-3: 1011
+distanceLSH: 247.267
+distanceTrue: 191.186
+Nearest neighbor-4: 706
+distanceLSH: 251.086
+distanceTrue: 232.08
+Nearest neighbor-5: 5058
+distanceLSH: 255.957
+distanceTrue: 239.46
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 26
+Nearest neighbor-1: 269
+distanceLSH: 294.995
+distanceTrue: 271.61
+Nearest neighbor-2: 6839
+distanceLSH: 314.209
+distanceTrue: 286.568
+Nearest neighbor-3: 4957
+distanceLSH: 319.201
+distanceTrue: 288.806
+Nearest neighbor-4: 1588
+distanceLSH: 322.907
+distanceTrue: 292.817
+Nearest neighbor-5: 4840
+distanceLSH: 330.224
+distanceTrue: 294.995
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 27
+Nearest neighbor-1: 6828
+distanceLSH: 199.702
+distanceTrue: 183.442
+Nearest neighbor-2: 4684
+distanceLSH: 223.099
+distanceTrue: 199.702
+Nearest neighbor-3: 4587
+distanceLSH: 250.014
+distanceTrue: 220.018
+Nearest neighbor-4: 4798
+distanceLSH: 253.227
+distanceTrue: 223.099
+Nearest neighbor-5: 5541
+distanceLSH: 255.895
+distanceTrue: 224.326
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 28
+Nearest neighbor-1: 5964
+distanceLSH: 175.516
+distanceTrue: 175.516
+Nearest neighbor-2: 5970
+distanceLSH: 220.474
+distanceTrue: 200.888
+Nearest neighbor-3: 4840
+distanceLSH: 240.834
+distanceTrue: 212.549
+Nearest neighbor-4: 6524
+distanceLSH: 245.394
+distanceTrue: 220.474
+Nearest neighbor-5: 2058
+distanceLSH: 247.15
+distanceTrue: 227.469
+tLSH: 0.004505
+tTrue: 0.016013
+Query: 29
+Nearest neighbor-1: 4473
+distanceLSH: 224.86
+distanceTrue: 224.86
+Nearest neighbor-2: 6828
+distanceLSH: 235.86
+distanceTrue: 229.828
+Nearest neighbor-3: 5542
+distanceLSH: 235.932
+distanceTrue: 230.378
+Nearest neighbor-4: 5478
+distanceLSH: 244.612
+distanceTrue: 235.86
+Nearest neighbor-5: 5998
+distanceLSH: 254.835
+distanceTrue: 235.932
+tLSH: 0.004503
+tTrue: 0.016014
+Query: 30
+Nearest neighbor-1: 5454
+distanceLSH: 125.379
+distanceTrue: 125.379
+Nearest neighbor-2: 5233
+distanceLSH: 167.821
+distanceTrue: 167.821
+Nearest neighbor-3: 5196
+distanceLSH: 170.868
+distanceTrue: 170.868
+Nearest neighbor-4: 6429
+distanceLSH: 186.778
+distanceTrue: 184.09
+Nearest neighbor-5: 6126
+distanceLSH: 189.37
+distanceTrue: 185.37
+tLSH: 0.005004
+tTrue: 0.015514
+Query: 31
+Nearest neighbor-1: 4778
+distanceLSH: 276.78
+distanceTrue: 265.377
+Nearest neighbor-2: 5621
+distanceLSH: 283.947
+distanceTrue: 267.007
+Nearest neighbor-3: 3369
+distanceLSH: 284.116
+distanceTrue: 272.206
+Nearest neighbor-4: 5878
+distanceLSH: 284.879
+distanceTrue: 273.96
+Nearest neighbor-5: 4648
+distanceLSH: 285.531
+distanceTrue: 275.342
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 32
+Nearest neighbor-1: 4996
+distanceLSH: 126.953
+distanceTrue: 109.192
+Nearest neighbor-2: 432
+distanceLSH: 287.792
+distanceTrue: 126.953
+Nearest neighbor-3: 5014
+distanceLSH: 308.524
+distanceTrue: 175.773
+Nearest neighbor-4: 2658
+distanceLSH: 308.676
+distanceTrue: 231.651
+Nearest neighbor-5: 4670
+distanceLSH: 309.401
+distanceTrue: 240.45
+tLSH: 0.005504
+tTrue: 0.016014
+Query: 33
+Nearest neighbor-1: 4568
+distanceLSH: 323.785
+distanceTrue: 187.563
+Nearest neighbor-2: 4764
+distanceLSH: 346.589
+distanceTrue: 232.768
+Nearest neighbor-3: 1224
+distanceLSH: 393.667
+distanceTrue: 236.244
+Nearest neighbor-4: 5023
+distanceLSH: 393.821
+distanceTrue: 246.605
+Nearest neighbor-5: 16
+distanceLSH: 404.463
+distanceTrue: 250.519
+tLSH: 0.001501
+tTrue: 0.015514
+Query: 34
+Nearest neighbor-1: 3934
+distanceLSH: 340.103
+distanceTrue: 328.279
+Nearest neighbor-2: 2305
+distanceLSH: 369.015
+distanceTrue: 340.103
+Nearest neighbor-3: 1132
+distanceLSH: 374.159
+distanceTrue: 348.505
+Nearest neighbor-4: 3579
+distanceLSH: 387.42
+distanceTrue: 351.409
+Nearest neighbor-5: 1244
+distanceLSH: 388.289
+distanceTrue: 353.065
+tLSH: 0.005005
+tTrue: 0.016013
+Query: 35
+Nearest neighbor-1: 4646
+distanceLSH: 378.785
+distanceTrue: 248.554
+Nearest neighbor-2: 256
+distanceLSH: 391.031
+distanceTrue: 262.463
+Nearest neighbor-3: 9998
+distanceLSH: 398.193
+distanceTrue: 272.189
+Nearest neighbor-4: 343
+distanceLSH: 399.282
+distanceTrue: 274.829
+Nearest neighbor-5: 332
+distanceLSH: 399.786
+distanceTrue: 274.936
+tLSH: 0.001501
+tTrue: 0.015514
+Query: 36
+Nearest neighbor-1: 3942
+distanceLSH: 352.912
+distanceTrue: 120.975
+Nearest neighbor-2: 9093
+distanceLSH: 371.817
+distanceTrue: 140.353
+Nearest neighbor-3: 7863
+distanceLSH: 376.828
+distanceTrue: 179.597
+Nearest neighbor-4: 3514
+distanceLSH: 401.586
+distanceTrue: 263.564
+Nearest neighbor-5: 666
+distanceLSH: 406.602
+distanceTrue: 288.083
+tLSH: 0.001501
+tTrue: 0.015514
+Query: 37
+Nearest neighbor-1: 9538
+distanceLSH: 343.628
+distanceTrue: 111.459
+Nearest neighbor-2: 9713
+distanceLSH: 359.123
+distanceTrue: 140.136
+Nearest neighbor-3: 6214
+distanceLSH: 377.285
+distanceTrue: 159.909
+Nearest neighbor-4: 870
+distanceLSH: 396.264
+distanceTrue: 282.73
+Nearest neighbor-5: 2796
+distanceLSH: 399.197
+distanceTrue: 284.761
+tLSH: 0.001001
+tTrue: 0.016013
+Query: 38
+Nearest neighbor-1: 4998
+distanceLSH: 247.869
+distanceTrue: 166.856
+Nearest neighbor-2: 3272
+distanceLSH: 309.908
+distanceTrue: 247.869
+Nearest neighbor-3: 6466
+distanceLSH: 315.663
+distanceTrue: 298.412
+Nearest neighbor-4: 3810
+distanceLSH: 319.506
+distanceTrue: 302.374
+Nearest neighbor-5: 6359
+distanceLSH: 322.788
+distanceTrue: 304.752
+tLSH: 0.004505
+tTrue: 0.016013
+Query: 39
+Nearest neighbor-1: 2230
+distanceLSH: 361.964
+distanceTrue: 156.359
+Nearest neighbor-2: 4983
+distanceLSH: 369.877
+distanceTrue: 159.245
+Nearest neighbor-3: 5148
+distanceLSH: 387.318
+distanceTrue: 162.034
+Nearest neighbor-4: 3572
+distanceLSH: 394.36
+distanceTrue: 177.302
+Nearest neighbor-5: 5224
+distanceLSH: 407.603
+distanceTrue: 214.532
+tLSH: 0.001501
+tTrue: 0.015514
+Query: 40
+Nearest neighbor-1: 5075
+distanceLSH: 202.262
+distanceTrue: 193.977
+Nearest neighbor-2: 2892
+distanceLSH: 216.58
+distanceTrue: 202.262
+Nearest neighbor-3: 6884
+distanceLSH: 219.424
+distanceTrue: 207.538
+Nearest neighbor-4: 4576
+distanceLSH: 220.724
+distanceTrue: 210.768
+Nearest neighbor-5: 4866
+distanceLSH: 224.867
+distanceTrue: 210.789
+tLSH: 0.005505
+tTrue: 0.015513
+Query: 41
+Nearest neighbor-1: 4868
+distanceLSH: 188.197
+distanceTrue: 153.564
+Nearest neighbor-2: 4615
+distanceLSH: 293.586
+distanceTrue: 185.373
+Nearest neighbor-3: 481
+distanceLSH: 296.803
+distanceTrue: 188.197
+Nearest neighbor-4: 2211
+distanceLSH: 301.621
+distanceTrue: 193.938
+Nearest neighbor-5: 3275
+distanceLSH: 301.947
+distanceTrue: 194.415
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 42
+Nearest neighbor-1: 561
+distanceLSH: 213.27
+distanceTrue: 200.494
+Nearest neighbor-2: 860
+distanceLSH: 214.46
+distanceTrue: 202.667
+Nearest neighbor-3: 6615
+distanceLSH: 223.663
+distanceTrue: 203.605
+Nearest neighbor-4: 6284
+distanceLSH: 229.539
+distanceTrue: 206.649
+Nearest neighbor-5: 6820
+distanceLSH: 232.086
+distanceTrue: 213.27
+tLSH: 0.004504
+tTrue: 0.016013
+Query: 43
+Nearest neighbor-1: 3912
+distanceLSH: 263.408
+distanceTrue: 236.772
+Nearest neighbor-2: 417
+distanceLSH: 277.953
+distanceTrue: 245.41
+Nearest neighbor-3: 5571
+distanceLSH: 278.555
+distanceTrue: 247.911
+Nearest neighbor-4: 80
+distanceLSH: 297.157
+distanceTrue: 255.351
+Nearest neighbor-5: 5176
+distanceLSH: 298.047
+distanceTrue: 258.844
+tLSH: 0.004505
+tTrue: 0.016013
+Query: 44
+Nearest neighbor-1: 4979
+distanceLSH: 272.384
+distanceTrue: 165.339
+Nearest neighbor-2: 6417
+distanceLSH: 282.317
+distanceTrue: 193.634
+Nearest neighbor-3: 6802
+distanceLSH: 294.511
+distanceTrue: 272.384
+Nearest neighbor-4: 928
+distanceLSH: 294.82
+distanceTrue: 282.317
+Nearest neighbor-5: 2917
+distanceLSH: 301.7
+distanceTrue: 283.058
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 45
+Nearest neighbor-1: 5931
+distanceLSH: 260.085
+distanceTrue: 256.353
+Nearest neighbor-2: 7250
+distanceLSH: 260.615
+distanceTrue: 257.08
+Nearest neighbor-3: 5359
+distanceLSH: 264.677
+distanceTrue: 260.085
+Nearest neighbor-4: 449
+distanceLSH: 277.473
+distanceTrue: 260.615
+Nearest neighbor-5: 6337
+distanceLSH: 285.804
+distanceTrue: 260.898
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 46
+Nearest neighbor-1: 1466
+distanceLSH: 370.711
+distanceTrue: 261.362
+Nearest neighbor-2: 67
+distanceLSH: 407.759
+distanceTrue: 265.663
+Nearest neighbor-3: 4333
+distanceLSH: 435.685
+distanceTrue: 266.15
+Nearest neighbor-4: 6188
+distanceLSH: 447.72
+distanceTrue: 269.401
+Nearest neighbor-5: 3821
+distanceLSH: 458.131
+distanceTrue: 271.199
+tLSH: 0.001
+tTrue: 0.016015
+Query: 47
+Nearest neighbor-1: 6799
+distanceLSH: 338.139
+distanceTrue: 99.6293
+Nearest neighbor-2: 469
+distanceLSH: 359.351
+distanceTrue: 215.715
+Nearest neighbor-3: 3734
+distanceLSH: 372.608
+distanceTrue: 224.007
+Nearest neighbor-4: 2371
+distanceLSH: 384.315
+distanceTrue: 226.071
+Nearest neighbor-5: 6357
+distanceLSH: 453.635
+distanceTrue: 234.141
+tLSH: 0.0015
+tTrue: 0.015514
+Query: 48
+Nearest neighbor-1: 5642
+distanceLSH: 294.394
+distanceTrue: 294.394
+Nearest neighbor-2: 3949
+distanceLSH: 312.92
+distanceTrue: 312.92
+Nearest neighbor-3: 3010
+distanceLSH: 331.255
+distanceTrue: 314.474
+Nearest neighbor-4: 4243
+distanceLSH: 350.129
+distanceTrue: 321.33
+Nearest neighbor-5: 3718
+distanceLSH: 352.18
+distanceTrue: 324.14
+tLSH: 0.005005
+tTrue: 0.016013
+Query: 49
+Nearest neighbor-1: 1645
+distanceLSH: 362.29
+distanceTrue: 155.763
+Nearest neighbor-2: 5019
+distanceLSH: 445.614
+distanceTrue: 215.634
+Nearest neighbor-3: 648
+distanceLSH: 452.244
+distanceTrue: 265.311
+Nearest neighbor-4: 5136
+distanceLSH: 462.429
+distanceTrue: 275.193
+Nearest neighbor-5: 9801
+distanceLSH: 468.235
+distanceTrue: 288.638
+tLSH: 0.001502
+tTrue: 0.020016
+Query: 50
+Nearest neighbor-1: 5597
+distanceLSH: 231.504
+distanceTrue: 128.783
+Nearest neighbor-2: 6828
+distanceLSH: 233.159
+distanceTrue: 172.398
+Nearest neighbor-3: 6401
+distanceLSH: 234.141
+distanceTrue: 215.016
+Nearest neighbor-4: 5760
+distanceLSH: 239.176
+distanceTrue: 217.17
+Nearest neighbor-5: 32
+distanceLSH: 243.006
+distanceTrue: 219.784
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 51
+Nearest neighbor-1: 5560
+distanceLSH: 308.631
+distanceTrue: 181.141
+Nearest neighbor-2: 1570
+distanceLSH: 310.197
+distanceTrue: 199.605
+Nearest neighbor-3: 6378
+distanceLSH: 333.585
+distanceTrue: 219.816
+Nearest neighbor-4: 658
+distanceLSH: 333.819
+distanceTrue: 256.591
+Nearest neighbor-5: 3032
+distanceLSH: 339.224
+distanceTrue: 267.159
+tLSH: 0.004503
+tTrue: 0.016014
+Query: 52
+Nearest neighbor-1: 6124
+distanceLSH: 130.813
+distanceTrue: 130.813
+Nearest neighbor-2: 6704
+distanceLSH: 248.328
+distanceTrue: 200.4
+Nearest neighbor-3: 6504
+distanceLSH: 262.315
+distanceTrue: 219.825
+Nearest neighbor-4: 7208
+distanceLSH: 276.94
+distanceTrue: 248.328
+Nearest neighbor-5: 7083
+distanceLSH: 280.216
+distanceTrue: 254.124
+tLSH: 0.005005
+tTrue: 0.016014
+Query: 53
+Nearest neighbor-1: 2257
+distanceLSH: 225.717
+distanceTrue: 198.776
+Nearest neighbor-2: 1003
+distanceLSH: 230.111
+distanceTrue: 220.749
+Nearest neighbor-3: 4358
+distanceLSH: 231.294
+distanceTrue: 221.671
+Nearest neighbor-4: 5289
+distanceLSH: 233.287
+distanceTrue: 225.717
+Nearest neighbor-5: 1090
+distanceLSH: 238.103
+distanceTrue: 227.075
+tLSH: 0.005004
+tTrue: 0.016013
+Query: 54
+Nearest neighbor-1: 8398
+distanceLSH: 322.269
+distanceTrue: 194.178
+Nearest neighbor-2: 6703
+distanceLSH: 324.273
+distanceTrue: 227.82
+Nearest neighbor-3: 9948
+distanceLSH: 332.584
+distanceTrue: 233.122
+Nearest neighbor-4: 6226
+distanceLSH: 372.647
+distanceTrue: 241.149
+Nearest neighbor-5: 4639
+distanceLSH: 375.452
+distanceTrue: 251.529
+tLSH: 0.001
+tTrue: 0.016013
+Query: 55
+Nearest neighbor-1: 4896
+distanceLSH: 185.078
+distanceTrue: 159.308
+Nearest neighbor-2: 6820
+distanceLSH: 187.184
+distanceTrue: 164.241
+Nearest neighbor-3: 5067
+distanceLSH: 188.298
+distanceTrue: 164.627
+Nearest neighbor-4: 561
+distanceLSH: 199.785
+distanceTrue: 164.785
+Nearest neighbor-5: 6798
+distanceLSH: 200.362
+distanceTrue: 166.631
+tLSH: 0.005005
+tTrue: 0.016014
+Query: 56
+Nearest neighbor-1: 100
+distanceLSH: 314.045
+distanceTrue: 184.043
+Nearest neighbor-2: 6207
+distanceLSH: 335.955
+distanceTrue: 197.474
+Nearest neighbor-3: 3266
+distanceLSH: 415.211
+distanceTrue: 197.914
+Nearest neighbor-4: 1166
+distanceLSH: 444.9
+distanceTrue: 207.81
+Nearest neighbor-5: 3610
+distanceLSH: 457.743
+distanceTrue: 212.17
+tLSH: 0.001
+tTrue: 0.016014
+Query: 57
+Nearest neighbor-1: 4904
+distanceLSH: 190.735
+distanceTrue: 190.735
+Nearest neighbor-2: 4679
+distanceLSH: 211.606
+distanceTrue: 209.062
+Nearest neighbor-3: 1525
+distanceLSH: 216.254
+distanceTrue: 210.713
+Nearest neighbor-4: 5432
+distanceLSH: 217.793
+distanceTrue: 210.794
+Nearest neighbor-5: 2071
+distanceLSH: 221.102
+distanceTrue: 211.606
+tLSH: 0.004504
+tTrue: 0.016513
+Query: 58
+Nearest neighbor-1: 5212
+distanceLSH: 167.147
+distanceTrue: 167.147
+Nearest neighbor-2: 449
+distanceLSH: 247.988
+distanceTrue: 211.688
+Nearest neighbor-3: 2965
+distanceLSH: 260.161
+distanceTrue: 220.518
+Nearest neighbor-4: 3688
+distanceLSH: 263.831
+distanceTrue: 227.295
+Nearest neighbor-5: 2728
+distanceLSH: 268.771
+distanceTrue: 237.71
+tLSH: 0.005005
+tTrue: 0.016013
+Query: 59
+Nearest neighbor-1: 7238
+distanceLSH: 65.7419
+distanceTrue: 65.7419
+Nearest neighbor-2: 7288
+distanceLSH: 319.786
+distanceTrue: 281.768
+Nearest neighbor-3: 972
+distanceLSH: 334.861
+distanceTrue: 302.607
+Nearest neighbor-4: 5732
+distanceLSH: 340.194
+distanceTrue: 316.142
+Nearest neighbor-5: 5215
+distanceLSH: 346.552
+distanceTrue: 319.786
+tLSH: 0.005003
+tTrue: 0.016516
+Query: 60
+Nearest neighbor-1: 6613
+distanceLSH: 125.18
+distanceTrue: 114.416
+Nearest neighbor-2: 6377
+distanceLSH: 141.746
+distanceTrue: 117.149
+Nearest neighbor-3: 6483
+distanceLSH: 194.528
+distanceTrue: 125.18
+Nearest neighbor-4: 6678
+distanceLSH: 197.193
+distanceTrue: 140.182
+Nearest neighbor-5: 4816
+distanceLSH: 211.67
+distanceTrue: 140.46
+tLSH: 0.006007
+tTrue: 0.017513
+Query: 61
+Nearest neighbor-1: 4473
+distanceLSH: 264.023
+distanceTrue: 170.309
+Nearest neighbor-2: 5388
+distanceLSH: 289.759
+distanceTrue: 264.023
+Nearest neighbor-3: 1790
+distanceLSH: 297.056
+distanceTrue: 265.339
+Nearest neighbor-4: 5407
+distanceLSH: 301.359
+distanceTrue: 268.351
+Nearest neighbor-5: 5731
+distanceLSH: 307.16
+distanceTrue: 270.629
+tLSH: 0.007006
+tTrue: 0.017515
+Query: 62
+Nearest neighbor-1: 6355
+distanceLSH: 242.295
+distanceTrue: 140.357
+Nearest neighbor-2: 1891
+distanceLSH: 249.796
+distanceTrue: 151.993
+Nearest neighbor-3: 3817
+distanceLSH: 259.311
+distanceTrue: 242.295
+Nearest neighbor-4: 4915
+distanceLSH: 266.075
+distanceTrue: 249.189
+Nearest neighbor-5: 2524
+distanceLSH: 282.844
+distanceTrue: 249.796
+tLSH: 0.004503
+tTrue: 0.017515
+Query: 63
+Nearest neighbor-1: 6269
+distanceLSH: 207.017
+distanceTrue: 131.651
+Nearest neighbor-2: 5173
+distanceLSH: 244.583
+distanceTrue: 182.058
+Nearest neighbor-3: 5913
+distanceLSH: 260.678
+distanceTrue: 193.22
+Nearest neighbor-4: 5338
+distanceLSH: 261.654
+distanceTrue: 203.58
+Nearest neighbor-5: 6125
+distanceLSH: 262.926
+distanceTrue: 207.017
+tLSH: 0.006005
+tTrue: 0.016514
+Query: 64
+Nearest neighbor-1: 5990
+distanceLSH: 133.503
+distanceTrue: 94.9158
+Nearest neighbor-2: 7095
+distanceLSH: 152.417
+distanceTrue: 124.226
+Nearest neighbor-3: 6441
+distanceLSH: 207.767
+distanceTrue: 133.503
+Nearest neighbor-4: 5168
+distanceLSH: 218.268
+distanceTrue: 152.417
+Nearest neighbor-5: 5328
+distanceLSH: 226.795
+distanceTrue: 207.767
+tLSH: 0.005506
+tTrue: 0.016013
+Query: 65
+Nearest neighbor-1: 6938
+distanceLSH: 240.697
+distanceTrue: 138.275
+Nearest neighbor-2: 7083
+distanceLSH: 247.39
+distanceTrue: 226.824
+Nearest neighbor-3: 1876
+distanceLSH: 292.27
+distanceTrue: 240.697
+Nearest neighbor-4: 6104
+distanceLSH: 301.788
+distanceTrue: 243.963
+Nearest neighbor-5: 5391
+distanceLSH: 308.423
+distanceTrue: 247.39
+tLSH: 0.005004
+tTrue: 0.017515
+Query: 66
+Nearest neighbor-1: 799
+distanceLSH: 234.47
+distanceTrue: 173.381
+Nearest neighbor-2: 6053
+distanceLSH: 258.782
+distanceTrue: 219.861
+Nearest neighbor-3: 6242
+distanceLSH: 262.008
+distanceTrue: 224.194
+Nearest neighbor-4: 6474
+distanceLSH: 262.322
+distanceTrue: 233.009
+Nearest neighbor-5: 6639
+distanceLSH: 264.583
+distanceTrue: 234.47
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 67
+Nearest neighbor-1: 5391
+distanceLSH: 200.866
+distanceTrue: 200.866
+Nearest neighbor-2: 3265
+distanceLSH: 282.439
+distanceTrue: 225.699
+Nearest neighbor-3: 7083
+distanceLSH: 292.082
+distanceTrue: 230.048
+Nearest neighbor-4: 6940
+distanceLSH: 300.185
+distanceTrue: 241.448
+Nearest neighbor-5: 6754
+distanceLSH: 306.349
+distanceTrue: 247.917
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 68
+Nearest neighbor-1: 6998
+distanceLSH: 401.212
+distanceTrue: 224.225
+Nearest neighbor-2: 1898
+distanceLSH: 401.752
+distanceTrue: 244.238
+Nearest neighbor-3: 762
+distanceLSH: 402.495
+distanceTrue: 251.036
+Nearest neighbor-4: 3797
+distanceLSH: 408.338
+distanceTrue: 253.379
+Nearest neighbor-5: 5120
+distanceLSH: 439.77
+distanceTrue: 260.225
+tLSH: 0.001001
+tTrue: 0.016014
+Query: 69
+Nearest neighbor-1: 604
+distanceLSH: 206.894
+distanceTrue: 201.311
+Nearest neighbor-2: 5233
+distanceLSH: 220.955
+distanceTrue: 201.336
+Nearest neighbor-3: 1947
+distanceLSH: 229.223
+distanceTrue: 202.771
+Nearest neighbor-4: 5096
+distanceLSH: 237.312
+distanceTrue: 203.18
+Nearest neighbor-5: 6117
+distanceLSH: 243.711
+distanceTrue: 206.894
+tLSH: 0.004503
+tTrue: 0.016015
+Query: 70
+Nearest neighbor-1: 5878
+distanceLSH: 266.813
+distanceTrue: 266.813
+Nearest neighbor-2: 3050
+distanceLSH: 268.537
+distanceTrue: 268.537
+Nearest neighbor-3: 4512
+distanceLSH: 294.022
+distanceTrue: 276.109
+Nearest neighbor-4: 1819
+distanceLSH: 310.021
+distanceTrue: 276.219
+Nearest neighbor-5: 4942
+distanceLSH: 312.623
+distanceTrue: 283.87
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 71
+Nearest neighbor-1: 6125
+distanceLSH: 46.8188
+distanceTrue: 46.8188
+Nearest neighbor-2: 5913
+distanceLSH: 100.772
+distanceTrue: 80.3679
+Nearest neighbor-3: 6805
+distanceLSH: 112.049
+distanceTrue: 100.772
+Nearest neighbor-4: 6164
+distanceLSH: 150.023
+distanceTrue: 112.049
+Nearest neighbor-5: 5197
+distanceLSH: 157.064
+distanceTrue: 132.28
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 72
+Nearest neighbor-1: 5886
+distanceLSH: 205.701
+distanceTrue: 193.675
+Nearest neighbor-2: 6343
+distanceLSH: 253.369
+distanceTrue: 205.701
+Nearest neighbor-3: 5635
+distanceLSH: 272.754
+distanceTrue: 222.8
+Nearest neighbor-4: 5483
+distanceLSH: 279.473
+distanceTrue: 252.331
+Nearest neighbor-5: 6797
+distanceLSH: 282.507
+distanceTrue: 253.369
+tLSH: 0.005004
+tTrue: 0.016013
+Query: 73
+Nearest neighbor-1: 6610
+distanceLSH: 303.211
+distanceTrue: 303.211
+Nearest neighbor-2: 934
+distanceLSH: 320.128
+distanceTrue: 320.128
+Nearest neighbor-3: 3594
+distanceLSH: 328.329
+distanceTrue: 320.729
+Nearest neighbor-4: 5297
+distanceLSH: 329.935
+distanceTrue: 322.633
+Nearest neighbor-5: 153
+distanceLSH: 341.365
+distanceTrue: 322.723
+tLSH: 0.004505
+tTrue: 0.016014
+Query: 74
+Nearest neighbor-1: 9589
+distanceLSH: 384.589
+distanceTrue: 230.458
+Nearest neighbor-2: 3525
+distanceLSH: 396.834
+distanceTrue: 289.491
+Nearest neighbor-3: 4213
+distanceLSH: 411.056
+distanceTrue: 289.595
+Nearest neighbor-4: 1300
+distanceLSH: 431.676
+distanceTrue: 291.89
+Nearest neighbor-5: 2017
+distanceLSH: 438.454
+distanceTrue: 295.586
+tLSH: 0.001001
+tTrue: 0.016014
+Query: 75
+Nearest neighbor-1: 4785
+distanceLSH: 244.594
+distanceTrue: 131.095
+Nearest neighbor-2: 7183
+distanceLSH: 277.806
+distanceTrue: 220.02
+Nearest neighbor-3: 5653
+distanceLSH: 294.133
+distanceTrue: 220.504
+Nearest neighbor-4: 6931
+distanceLSH: 306.847
+distanceTrue: 222.187
+Nearest neighbor-5: 1904
+distanceLSH: 315.758
+distanceTrue: 223.598
+tLSH: 0.001001
+tTrue: 0.016014
+Query: 76
+Nearest neighbor-1: 2727
+distanceLSH: 299.314
+distanceTrue: 212.061
+Nearest neighbor-2: 4882
+distanceLSH: 309.446
+distanceTrue: 254.769
+Nearest neighbor-3: 5154
+distanceLSH: 319.103
+distanceTrue: 294.258
+Nearest neighbor-4: 1381
+distanceLSH: 324.597
+distanceTrue: 297.792
+Nearest neighbor-5: 5482
+distanceLSH: 328.889
+distanceTrue: 299.314
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 77
+Nearest neighbor-1: 9934
+distanceLSH: 393.207
+distanceTrue: 251.257
+Nearest neighbor-2: 7572
+distanceLSH: 405.957
+distanceTrue: 255.996
+Nearest neighbor-3: 6677
+distanceLSH: 406.108
+distanceTrue: 280.836
+Nearest neighbor-4: 9286
+distanceLSH: 414.03
+distanceTrue: 282.427
+Nearest neighbor-5: 3285
+distanceLSH: 468.263
+distanceTrue: 285.184
+tLSH: 0.001002
+tTrue: 0.016013
+Query: 78
+Nearest neighbor-1: 2093
+distanceLSH: 317.909
+distanceTrue: 293.716
+Nearest neighbor-2: 3291
+distanceLSH: 320.893
+distanceTrue: 298.88
+Nearest neighbor-3: 1076
+distanceLSH: 338.253
+distanceTrue: 306.738
+Nearest neighbor-4: 6995
+distanceLSH: 338.433
+distanceTrue: 317.762
+Nearest neighbor-5: 6879
+distanceLSH: 342.016
+distanceTrue: 317.909
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 79
+Nearest neighbor-1: 1563
+distanceLSH: 261.612
+distanceTrue: 226.868
+Nearest neighbor-2: 4889
+distanceLSH: 266.751
+distanceTrue: 245.516
+Nearest neighbor-3: 7118
+distanceLSH: 271.037
+distanceTrue: 254.876
+Nearest neighbor-4: 4658
+distanceLSH: 273.32
+distanceTrue: 258.88
+Nearest neighbor-5: 1903
+distanceLSH: 278.083
+distanceTrue: 260.929
+tLSH: 0.005504
+tTrue: 0.016015
+Query: 80
+Nearest neighbor-1: 5953
+distanceLSH: 209.344
+distanceTrue: 148.165
+Nearest neighbor-2: 7281
+distanceLSH: 210.295
+distanceTrue: 160.415
+Nearest neighbor-3: 6647
+distanceLSH: 216.758
+distanceTrue: 161.369
+Nearest neighbor-4: 6004
+distanceLSH: 224.223
+distanceTrue: 171.193
+Nearest neighbor-5: 5563
+distanceLSH: 244.88
+distanceTrue: 180.222
+tLSH: 0.005504
+tTrue: 0.016014
+Query: 81
+Nearest neighbor-1: 7189
+distanceLSH: 230.894
+distanceTrue: 146.311
+Nearest neighbor-2: 4297
+distanceLSH: 312.136
+distanceTrue: 230.894
+Nearest neighbor-3: 7062
+distanceLSH: 313.688
+distanceTrue: 281.068
+Nearest neighbor-4: 6468
+distanceLSH: 316.901
+distanceTrue: 296.906
+Nearest neighbor-5: 2215
+distanceLSH: 322.67
+distanceTrue: 299.286
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 82
+Nearest neighbor-1: 3087
+distanceLSH: 276.819
+distanceTrue: 276.819
+Nearest neighbor-2: 5089
+distanceLSH: 298.706
+distanceTrue: 295.41
+Nearest neighbor-3: 1549
+distanceLSH: 302.366
+distanceTrue: 297.303
+Nearest neighbor-4: 6132
+distanceLSH: 304.437
+distanceTrue: 298.706
+Nearest neighbor-5: 367
+distanceLSH: 309.897
+distanceTrue: 302.366
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 83
+Nearest neighbor-1: 91
+distanceLSH: 280.237
+distanceTrue: 271.982
+Nearest neighbor-2: 776
+distanceLSH: 304.598
+distanceTrue: 273.892
+Nearest neighbor-3: 1508
+distanceLSH: 308.037
+distanceTrue: 278.718
+Nearest neighbor-4: 5249
+distanceLSH: 308.678
+distanceTrue: 280.237
+Nearest neighbor-5: 2810
+distanceLSH: 310.582
+distanceTrue: 280.36
+tLSH: 0.005504
+tTrue: 0.016014
+Query: 84
+Nearest neighbor-1: 6779
+distanceLSH: 196.987
+distanceTrue: 181.607
+Nearest neighbor-2: 4673
+distanceLSH: 273.271
+distanceTrue: 196.987
+Nearest neighbor-3: 604
+distanceLSH: 273.748
+distanceTrue: 237.668
+Nearest neighbor-4: 5057
+distanceLSH: 278.266
+distanceTrue: 249.389
+Nearest neighbor-5: 1724
+distanceLSH: 280.264
+distanceTrue: 252.513
+tLSH: 0.005004
+tTrue: 0.015514
+Query: 85
+Nearest neighbor-1: 4694
+distanceLSH: 339.848
+distanceTrue: 192.678
+Nearest neighbor-2: 7920
+distanceLSH: 347.734
+distanceTrue: 233.846
+Nearest neighbor-3: 1592
+distanceLSH: 375.972
+distanceTrue: 248.363
+Nearest neighbor-4: 1484
+distanceLSH: 389.442
+distanceTrue: 249.662
+Nearest neighbor-5: 1655
+distanceLSH: 390.926
+distanceTrue: 250.466
+tLSH: 0.001001
+tTrue: 0.016014
+Query: 86
+Nearest neighbor-1: 6255
+distanceLSH: 361.699
+distanceTrue: 285.107
+Nearest neighbor-2: 4233
+distanceLSH: 374.908
+distanceTrue: 305.612
+Nearest neighbor-3: 6106
+distanceLSH: 396.4
+distanceTrue: 330.97
+Nearest neighbor-4: 4782
+distanceLSH: 408.799
+distanceTrue: 339.972
+Nearest neighbor-5: 6722
+distanceLSH: 417.692
+distanceTrue: 346.298
+tLSH: 0.005004
+tTrue: 0.015514
+Query: 87
+Nearest neighbor-1: 5744
+distanceLSH: 255.282
+distanceTrue: 224.907
+Nearest neighbor-2: 5475
+distanceLSH: 281.778
+distanceTrue: 255.282
+Nearest neighbor-3: 6375
+distanceLSH: 304.603
+distanceTrue: 265.055
+Nearest neighbor-4: 7204
+distanceLSH: 316.185
+distanceTrue: 277.784
+Nearest neighbor-5: 6019
+distanceLSH: 330.085
+distanceTrue: 281.778
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 88
+Nearest neighbor-1: 5475
+distanceLSH: 301.596
+distanceTrue: 123.56
+Nearest neighbor-2: 5813
+distanceLSH: 304.534
+distanceTrue: 216.025
+Nearest neighbor-3: 6750
+distanceLSH: 305.493
+distanceTrue: 217.936
+Nearest neighbor-4: 5744
+distanceLSH: 306.989
+distanceTrue: 231.208
+Nearest neighbor-5: 2842
+distanceLSH: 330.595
+distanceTrue: 234.113
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 89
+Nearest neighbor-1: 7099
+distanceLSH: 75.08
+distanceTrue: 75.08
+Nearest neighbor-2: 7066
+distanceLSH: 155.515
+distanceTrue: 135.052
+Nearest neighbor-3: 6327
+distanceLSH: 186.022
+distanceTrue: 154.418
+Nearest neighbor-4: 5902
+distanceLSH: 201.517
+distanceTrue: 155.515
+Nearest neighbor-5: 6639
+distanceLSH: 238.39
+distanceTrue: 163.411
+tLSH: 0.005505
+tTrue: 0.016013
+Query: 90
+Nearest neighbor-1: 6080
+distanceLSH: 191.523
+distanceTrue: 114.534
+Nearest neighbor-2: 5765
+distanceLSH: 217.812
+distanceTrue: 157.34
+Nearest neighbor-3: 5291
+distanceLSH: 222.675
+distanceTrue: 191.523
+Nearest neighbor-4: 5692
+distanceLSH: 231.426
+distanceTrue: 206.422
+Nearest neighbor-5: 81
+distanceLSH: 232.478
+distanceTrue: 208.031
+tLSH: 0.005005
+tTrue: 0.015513
+Query: 91
+Nearest neighbor-1: 4679
+distanceLSH: 169.035
+distanceTrue: 50.4579
+Nearest neighbor-2: 5527
+distanceLSH: 170.053
+distanceTrue: 60.663
+Nearest neighbor-3: 5003
+distanceLSH: 176.76
+distanceTrue: 156.234
+Nearest neighbor-4: 5432
+distanceLSH: 185.876
+distanceTrue: 157.629
+Nearest neighbor-5: 4741
+distanceLSH: 192.546
+distanceTrue: 163.141
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 92
+Nearest neighbor-1: 3938
+distanceLSH: 314.189
+distanceTrue: 298.027
+Nearest neighbor-2: 764
+distanceLSH: 317.481
+distanceTrue: 308.971
+Nearest neighbor-3: 6454
+distanceLSH: 340.409
+distanceTrue: 314.189
+Nearest neighbor-4: 6270
+distanceLSH: 343.746
+distanceTrue: 317.481
+Nearest neighbor-5: 6871
+distanceLSH: 353.123
+distanceTrue: 318.824
+tLSH: 0.005004
+tTrue: 0.016013
+Query: 93
+Nearest neighbor-1: 957
+distanceLSH: 293.626
+distanceTrue: 141.464
+Nearest neighbor-2: 909
+distanceLSH: 305.943
+distanceTrue: 245.21
+Nearest neighbor-3: 581
+distanceLSH: 307.982
+distanceTrue: 293.626
+Nearest neighbor-4: 1568
+distanceLSH: 311.933
+distanceTrue: 305.943
+Nearest neighbor-5: 1060
+distanceLSH: 313.22
+distanceTrue: 307.982
+tLSH: 0.005005
+tTrue: 0.015514
+Query: 94
+Nearest neighbor-1: 6138
+distanceLSH: 272.932
+distanceTrue: 234.774
+Nearest neighbor-2: 1662
+distanceLSH: 273.843
+distanceTrue: 258.339
+Nearest neighbor-3: 6124
+distanceLSH: 282.814
+distanceTrue: 259.917
+Nearest neighbor-4: 1478
+distanceLSH: 285.577
+distanceTrue: 265.735
+Nearest neighbor-5: 4691
+distanceLSH: 286.398
+distanceTrue: 268.717
+tLSH: 0.005004
+tTrue: 0.016014
+Query: 95
+Nearest neighbor-1: 6805
+distanceLSH: 262.962
+distanceTrue: 160.571
+Nearest neighbor-2: 3192
+distanceLSH: 296.287
+distanceTrue: 236.377
+Nearest neighbor-3: 5330
+distanceLSH: 303.987
+distanceTrue: 245.982
+Nearest neighbor-4: 6598
+distanceLSH: 304.128
+distanceTrue: 256.515
+Nearest neighbor-5: 5296
+distanceLSH: 304.408
+distanceTrue: 260.471
+tLSH: 0.005004
+tTrue: 0.015514
+Query: 96
+Nearest neighbor-1: 1502
+distanceLSH: 371.121
+distanceTrue: 305.392
+Nearest neighbor-2: 2087
+distanceLSH: 388.421
+distanceTrue: 313.359
+Nearest neighbor-3: 3305
+distanceLSH: 412.059
+distanceTrue: 313.739
+Nearest neighbor-4: 2294
+distanceLSH: 420.891
+distanceTrue: 318.987
+Nearest neighbor-5: 5384
+distanceLSH: 426.783
+distanceTrue: 320.947
+tLSH: 0.001501
+tTrue: 0.016013
+Query: 97
+Nearest neighbor-1: 2127
+distanceLSH: 322.957
+distanceTrue: 285.79
+Nearest neighbor-2: 4868
+distanceLSH: 325.266
+distanceTrue: 303.557
+Nearest neighbor-3: 903
+distanceLSH: 330.581
+distanceTrue: 318.366
+Nearest neighbor-4: 972
+distanceLSH: 331.198
+distanceTrue: 320.209
+Nearest neighbor-5: 729
+distanceLSH: 333.011
+distanceTrue: 322.957
+tLSH: 0.004504
+tTrue: 0.016014
+Query: 98
+Nearest neighbor-1: 8255
+distanceLSH: 404.421
+distanceTrue: 233.532
+Nearest neighbor-2: 2671
+distanceLSH: 427.348
+distanceTrue: 303.745
+Nearest neighbor-3: 558
+distanceLSH: 435.205
+distanceTrue: 304.041
+Nearest neighbor-4: 7410
+distanceLSH: 449.558
+distanceTrue: 311.304
+Nearest neighbor-5: 6033
+distanceLSH: 450.325
+distanceTrue: 315.435
+tLSH: 0.001001
+tTrue: 0.016014
+Query: 99
+Nearest neighbor-1: 5774
+distanceLSH: 143.457
+distanceTrue: 137.43
+Nearest neighbor-2: 6907
+distanceLSH: 144.253
+distanceTrue: 138.899
+Nearest neighbor-3: 6290
+distanceLSH: 155.019
+distanceTrue: 138.964
+Nearest neighbor-4: 5712
+distanceLSH: 157.013
+distanceTrue: 142.506
+Nearest neighbor-5: 6633
+distanceLSH: 161.192
+distanceTrue: 143.457
+tLSH: 0.005505
+tTrue: 0.016014
+Query: 100
+Nearest neighbor-1: 2429
+distanceLSH: 341.152
+distanceTrue: 184.613
+Nearest neighbor-2: 3271
+distanceLSH: 344.91
+distanceTrue: 234.885
+Nearest neighbor-3: 2378
+distanceLSH: 350.341
+distanceTrue: 308.608
+Nearest neighbor-4: 4678
+distanceLSH: 351.11
+distanceTrue: 310.403
+Nearest neighbor-5: 4403
+distanceLSH: 353.91
+distanceTrue: 318.94
+tLSH: 0.005004
+tTrue: 0.016014
