@@ -214,7 +214,7 @@ namespace Alekos
 
             for (int j = 0; j < (*cluster).size(); ++j)
             {
-                double dist = EuclideanDistance(&this->dataset[i], &((*cluster)[j]), dimension);
+                double dist = EuclideanDistance(item, &((*cluster)[j]), dimension);
                 distances.push_back(dist);
             }
 
@@ -240,6 +240,9 @@ namespace Alekos
                     }
                 }
             }
+
+            int second_best = assignments_map[item].secont;
+            best_dist=EuclideanDistance(&this->dataset[i], &this->centers[second_best], dimension);
 
             // now perform the calculations
             distances.clear();
