@@ -10,15 +10,15 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    LSH_params params;
+    lshui::LSH_params params;
 
     if (argc == 1) // Αν δεν έχουν δωθεί παράμετροι από το terminal τρέξε το interface με prompts
     {
-        params = Guided_Interface();
+        params = lshui::Guided_Interface();
     }
     else // Αλλιώς διάβασε τις παραμέτρους από το terminal
     {
-        params = CMD_Interface(argc, argv);
+        params = lshui::CMD_Interface(argc, argv);
         if (params.source == "default") // Αν κάποιο option έχει γραφτεί λάθος τότε οι παράμετροι δεν θα αλλάξουν (θα παραμείνουν οι default)
         {
             return -1; // Κλείσε το πρόγραμμα

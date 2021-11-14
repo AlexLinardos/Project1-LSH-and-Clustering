@@ -56,7 +56,7 @@ public:
     std::vector<Item *> *hash_table;
     F f;
 
-    Hypercube(const Cube_params &params, vector<Item> &dataset, int factor_for_windowSize, vector<unordered_map<int, int>> &h_maps) : f(params.k)
+    Hypercube(const cubeui::Cube_params &params, vector<Item> &dataset, int factor_for_windowSize, vector<unordered_map<int, int>> &h_maps) : f(params.k)
     {
         d = dataset[0].xij.size();
         std::random_device rd;                                         // only used once to initialise (seed) engine
@@ -115,7 +115,8 @@ public:
         }
     }
 
-    ~Hypercube() {
+    ~Hypercube()
+    {
         delete[] hash_table;
     }
 
