@@ -115,7 +115,9 @@ public:
         }
     }
 
-    ~Hypercube() {}
+    ~Hypercube() {
+        delete[] hash_table;
+    }
 
     // calculates the bucket (vertex) at which query should be assigned to
     unsigned int find_bucket(const Item &q)

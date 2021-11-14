@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 
     lsh_elapsed = lsh_elapsed / CLOCKS_PER_SEC;
     brute_elapsed = brute_elapsed / CLOCKS_PER_SEC;
-    cout << "tlSH/tTrue: " << (lsh_elapsed * (double)1000000) / (brute_elapsed * (double)1000000) << endl;
+    cout << "tlSH/tTrue: " << (lsh_elapsed * 1000000.0) / (brute_elapsed * 1000000.0) << endl;
 
     meso_error = meso_error / (double)queries.size();
 
