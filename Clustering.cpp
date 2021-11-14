@@ -41,10 +41,65 @@ int main(int argc, char *argv[])
 
     vector<Item> dataset;
     read_items(dataset, params.input_file);
-    Alekos::Clustering cluster = Alekos::Clustering(params, dataset);
+    Alekos::Clustering *cluster = new Alekos::Clustering(params, dataset);
+    int dimension = dataset[0].xij.size();
 
-    cluster.initialize_pp();
-    cluster.Lloyds(1000);
+    clock_t begin = clock();
+    cluster->initialize_pp();
+    cluster->Lloyds(1000);
+    clock_t end = clock();
 
+    double elapsed = double(end - begin) / CLOCKS_PER_SEC;
+
+    ofstream output_file;
+    output_file.open("CLUSTERING_output.txt");
+
+    if(params.complete)
+    {
+        for (int i = 0; i < params.clusters; i++)
+        {
+            output_file << "CLUSTER-" << i+1 << " {centroid: [";
+            for(int j=0; j< dimension; j++)
+            {
+                output_file << cluster->centers[i].xij[j] << ",";
+            }
+            output_file << "]";
+            for(int j=0; j< cluster->clusters[i].size(); j++)
+            {
+                output_file << ", " << cluster->clusters[i][j].id;
+            }
+            output_file << "}" << endl;
+        }
+    }
+    else
+    {
+        for (int i = 0; i < params.clusters; i++)
+        {
+            output_file << "CLUSTER-" << i+1 << " {size: " << cluster->clusters[i].size() << ", centroid: [";
+            for(int j=0; j< dimension; j++)
+            {
+                output_file << cluster->centers[i].xij[j] << ",";
+            }
+            output_file << "]}" << endl;
+        }
+    }
+    if (cluster->centers.size() > 1)
+    {
+        output_file << "clustering_time: " << elapsed << endl;
+        output_file << "Silhouette: [";
+        for (int i = 0; i < params.clusters; i++)
+        {
+            output_file << cluster->eval_specific_cluster(i) << ", ";
+        }
+        output_file << cluster->eval_clustering() << "]" << endl;    
+    }
+    else
+    {
+        cout << "Silhouette can only be computed when there are 2 or more clusters." << endl;
+    }
+
+    output_file.close();
+
+    delete cluster;
     return 0;
 }

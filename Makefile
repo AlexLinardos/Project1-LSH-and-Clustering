@@ -19,7 +19,7 @@ Cube.o: Cube.cpp utilities.hpp Cube_ui.hpp hashing.hpp
 cluster: Clustering.o
 	$(CC) Clustering.o -o cluster $(CFLAGS)
 
-Clustering.o: Clustering.cpp utilities.hpp Clustering_ui.hpp
+Clustering.o: Clustering.cpp utilities.hpp Clustering_ui.hpp Clustering.hpp
 	$(CC) -c Clustering.cpp $(CFLAGS)
 
 clean:

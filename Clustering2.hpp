@@ -198,19 +198,6 @@ namespace Alekos
             } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) && iter < max_iter);
             cout << "............................................" << endl;
             cout << "Lloyd's algorithm ended after " << iter << " iterations" << endl;
-
-            if (this->centers.size() > 1)
-            {
-                for (int c = 0; c < this->clusters.size(); ++c)
-                {
-                    cout << "C" << c + 1 << " Silhouette: " << eval_specific_cluster(c) << endl;
-                }
-                cout << "Overall Silhouette: " << eval_clustering() << endl;
-            }
-            else
-            {
-                cout << "Silhouette can only be computed when there are 2 or more clusters." << endl;
-            }
         }
 
         // Silhouette of object at index i
