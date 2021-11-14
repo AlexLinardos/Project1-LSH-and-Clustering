@@ -23,6 +23,8 @@ namespace Alekos
         vector<int> assignments; // shows the cluster to which each point is assigned to
                                  // (example: if assignments[4]=2 then item at index 4 of dataset is assigned to cluster at index 2)
 
+        unordered_map<Item*, std::pair<int,int>> assignments_map; // maps item's id string to a int pair indication 1:it's assigned cluster index, 2:the second best cluster for that item
+
         Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1), assignments(dataset.size()) {}
 
         // initialization ++
@@ -130,21 +132,26 @@ namespace Alekos
         {
             // cout << "ASSIGNING" << endl;
             int dimension = this->dataset[0].xij.size();
+            int nearest_cntr;
+            int second_nearest;
+
             for (int i = 0; i < this->dataset.size(); ++i)
             {
                 double min_d = EuclideanDistance(&centers[0], &this->dataset[i], dimension);
-                int nearest_cntr = 0;
+                nearest_cntr = 0;
                 for (int c = 1; c < centers.size(); ++c)
                 {
                     double next_d = EuclideanDistance(&centers[c], &this->dataset[i], dimension);
                     if (next_d < min_d)
                     {
                         min_d = next_d;
+                        second_nearest=nearest_cntr;
                         nearest_cntr = c;
                     }
                 }
                 this->assignments[i] = nearest_cntr;
                 this->clusters[nearest_cntr].push_back(this->dataset[i]); // push it into a cluster based on assigned center
+                assignments_map[&dataset[i]]=make_pair(nearest_cntr, second_nearest);
             }
         }
 
@@ -195,9 +202,11 @@ namespace Alekos
         }
 
         // Silhouette of object at index i
-        double silhouette(int i)
+        double silhouette(Item * item)
         {
-            vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
+            //vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
+            int cluster_index = assignments_map[item].first;
+            vector<Item> *cluster = &clusters[cluster_index];
 
             //  calculate a(i) = average distance of i to objects in same cluster
             vector<double> distances;
