@@ -75,13 +75,13 @@ class LSH
 
     int tableSize; // hashtableSize
 
-    LSH_params params; // k, L, N, R
+    lshui::LSH_params params; // k, L, N, R
 
     std::vector<Item *> **hashTables;
     G **g;
 
 public:
-    LSH(const LSH_params &params, vector<Item> &dataset, int factor_for_windowSize, int divisor_for_tableSize) : params(params)
+    LSH(const lshui::LSH_params &params, vector<Item> &dataset, int factor_for_windowSize, int divisor_for_tableSize) : params(params)
     {
         // tune windowSize
         tableSize = dataset.size() / divisor_for_tableSize;
@@ -138,7 +138,7 @@ public:
         delete[] g;
     }
 
-    std::vector<std::pair<double, Item *>> kNN(const Item *query, int thresh = 0)const
+    std::vector<std::pair<double, Item *>> kNN(const Item *query, int thresh = 0) const
     {
         int N = params.N;
         // initialize a vector of N best candidates and distances represented as c++ pairs
@@ -207,7 +207,7 @@ public:
     Each neighbor is represented as a pair of <distanceToQuery, neighborItem*>
     The following function returns a vector of these pairs
     */
-    std::vector<std::pair<double, Item *>> RangeSearch(const Item *query, double radius, int thresh = 0)const
+    std::vector<std::pair<double, Item *>> RangeSearch(const Item *query, double radius, int thresh = 0) const
     {
         std::vector<std::pair<double, Item *>> d;
 

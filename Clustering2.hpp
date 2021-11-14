@@ -6,6 +6,10 @@
 #include <random>
 #include <chrono>
 #include "Clustering_ui.hpp"
+#include "LSH.hpp"
+#include "LSH_ui.hpp"
+#include "Cube.hpp"
+#include "Cube_ui.hpp"
 
 using namespace std;
 
@@ -199,6 +203,94 @@ namespace Alekos
             } while ((!equal(assignments.begin(), assignments.end(), last_assignments.begin())) && iter < max_iter);
             cout << "............................................" << endl;
             cout << "Lloyd's algorithm ended after " << iter << " iterations" << endl;
+        }
+
+        // calculates starting radius for Reverse Assignment algorithm which is min(dist between centers)/2
+        double calculate_start_radius()
+        {
+            double min_dist = std::numeric_limits<double>::max();
+            int dimension = this->centers[0].xij.size();
+            for (int i = 0; i < this->centers.size(); ++i)
+            {
+                for (int j = 0; j < this->centers.size(); ++j)
+                {
+                    if (i != j)
+                    {
+                        double dist = EuclideanDistance(&this->centers[i], &this->centers[j], dimension);
+                        if (dist < min_dist)
+                        {
+                            min_dist = dist;
+                        }
+                    }
+                }
+            }
+            return min_dist / 2;
+        }
+
+        void Reverse_Assignment(int max_iter)
+        {
+            int iter = 1; // iterations
+            int balls_changed = 0;
+            double radius = calculate_start_radius();
+
+            // create objects needed for both methods and use only one of them according to method parameter
+
+            lshui::LSH_params lsh_params = lshui::LSH_params();
+            lsh_params.input_file = this->params.input_file;
+            lsh_params.out_file = this->params.out_file;
+            lsh_params.k = this->params.k_LSH;
+            lsh_params.L = this->params.L;
+            LSH lsh = LSH(lsh_params, this->dataset, 3, 8);
+
+            cubeui::Cube_params cube_params = cubeui::Cube_params();
+            cube_params.input_file = this->params.input_file;
+            cube_params.out_file = this->params.out_file;
+            cube_params.M = this->params.M;
+            cube_params.k = this->params.k_HC;
+            cube_params.probes = this->params.probes;
+            F f = F(cube_params.k);
+            Hypercube cube = Hypercube(cube_params, this->dataset, 3, f.h_maps);
+
+            do
+            {
+                balls_changed = 0;
+                vector<int> new_assignments = this->assignments;
+
+                for (int c = 0; c < this->params.clusters; ++c)
+                {
+                    // perform Range Search
+                    std::vector<std::pair<double, Item *>> r_search;
+                    if (params.method == "LSH")
+                    {
+                        r_search = lsh.RangeSearch(&this->centers[c], radius, 0);
+                    }
+                    else
+                    {
+                        cube.R = radius;
+                        r_search = cube.RangeSearch(&this->centers[c]);
+                    }
+                    // if ball found new items
+                    if (r_search.size() > 0)
+                    {
+                        balls_changed++;
+                    }
+                    for (int i = 0; i < r_search.size(); ++i)
+                    {
+                        if (!r_search[i].second->claimed) // if item has not been claimed by a ball
+                        {
+                            r_search[i].second->claimed = true;
+                            this->clusters[c].push_back(*r_search[i].second);
+                            // χρειάζεται τρόπο να γίνει assigned το item στον cluster με index c
+                        }
+                        else // else must resolve conflict
+                        {
+                            // κι εδώ χρειάζεται τον cluster του
+                            // μετά 2 euclidean distance για να βρούμε αν ο παλιός ή ο καινούργιος είναι ο κοντινότερος και σύγκριση
+                        }
+                    }
+                }
+
+            } while (iter < max_iter);
         }
 
         // Silhouette of object at index i
