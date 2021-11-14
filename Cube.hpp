@@ -258,9 +258,10 @@ public:
 
         // cout << "-----------------------------------------------------" << endl;
         int items_searched = 0;
+        int curr_bucket;
         for (int i = 0; i < search_probes.size(); ++i)
         {
-            int curr_bucket = search_probes[i];
+            curr_bucket = search_probes[i];
             // cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
             // cout << "BUCKET " << curr_bucket << ": ";
             // for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
@@ -271,8 +272,11 @@ public:
 
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
-                // Εδώ κάνεις κάποια plays με ένα alreadyExists που δεν έχω ιδεά τι είναι
-                // Το αφήνω να το βάλεις εσύ καλύτερα
+                /* In the "reverse assignment with range search" clustering algorithm we mark items when they are
+                assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
+                has no effect */
+                if(hash_table[curr_bucket][j]->marked)
+                    continue;
 
                 // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
                 double dist = EuclideanDistance(query, hash_table[curr_bucket][j], d);
