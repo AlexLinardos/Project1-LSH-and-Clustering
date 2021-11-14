@@ -20,7 +20,7 @@ public:
     vector<double> xij;
 
     int cluster=0;
-    // int second=0;
+    int second=-1;
 
     bool null = false;    // flag if is NULL item created to initialize apair vector for knn and brute foce algorithms
     bool claimed = false; // will be used in reverse assignment to indicate if item has been claimed by a ball (in order to resolve conflicts)

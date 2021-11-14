@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         params.out_file = "./out.txt";
         params.complete = false;
         params.method = "LSH";
-        params.clusters = 10;
+        params.clusters = 5;
         params.L = 3;
         params.k_LSH = 4;
         params.M = 10;
@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
         output_file << "Silhouette: [";
         for (int i = 0; i < params.clusters; i++)
         {
+            cout << i << endl;
             output_file << cluster->eval_specific_cluster(i) << ", ";
         }
         output_file << cluster->eval_clustering() << "]" << endl;    

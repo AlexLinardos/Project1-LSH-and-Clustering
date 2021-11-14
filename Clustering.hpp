@@ -162,7 +162,7 @@ namespace Alekos
                 //assignments_map[&dataset[i]]=make_pair(nearest_cntr, second_nearest);
                 dataset[i].cluster=nearest_cntr;
                 // dataset[i].second=second_nearest;
-                dataset[i].marked=true;
+                // dataset[i].marked=true;
             }
         }
 
@@ -205,11 +205,11 @@ namespace Alekos
                 }
                 last_assignments = this->assignments_vec;
                 
-                for (int i = 0; i < dataset.size(); i++) // unmark all items
-                {
-                    dataset[i].claimed = false;
-                    dataset[i].marked = false;
-                }
+                // for (int i = 0; i < dataset.size(); i++) // unmark all items
+                // {
+                //     dataset[i].claimed = false;
+                //     dataset[i].marked = false;
+                // }
                 Lloyds_assign_centers();
                 update_centers();
                 iter++;
@@ -244,34 +244,6 @@ namespace Alekos
 
         void Reverse_Assignment_Cluestering()
         {
-            int iter = 0; // iterations
-            vector<Item> old_centers = this->centers;
-            do
-            {
-                for (int i = 0; i < dataset.size(); i++)
-                {
-                    dataset[i].claimed = false;
-                    dataset[i].marked = false;
-                }
-                Reverse_Assignment(3);
-                old_centers = centers;
-                update_centers();
-                cout << iter++ << endl;
-            }while(!ItemVectorsEqual(old_centers, centers) && iter<20);
-
-            cout << "............................................" << endl;
-            cout << "Reverse Assignment Cluestering ended after " << iter << " iterations" << endl;
-        }
-
-        void Reverse_Assignment(int max_iter)
-        {
-            int dimension = this->dataset[0].xij.size();
-            int iter = 1; // iterations
-            int balls_changed = 0;
-            double radius = calculate_start_radius();
-
-            unordered_map <string, pair<Item*,int>> step_assignments; // map item id string to a pair that indicates a temporary item-cluster assignment
-
             // create objects needed for both methods and use only one of them according to method parameter
 
             lshui::LSH_params lsh_params = lshui::LSH_params();
@@ -290,87 +262,103 @@ namespace Alekos
             F f = F(cube_params.k);
             Hypercube cube = Hypercube(cube_params, this->dataset, 3, f.h_maps);
 
+            double radius = calculate_start_radius();
+            int iter = 0; // iterations
+            vector<Item> old_centers = this->centers;
+
+            int balls_changed;
             do
             {
-                balls_changed = 0;
-                // vector<int> new_assignments = this->assignments;
-
-                for (int c = 0; c < this->params.clusters; ++c)
+                for (int i = 0; i < dataset.size(); i++)
                 {
-                    // perform Range Search
-                    std::vector<std::pair<double, Item *>> r_search;
-                    if (params.method == "LSH")
-                    {
-                        r_search = lsh.RangeSearch(&this->centers[c], radius, 0);
-                    }
-                    else
-                    {
-                        cube.R = radius;
-                        r_search = cube.RangeSearch(&this->centers[c]);
-                    }
-                    // if ball found new items
-                    if (r_search.size() > 0)
-                    {
-                        balls_changed++;
-                    }
-                    for (int i = 0; i < r_search.size(); ++i)
-                    {
-                        Item* item = r_search[i].second;
-                        if (!item->claimed) // if item has not been claimed by a ball
-                        {
-                            item->claimed = true;
-
-                            step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
-                        }
-                        else // else must resolve conflict
-                        {
-                            // if we are her the item has already been assigned to another cluster
-                            int assigned_cluster = step_assignments[item->id].second;
-
-                            double dist_to_assigned = EuclideanDistance(&centers[assigned_cluster], item, dimension);
-                            double dist_to_curr = EuclideanDistance(&centers[c], item, dimension);
-                            /* if the distance to the current cluster is smaller that the distance to the previously closest */
-                            if (dist_to_curr < dist_to_assigned)
-                                step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
-                        }
-                    }
+                    // dataset[i].claimed = false;
+                    dataset[i].marked = false;
                 }
-                /* traverse the unordered map, */
-                for (auto x : step_assignments)
-                {
-                    // /* get the value of the specific key in the unordered map */
-                    // std::pair<uint16_t, Item<T>*> pair = x.second;
-                    /* get the closest cluster found */
-                    int closest_cluster = x.second.second;
-                    /* get the item */
-                    Item* item = x.second.first;
-
-                    /* unstage the item */
-                    item->claimed = false;
-                    /* mark the item because it will be added in a cluster */
-                    item->marked = true;
-                    /* assign point to its closest cluster */
-                    item->cluster=closest_cluster;
-                    clusters[closest_cluster].push_back(*item);
-                    // assignments[item->id]=make_pair(item, closest_cluster);
-
-                    // this->assignments[i] = nearest_cntr;
-                    // dataset[i].second=second_nearest;
-                }
-
-                /* double the radius */
+                balls_changed = Reverse_Assignment(radius, lsh, cube);
                 radius *= 2;
+                old_centers = centers;
+                update_centers();
+                cout << iter++ << endl;
+            }while(/*!ItemVectorsEqual(old_centers, centers) && */iter<20 /* && balls_changed >= params.clusters * 0.3 */);
 
-                /* increment the number of iterations */
-                iter++;
-
-                /* remove "the assignment" of each data point as the iteration has ended */
-                step_assignments.clear();
-
-            } while (balls_changed >= params.clusters * 0.3 || iter < max_iter); // until most balls get no new point
-
-            /* perform Lloyds (brute force) assignment for the rest points that were not assigned */
             Lloyds_assign_centers();
+
+            cout << "............................................" << endl;
+            cout << "Reverse Assignment Cluestering ended after " << iter << " iterations" << endl;
+        }
+
+        int Reverse_Assignment(double radius, LSH &lsh, Hypercube &cube)
+        {
+            int dimension = this->dataset[0].xij.size();
+            int balls_changed = 0;
+
+            unordered_map <string, pair<Item*,int>> step_assignments; // map item id string to a pair that indicates a temporary item-cluster assignment
+
+            // vector<int> new_assignments = this->assignments;
+
+            for (int c = 0; c < this->params.clusters; ++c)
+            {
+                // perform Range Search
+                std::vector<std::pair<double, Item *>> r_search;
+                if (params.method == "LSH")
+                {
+                    r_search = lsh.RangeSearch(&this->centers[c], radius, 0);
+                }
+                else
+                {
+                    cube.R = radius;
+                    r_search = cube.RangeSearch(&this->centers[c]);
+                }
+                // if ball found new items
+                if (r_search.size() > 0)
+                {
+                    balls_changed++;
+                }
+                for (int i = 0; i < r_search.size(); ++i)
+                {
+                    Item* item = r_search[i].second;
+                    if (!item->claimed) // if item has not been claimed by a ball
+                    {
+                        item->claimed = true;
+
+                        step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
+                    }
+                    else // else must resolve conflict
+                    {
+                        // if we are her the item has already been assigned to another cluster
+                        int assigned_cluster = step_assignments[item->id].second;
+
+                        double dist_to_assigned = EuclideanDistance(&centers[assigned_cluster], item, dimension);
+                        double dist_to_curr = EuclideanDistance(&centers[c], item, dimension);
+                        /* if the distance to the current cluster is smaller that the distance to the previously closest */
+                        if (dist_to_curr < dist_to_assigned)
+                            step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
+                    }
+                }
+            }
+            /* traverse the unordered map, */
+            for (auto x : step_assignments)
+            {
+                // /* get the value of the specific key in the unordered map */
+                // std::pair<uint16_t, Item<T>*> pair = x.second;
+                /* get the closest cluster found */
+                int closest_cluster = x.second.second;
+                /* get the item */
+                Item* item = x.second.first;
+
+                /* unstage the item */
+                item->claimed = false;
+                /* mark the item because it will be added in a cluster */
+                item->marked = true;
+                /* assign point to its closest cluster */
+                item->cluster=closest_cluster;
+                clusters[closest_cluster].push_back(*item);
+                // assignments[item->id]=make_pair(item, closest_cluster);
+
+                // this->assignments[i] = nearest_cntr;
+                // dataset[i].second=second_nearest;
+            }
+            return balls_changed;
         }
 
         // Silhouette of object at index i
