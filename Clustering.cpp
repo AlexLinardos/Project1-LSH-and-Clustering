@@ -2,7 +2,7 @@
 #include <vector>
 #include "utilities.hpp"
 #include "Clustering_ui.hpp"
-#include "Clustering2.hpp"
+#include "Clustering.hpp"
 #include <map>
 #include <random>
 #include <chrono>
@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
         params.conf_file = "./cluster.conf";
         params.out_file = "./out.txt";
         params.complete = false;
-        params.method = "Classic";
-        params.clusters = 3;
+        params.method = "LSH";
+        params.clusters = 10;
         params.L = 3;
         params.k_LSH = 4;
         params.M = 10;
@@ -44,10 +44,23 @@ int main(int argc, char *argv[])
     Alekos::Clustering *cluster = new Alekos::Clustering(params, dataset);
     int dimension = dataset[0].xij.size();
 
-    clock_t begin = clock();
     cluster->initialize_pp();
-    cluster->Lloyds(1000);
-    clock_t end = clock();
+
+    clock_t begin;
+    clock_t end;
+
+    if(params.method=="Classic")
+    {   
+        begin = clock();
+        cluster->Lloyds(1000);
+        end = clock();
+    }
+    else
+    {   
+        begin = clock();
+        cluster->Reverse_Assignment_Cluestering();
+        end = clock();
+    }
 
     double elapsed = double(end - begin) / CLOCKS_PER_SEC;
 

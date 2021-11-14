@@ -102,8 +102,6 @@ namespace lshui
         return params;
     }
 
-#endif
-
     void print_LSH_params(const LSH_params &params)
     {
         cout << "[Current parameters for LSH]" << endl
@@ -116,3 +114,5 @@ namespace lshui
              << "Output file: " << params.out_file << endl;
     }
 }
+
+#endif
