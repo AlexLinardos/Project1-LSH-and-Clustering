@@ -2,7 +2,7 @@
 
 ## Μέλη ομάδας
 Αλέξανδρος Λινάρδος (sdi1600093@di.uoa.gr) <br>
-Αντώνης Μήλιος (sdi1600100@di.uoa.gr)
+Αντώνης Μήλιος (sdi1600100@di.uoa.gr) <br>
 Github repo: https://github.com/AlexLinardos/Project1-LSH-and-Clustering
 
 ## Περιγραφή project
