@@ -100,7 +100,7 @@ LSH_params CMD_Interface(int argc, char *argv[])
 
 #endif
 
-void print_LSH_params(LSH_params params)
+void print_LSH_params(const LSH_params &params)
 {
     cout << "[Current parameters for LSH]" << endl
          << "Input file: " << params.input_file << endl

@@ -51,14 +51,13 @@ public:
     int d;                 // Διαστάσεις αντικειμένων
     int w;                 // Window
     unsigned int vertices; // Hypercube vertices
-    vector<Item> dataset;
-    vector<unordered_map<int, int>> h_maps;
-    vector<vector<Item>> hash_table;
+    //vector<unordered_map<int, int>> h_maps;
+    // vector<vector<Item>> hash_table;
+    std::vector<Item *> * hash_table;
     F f;
 
-    Hypercube(Cube_params params, int factor_for_windowSize, vector<Item> dataset, vector<unordered_map<int, int>> h_maps) : h_maps(h_maps), f(params.k)
+    Hypercube(const Cube_params &params, vector<Item> &dataset, int factor_for_windowSize, vector<unordered_map<int, int>> &h_maps) : f(params.k)
     {
-        dataset = read_items(params.input_file);
         d = dataset[0].xij.size();
         std::random_device rd;                                         // only used once to initialise (seed) engine
         std::mt19937 rng(rd());                                        // random-number engine used (Mersenne-Twister in this case)
@@ -86,13 +85,15 @@ public:
         this->R = params.R;
         this->vertices = pow(2, k);
 
-        hash_table = vector<vector<Item>>(vertices);
+        hash_table = new std::vector<Item*>[vertices];
+
+        // hash_table = vector<vector<Item>>(vertices);
         // cout << "INITIALIZED HASH TABLE OF SIZE: " << hash_table.size() << endl;
-        for (int i = 0; i < vertices; ++i)
-        {
-            vector<Item> dummy_vec;
-            hash_table[i] = dummy_vec;
-        }
+        // for (int i = 0; i < vertices; ++i)
+        // {
+        //     vector<Item> dummy_vec;
+        //     hash_table[i] = dummy_vec;
+        // }
 
         for (int i = 0; i < dataset.size(); ++i)
         {
@@ -105,13 +106,13 @@ public:
                 f_values.push_back(f.produce_f(j, h_functions[j]));
             }
             unsigned int bucket = concat_f_values(f_values);
-            hash_table[bucket].push_back(dataset[i]);
+            hash_table[bucket].push_back(&dataset[i]);
         }
     }
 
     ~Hypercube() {}
 
-    unsigned int find_bucket(Item q)
+    unsigned int find_bucket(const Item &q)
     {
         H h(w, d, k);
         vector<int> h_functions = h.produce_k_h(q);
@@ -123,7 +124,7 @@ public:
         return concat_f_values(f_values);
     }
 
-    unsigned int concat_f_values(vector<int> f_values)
+    unsigned int concat_f_values(const vector<int> &f_values)const
     {
         unsigned int num = 0;
         for (int i = 0; i < f_values.size(); ++i)
@@ -141,7 +142,7 @@ public:
         return num;
     }
 
-    void print_buckets(int num)
+    void print_buckets(int num)const
     {
         for (int i = 0; i < num; ++i)
         {
@@ -149,7 +150,7 @@ public:
         }
     }
 
-    vector<int> get_probes_in_distance(int dist, unsigned int bucket)
+    vector<int> get_probes_in_distance(int dist, unsigned int bucket)const
     {
         vector<int> result;
 
@@ -163,7 +164,7 @@ public:
         return result;
     }
 
-    vector<int> get_probes_in_threshold(unsigned int bucket)
+    vector<int> get_probes_in_threshold(unsigned int bucket)const
     {
         vector<int> result;
 
@@ -193,15 +194,19 @@ public:
         return result;
     }
 
-    std::vector<std::pair<double, Item *>> kNN(Item query)
+    std::vector<std::pair<double, Item *>> kNN(Item *query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
         std::vector<std::pair<double, Item *>> knns;
         // Then initialize each pair with distance -> (max integer) and a null item
-        for (int i = 0; i < this->N; i++)
-            knns.push_back(std::make_pair(std::numeric_limits<double>::max(), new Item()));
 
-        unsigned int q_bucket = find_bucket(query);
+        for (int i = 0; i < N; i++)
+        {
+            Item item = Item("null");
+            knns.push_back(std::make_pair(std::numeric_limits<double>::max(), &item));
+        }
+
+        unsigned int q_bucket = find_bucket(*query);
         // cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
         vector<int> search_probes = get_probes_in_threshold(q_bucket);
 
@@ -221,15 +226,13 @@ public:
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
                 // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
-                double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
+                double dist = EuclideanDistance(query, hash_table[curr_bucket][j], d);
                 // cout << "distance " << dist << " | ";
 
                 if (dist < knns[N - 1].first)
                 {
                     knns[N - 1].first = dist;
-                    if (knns[N - 1].second->null && knns[N - 1].second->id == "-1") // if it is a null item created just to initialize the N pairs of the vector.
-                        delete knns[N - 1].second;
-                    knns[N - 1].second = &hash_table[curr_bucket][j];
+                    knns[N - 1].second = hash_table[curr_bucket][j];
                     std::sort(knns.begin(), knns.end(), comparePairs);
                 }
 
@@ -245,19 +248,20 @@ public:
         return knns;
     }
 
-    std::vector<std::pair<double, Item *>> RangeSearch(Item query)
+    std::vector<std::pair<double, Item *>> RangeSearch(Item * query)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
         std::vector<std::pair<double, Item *>> rns;
-        unsigned int q_bucket = find_bucket(query);
+        unsigned int q_bucket = find_bucket(*query);
         // cout << "Query " << query.id << " is in bucket " << q_bucket << endl;
         vector<int> search_probes = get_probes_in_threshold(q_bucket);
 
         // cout << "-----------------------------------------------------" << endl;
         int items_searched = 0;
+        int curr_bucket;
         for (int i = 0; i < search_probes.size(); ++i)
         {
-            int curr_bucket = search_probes[i];
+            curr_bucket = search_probes[i];
             // cout << "Searching bucket " << curr_bucket << " with " << hash_table[curr_bucket].size() << " items inside." << endl;
             // cout << "BUCKET " << curr_bucket << ": ";
             // for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
@@ -268,16 +272,19 @@ public:
 
             for (int j = 0; j < hash_table[curr_bucket].size(); ++j)
             {
-                // Εδώ κάνεις κάποια plays με ένα alreadyExists που δεν έχω ιδεά τι είναι
-                // Το αφήνω να το βάλεις εσύ καλύτερα
+                /* In the "reverse assignment with range search" clustering algorithm we mark items when they are
+                assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
+                has no effect */
+                if(hash_table[curr_bucket][j]->marked)
+                    continue;
 
                 // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
-                double dist = EuclideanDistance(&query, &hash_table[curr_bucket][j], d);
+                double dist = EuclideanDistance(query, hash_table[curr_bucket][j], d);
                 // cout << "distance " << dist << " | ";
 
                 if (dist < this->R)
                 {
-                    std::pair<double, Item *> tmp_pair = std::make_pair(dist, &hash_table[curr_bucket][j]);
+                    std::pair<double, Item *> tmp_pair = std::make_pair(dist, hash_table[curr_bucket][j]);
                     rns.push_back(tmp_pair);
                 }
 

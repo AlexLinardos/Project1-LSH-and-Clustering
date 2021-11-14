@@ -25,30 +25,14 @@ int main(int argc, char *argv[])
         }
     }
     print_Cube_params(params);
-    cout << "----------------------------------------" << endl;
+    
     vector<Item> dataset;
-    dataset = read_items(params.input_file);
-
+    read_items(dataset, params.input_file);
     vector<Item> queries;
-    queries = read_items(params.query_file);
+    read_items(queries, params.query_file);
 
     F f = F(params.k);
-    Hypercube cube = Hypercube(params, 3, dataset, f.h_maps);
-
-    cout << "----------------------------------------" << endl;
-    // cout << "[Now running kNN]" << endl;
-    // std::vector<std::pair<int, Item *>> knns = cube.kNN(queries[0]);
-    // for (int a = 0; a < params.N; a++)
-    // {
-    //     cout << knns[a].first << ", " << knns[a].second->id << endl;
-    // }
-    // cout << "----------------------------------------" << endl;
-    // cout << "[Now running Range Search]" << endl;
-    // std::vector<std::pair<int, Item *>> rns = cube.RangeSearch(queries[0]);
-    // for (int a = 0; a < params.N; a++)
-    // {
-    //     cout << rns[a].first << ", " << rns[a].second->id << endl;
-    // }
+    Hypercube cube = Hypercube(params, dataset, 3, f.h_maps);
 
     std::vector<std::pair<double, Item *>> knns;
     std::vector<std::pair<double, Item *>> true_knns;
@@ -63,7 +47,7 @@ int main(int argc, char *argv[])
     double meso_error = 0;
 
     ofstream output_file;
-    output_file.open("LSH_output.txt");
+    output_file.open("CUBE_output.txt");
     double lsh_elapsed = 0;
     double brute_elapsed = 0;
     clock_t begin;
@@ -76,7 +60,7 @@ int main(int argc, char *argv[])
         // cout << "[k-ANN]" << endl;
         lsh_begin = std::chrono::steady_clock::now();
         begin = clock();
-        knns = cube.kNN(queries[i]);
+        knns = cube.kNN(&queries[i]);
         end = clock();
         lsh_end = std::chrono::steady_clock::now();
         lsh_elapsed += double(end - begin);
@@ -92,20 +76,20 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < params.N; j++)
         {
-            if (knns[j].second->id == "-1")
+            if (knns[j].second->null)
             {
                 output_file << "Nearest neighbor-" << j + 1 << ": "
                             << "NOT FOUND" << endl;
                 continue;
             }
             output_file << "Nearest neighbor-" << j + 1 << ": " << knns[j].second->id << endl;
-            output_file << "distanceLSH: " << knns[j].first << endl;
+            output_file << "distanceCUBE: " << knns[j].first << endl;
             output_file << "distanceTrue: " << true_knns[j].first << endl;
             error += (knns[j].first / true_knns[j].first);
             // cout << "error: "  << error << endl;
             neighboors_returned++;
         }
-        output_file << "tLSH: " << (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) / 1000000.0 << std::endl;
+        output_file << "tCUBE: " << (std::chrono::duration_cast<std::chrono::microseconds>(lsh_end - lsh_begin).count()) / 1000000.0 << std::endl;
         output_file << "tTrue: " << (std::chrono::duration_cast<std::chrono::microseconds>(true_end - true_begin).count()) / 1000000.0 << std::endl;
 
         // output_file << "R-near neighbors:" << endl;
@@ -114,8 +98,11 @@ int main(int argc, char *argv[])
         // {
         //     output_file << r[a].second->id << ", " << r[a].first << endl;
         // }
-        meso_error += error / (double)neighboors_returned;
-        error = 0;
+        if(error!=0)
+        {
+            meso_error += error / (double)neighboors_returned;
+            error = 0;
+        }
         // cout << meso_error << endl;
     }
 

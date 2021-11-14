@@ -19,18 +19,25 @@ public:
     string id;
     vector<double> xij;
 
-    bool null = false; // Flag if is NULL
-    Item()
+    bool null = false; // Flag if is NULL item created to initialize apair vector for knn and brute foce algorithms
+    bool marked = false;
+
+    Item(string id, const vector<double> &xij) : id(id), xij(xij) { null = false; }
+
+    Item(const string &flag)
     {
-        id = "-1";
-        null = true;
+        if (flag == "null")
+        {
+            id = "-1";
+            null = true;
+        }
     }
 
-    Item(string id, vector<double> xij) : id(id), xij(xij) { null = false; }
+    Item() {}
 };
 
 // used to tokenize a text line
-vector<string> tokenize(string str)
+vector<string> tokenize(const string &str)
 {
     vector<string> tokens;
     string tmp;
@@ -43,9 +50,8 @@ vector<string> tokenize(string str)
 }
 
 // used to read our dataset/query files
-vector<Item> read_items(string filename)
+void read_items(vector<Item> &data, const string &filename)
 {
-    vector<Item> data;
     string line;
     ifstream f;
     f.open(filename);
@@ -101,11 +107,11 @@ vector<Item> read_items(string filename)
     // cout << "Catches: " << catch_count << endl;
 
     f.close();
-    return data;
+    return;
 }
 
 // computes the Euclidean Distance between 2 points of dimension d
-double EuclideanDistance(Item *p, Item *q, const uint16_t &d)
+double EuclideanDistance(const Item *p, const Item *q, const uint16_t &d)
 {
     double sum = 0;
     for (int i = 0.0; i < d; i++)
@@ -117,13 +123,13 @@ double EuclideanDistance(Item *p, Item *q, const uint16_t &d)
 }
 
 // used at sorting nearest neighbor points by distance
-bool comparePairs(std::pair<double, Item *> x, std::pair<double, Item *> y)
+bool comparePairs(const std::pair<double, Item *> &x, const std::pair<double, Item *> &y)
 {
     return (x.first < y.first);
 }
 
 // used to read data from config file
-int extract_int_from_string(string str)
+int extract_int_from_string(const string &str)
 {
     stringstream ss;
     ss << str;
@@ -169,7 +175,7 @@ int HammingDistance(unsigned int i1, unsigned int i2)
 
 // used to calculate mean for the update(maximization) step of Lloyd's algorithm
 // v1 works as an accumulator
-vector<double> vector_mean(vector<double> &v1, vector<double> v2, int dimensions, int T)
+vector<double> vector_mean(vector<double> &v1, const vector<double> &v2, int dimensions, int T)
 {
     vector<double> result(dimensions, 0);
     for (int i = 0; i < dimensions; ++i)
