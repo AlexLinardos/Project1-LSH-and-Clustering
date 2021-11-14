@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
     vector<Item> dataset;
     read_items(dataset, params.input_file);
-    Alekos::Clustering *cluster = new Alekos::Clustering(params, dataset);
+    Clustering *cluster = new Clustering(params, dataset);
     int dimension = dataset[0].xij.size();
 
     cluster->initialize_pp();
