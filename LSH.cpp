@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         // cout << "[k-ANN]" << endl;
         lsh_begin = std::chrono::steady_clock::now();
         begin = clock();
-        knns = lsh.kNN(&queries[i], params.N, dataset.size() / 4);
+        knns = lsh.kNN(&queries[i], dataset.size() / 5);
         end = clock();
         lsh_end = std::chrono::steady_clock::now();
         lsh_elapsed += double(end - begin);

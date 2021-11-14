@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
         // cout << "[k-ANN]" << endl;
         lsh_begin = std::chrono::steady_clock::now();
         begin = clock();
-        knns = cube.kNN(queries[i]);
+        knns = cube.kNN(&queries[i]);
         end = clock();
         lsh_end = std::chrono::steady_clock::now();
         lsh_elapsed += double(end - begin);
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
         for (int j = 0; j < params.N; j++)
         {
-            if (knns[j].second->id == "-1")
+            if (knns[j].second->null)
             {
                 output_file << "Nearest neighbor-" << j + 1 << ": "
                             << "NOT FOUND" << endl;
@@ -98,8 +98,11 @@ int main(int argc, char *argv[])
         // {
         //     output_file << r[a].second->id << ", " << r[a].first << endl;
         // }
-        meso_error += error / (double)neighboors_returned;
-        error = 0;
+        if(error!=0)
+        {
+            meso_error += error / (double)neighboors_returned;
+            error = 0;
+        }
         // cout << meso_error << endl;
     }
 
