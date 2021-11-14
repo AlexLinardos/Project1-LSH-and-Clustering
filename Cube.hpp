@@ -110,7 +110,9 @@ public:
         }
     }
 
-    ~Hypercube() {}
+    ~Hypercube() {
+        delete[] hash_table;
+    }
 
     unsigned int find_bucket(const Item &q)
     {
