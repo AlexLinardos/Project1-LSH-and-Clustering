@@ -24,7 +24,7 @@ public:
     vector<Item> centers; // cluster centers initialized in initialize_pp()
     vector<vector<Item>> clusters;
     vector<int> assignments_vec; // shows the cluster to which each point is assigned to
-                                // (example: if assignments[4]=2 then item at index 4 of dataset is assigned to cluster at index 2)
+                                 // (example: if assignments[4]=2 then item at index 4 of dataset is assigned to cluster at index 2)
 
     // unordered_map <string, pair<Item*,int>> assignments; // map item id string to a pair that indicates a item-cluster_index assignment
 
@@ -140,7 +140,7 @@ public:
 
         for (int i = 0; i < this->dataset.size(); ++i)
         {
-            if(dataset[i].marked) // if item is marked, it is assigned in a cluster during reverse_assignement
+            if (dataset[i].marked) // if item is marked, it is assigned in a cluster during reverse_assignement
                 continue;
             double min_d = EuclideanDistance(&centers[0], &this->dataset[i], dimension);
             nearest_cntr = 0;
@@ -157,8 +157,8 @@ public:
             this->assignments_vec[i] = nearest_cntr;
             // assignments[dataset[i].id] = make_pair(&dataset[i], nearest_cntr);
             this->clusters[nearest_cntr].push_back(this->dataset[i]); // push it into a cluster based on assigned center
-            //assignments_map[&dataset[i]]=make_pair(nearest_cntr, second_nearest);
-            dataset[i].cluster=nearest_cntr;
+            // assignments_map[&dataset[i]]=make_pair(nearest_cntr, second_nearest);
+            dataset[i].cluster = nearest_cntr;
             // dataset[i].second=second_nearest;
             // dataset[i].marked=true;
         }
@@ -202,7 +202,7 @@ public:
                 this->clusters[i].clear(); // clear clusters so we can reassign the items
             }
             last_assignments = this->assignments_vec;
-            
+
             // for (int i = 0; i < dataset.size(); i++) // unmark all items
             // {
             //     dataset[i].claimed = false;
@@ -281,7 +281,7 @@ public:
             old_centers = centers;
             update_centers();
             cout << iter++ << endl;
-        }while(/*!ItemVectorsEqual(old_centers, centers) && */iter<20 && balls_changed >= params.clusters * 0.2 );
+        } while (/*!ItemVectorsEqual(old_centers, centers) && */ iter < 20 && balls_changed >= params.clusters * 0.2);
 
         Lloyds_assign_centers();
 
@@ -294,7 +294,7 @@ public:
         int dimension = this->dataset[0].xij.size();
         int balls_changed = 0;
 
-        unordered_map <string, pair<Item*,int>> step_assignments; // map item id string to a pair that indicates a temporary item-cluster assignment
+        unordered_map<string, pair<Item *, int>> step_assignments; // map item id string to a pair that indicates a temporary item-cluster assignment
 
         // vector<int> new_assignments = this->assignments;
 
@@ -318,12 +318,12 @@ public:
             }
             for (int i = 0; i < r_search.size(); ++i)
             {
-                Item* item = r_search[i].second;
+                Item *item = r_search[i].second;
                 if (!item->claimed) // if item has not been claimed by a ball
                 {
                     item->claimed = true;
 
-                    step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
+                    step_assignments[item->id] = make_pair(item, c); // temp assignment of item to cluster of index c
                 }
                 else // else must resolve conflict
                 {
@@ -334,28 +334,24 @@ public:
                     double dist_to_curr = EuclideanDistance(&centers[c], item, dimension);
                     /* if the distance to the current cluster is smaller that the distance to the previously closest */
                     if (dist_to_curr < dist_to_assigned)
-                        step_assignments[item->id]=make_pair(item, c); // temp assignment of item to cluster of index c
+                        step_assignments[item->id] = make_pair(item, c); // temp assignment of item to cluster of index c
                 }
             }
         }
         /* traverse the unordered map, */
         for (auto x : step_assignments)
         {
-            // /* get the value of the specific key in the unordered map */
-            // std::pair<uint16_t, Item<T>*> pair = x.second;
             /* get the closest cluster found */
             int closest_cluster = x.second.second;
             /* get the item */
-            Item* item = x.second.first;
+            Item *item = x.second.first;
 
-            /* unstage the item */
             item->claimed = false;
             /* mark the item because it will be added in a cluster */
             item->marked = true;
             /* assign point to its closest cluster */
-            item->cluster=closest_cluster;
+            item->cluster = closest_cluster;
             clusters[closest_cluster].push_back(*item);
-            // assignments[item->id]=make_pair(item, closest_cluster);
 
             // this->assignments[i] = nearest_cntr;
             // dataset[i].second=second_nearest;
@@ -364,10 +360,10 @@ public:
     }
 
     // Silhouette of object at index i
-    double silhouette(Item * item)
+    double silhouette(Item *item)
     {
-        //vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
-        // int cluster_index = assignments_map[item].first;
+        // vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
+        //  int cluster_index = assignments_map[item].first;
         vector<Item> *cluster = &clusters[item->cluster];
 
         //  calculate a(i) = average distance of i to objects in same cluster
@@ -403,8 +399,8 @@ public:
             }
         }
 
-        //int best = assignments_map[item].second;
-        // int best = item->second;
+        // int best = assignments_map[item].second;
+        //  int best = item->second;
 
         // now perform the calculations
         distances.clear();
@@ -444,7 +440,7 @@ public:
         //         average += s / (double)n;
         //     }
         // }
-        for(int i=0; i< n; i++)
+        for (int i = 0; i < n; i++)
         {
             s = silhouette(&clusters[c_index][i]);
             average += s / (double)n;
