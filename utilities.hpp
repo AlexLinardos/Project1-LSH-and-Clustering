@@ -19,14 +19,21 @@ public:
     string id;
     vector<double> xij;
 
-    bool null = false; // Flag if is NULL
-    Item()
-    {
-        id = "-1";
-        null = true;
-    }
+    bool null = false; // Flag if is NULL item created to initialize apair vector for knn and brute foce algorithms
+    bool marked = false;
 
     Item(string id, vector<double> xij) : id(id), xij(xij) { null = false; }
+
+    Item(string flag)
+    {
+        if(flag == "null")
+        {
+            id = "-1";
+            null = true;
+        }
+    }
+
+    Item(){}
 };
 
 // used to tokenize a text line

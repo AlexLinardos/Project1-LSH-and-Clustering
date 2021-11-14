@@ -142,10 +142,10 @@ public:
     {
         // initialize a vector of N best candidates and distances represented as c++ pairs
         std::vector<std::pair<double, Item *>> knns;
-        // Then initialize each pair with distance -> (max integer) and a null item
+        // Then initialize each pair with max distance and a null item
         for (int i = 0; i < N; i++)
         {
-            Item item = Item();
+            Item item = Item("null");
             knns.push_back(std::make_pair(std::numeric_limits<double>::max(), &item));
         }
 
@@ -186,8 +186,6 @@ public:
                 if (distance < knns[N - 1].first)
                 {
                     knns[N - 1].first = distance;
-                    // if (knns[N-1].second->null) // if it is a null item created just to initialize the N pairs of the vector.
-                    //     delete knns[N-1].second;
                     knns[N - 1].second = hashTables[i][bucket][j];
                     std::sort(knns.begin(), knns.end(), comparePairs);
                 }
@@ -196,7 +194,8 @@ public:
                 If a certain threshold of items traversed is reached, return the vector.
                 If thresh == 0 it indicates that the user does not want to add a threshold.
                 */
-                if (thresh != 0 && ++itemsSearched >= thresh)
+                itemsSearched++;
+                if (thresh != 0 && itemsSearched >= thresh)
                     return knns;
             }
         }
@@ -209,13 +208,7 @@ public:
     */
     std::vector<std::pair<double, Item *>> RangeSearch(Item *query, double radius, int thresh = 0)
     {
-        // Initialize the vector
         std::vector<std::pair<double, Item *>> d;
-        /*
-        In this method, we do not need to sort the vector, also its size is not constant.
-        Hence, we do not need to initalize its values.
-        Simply, whenever a neighbor has distance less than radius, we add it to the vector
-        */
 
         // For each hash table...
         int itemsSearched = 0;
@@ -234,13 +227,10 @@ public:
                     if (d[a].second->id == hashTables[i][bucket][j]->id)
                         alreadyExists = true;
 
-                /*
-                The "marked" condition will only be met whenever this function is used by
-                reverse assignment in clustering. When LSH is used for ANN, it will have no effect.
-                In reverse assignment, to avoid fetching the same items, we "mark" them when inserted
-                to a cluster so as to indicate that they are already assigned.
-                */
-                if (alreadyExists /*|| hashTables[i][bucket][j]->marked*/)
+                /* In the "reverse assignment with range search using LSH" clustering algorithm we mark items when they are
+                assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
+                has no effect */
+                if (alreadyExists || hashTables[i][bucket][j]->marked)
                     continue;
 
                 double distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
@@ -253,7 +243,8 @@ public:
                 }
 
                 // If a certain threshold of items traversed is reached, return the vector.
-                if (thresh != 0 && ++itemsSearched >= thresh)
+                itemsSearched++;
+                if (thresh != 0 && itemsSearched >= thresh)
                 {
                     std::sort(d.begin(), d.end(), comparePairs);
                     return d;
