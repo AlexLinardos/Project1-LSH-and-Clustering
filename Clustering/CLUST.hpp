@@ -1,15 +1,13 @@
-#ifndef CLUSTERING2_HPP
-#define CLUSTERING2_HPP
+#ifndef CLUST_HPP
+#define CLUST_HPP
 #include <iostream>
 #include <string>
 #include <vector>
 #include <random>
 #include <chrono>
-#include "Clustering_ui.hpp"
-#include "LSH.hpp"
-#include "LSH_ui.hpp"
-#include "Cube.hpp"
-#include "Cube_ui.hpp"
+#include "CLUST_ui.hpp"
+#include "../LSHashing/LSH.hpp"
+#include "../Hypercube/HC.hpp"
 #include <unordered_map>
 
 using namespace std;
@@ -19,6 +17,7 @@ class Clustering
 public:
     Cluster_params params;
     vector<Item> dataset;
+    int dimension;
     default_random_engine eng;
     uniform_int_distribution<int> uid;
     vector<Item> centers; // cluster centers initialized in initialize_pp()
@@ -28,7 +27,10 @@ public:
 
     // unordered_map <string, pair<Item*,int>> assignments; // map item id string to a pair that indicates a item-cluster_index assignment
 
-    Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1), assignments_vec(dataset.size()) {}
+    Clustering(Cluster_params params, vector<Item> dataset) : params(params), dataset(dataset), eng(chrono::system_clock::now().time_since_epoch().count()), uid(0, dataset.size() - 1), assignments_vec(dataset.size()) 
+    {
+        dimension = dataset[0].xij.size();
+    }
 
     // initialization ++
     void initialize_pp()
@@ -56,12 +58,11 @@ public:
             {
                 sum_prob += p[k];
             }
-            // cout << "THIS MUST BE 1.0 : " << sum_prob << endl;
 
             std::discrete_distribution<> distribution{p.begin(), p.end()};
             int pick = distribution(eng);
             centroids.push_back(dataset[pick]);
-            // cout << "New centroid is point with id: " << dataset[pick].id << " and it had a probabillity of " << p[pick] << endl;
+            
             double max_p = 0.0;
             for (int z = 0; z < p.size(); ++z)
             {
@@ -70,10 +71,7 @@ public:
                     max_p = p[z];
                 }
             }
-            // cout << "Max probabillity was " << max_p << endl
-            //      << endl;
         }
-        // cout << "CENTROIDS CREATED = " << centroids.size() << endl;
         this->centers = centroids;
         this->clusters.resize(centroids.size());
     }
@@ -81,7 +79,6 @@ public:
     // calculate distance of each point from its nearest centroid
     void calculate_min_dists(vector<Item> &centroids, vector<double> &d, double &dist_sum)
     {
-        int dimension = this->dataset[0].xij.size();
         double max_d = 0.0; // for normalization
 
         for (int i = 0; i < this->dataset.size(); ++i)
@@ -134,7 +131,6 @@ public:
     void Lloyds_assign_centers()
     {
         // cout << "ASSIGNING" << endl;
-        int dimension = this->dataset[0].xij.size();
         int nearest_cntr;
         // int second_nearest;
 
@@ -150,17 +146,12 @@ public:
                 if (next_d < min_d)
                 {
                     min_d = next_d;
-                    // second_nearest=nearest_cntr;
                     nearest_cntr = c;
                 }
             }
             this->assignments_vec[i] = nearest_cntr;
-            // assignments[dataset[i].id] = make_pair(&dataset[i], nearest_cntr);
             this->clusters[nearest_cntr].push_back(this->dataset[i]); // push it into a cluster based on assigned center
-            // assignments_map[&dataset[i]]=make_pair(nearest_cntr, second_nearest);
             dataset[i].cluster = nearest_cntr;
-            // dataset[i].second=second_nearest;
-            // dataset[i].marked=true;
         }
     }
 
@@ -194,7 +185,6 @@ public:
         update_centers();
 
         vector<int> last_assignments(this->assignments_vec.size());
-        // unordered_map <string, pair<Item*,int>> last_assignments = assignments;
         do
         {
             for (int i = 0; i < this->clusters.size(); ++i)
@@ -202,18 +192,12 @@ public:
                 this->clusters[i].clear(); // clear clusters so we can reassign the items
             }
             last_assignments = this->assignments_vec;
-
-            // for (int i = 0; i < dataset.size(); i++) // unmark all items
-            // {
-            //     dataset[i].claimed = false;
-            //     dataset[i].marked = false;
-            // }
             Lloyds_assign_centers();
             update_centers();
             iter++;
             // iterate until assignments don't change or until we reach max_iter threshold
         } while ((!equal(assignments_vec.begin(), assignments_vec.end(), last_assignments.begin())) && iter < max_iter);
-        // } while (!CompareMaps(assignments, last) && iter < max_iter);
+
         cout << "............................................" << endl;
         cout << "Lloyd's algorithm ended after " << iter << " iterations" << endl;
     }
@@ -222,7 +206,6 @@ public:
     double calculate_start_radius()
     {
         double min_dist = std::numeric_limits<double>::max();
-        int dimension = this->centers[0].xij.size();
         for (int i = 0; i < this->centers.size(); ++i)
         {
             for (int j = 0; j < this->centers.size(); ++j)
@@ -240,7 +223,7 @@ public:
         return min_dist / 2;
     }
 
-    void Reverse_Assignment_Cluestering()
+    void Reverse_Assignment_Cluestering(int max_iterations)
     {
         // create objects needed for both methods and use only one of them according to method parameter
 
@@ -260,115 +243,108 @@ public:
         F f = F(cube_params.k);
         Hypercube cube = Hypercube(cube_params, this->dataset, 3, f.h_maps);
 
-        double radius = calculate_start_radius();
         int iter = 0; // iterations
         vector<Item> old_centers = this->centers;
 
-        int balls_changed;
         do
         {
             for (int i = 0; i < this->clusters.size(); ++i)
-            {
                 this->clusters[i].clear(); // clear clusters so we can reassign the items
-            }
             for (int i = 0; i < dataset.size(); i++)
-            {
-                // dataset[i].claimed = false;
                 dataset[i].marked = false;
-            }
-            balls_changed = Reverse_Assignment(radius, lsh, cube);
-            radius *= 2;
+            Reverse_Assignment(lsh, cube);
             old_centers = centers;
             update_centers();
-            cout << iter++ << endl;
-        } while (/*!ItemVectorsEqual(old_centers, centers) && */ iter < 20 && balls_changed >= params.clusters * 0.2);
-
-        Lloyds_assign_centers();
+            iter++;
+        } while (iter < max_iterations);
 
         cout << "............................................" << endl;
         cout << "Reverse Assignment Cluestering ended after " << iter << " iterations" << endl;
     }
 
-    int Reverse_Assignment(double radius, LSH &lsh, Hypercube &cube)
+    void Reverse_Assignment(LSH &lsh, Hypercube &cube)
     {
-        int dimension = this->dataset[0].xij.size();
         int balls_changed = 0;
+        double radius = calculate_start_radius();
+        int iter = 0;
 
         unordered_map<string, pair<Item *, int>> step_assignments; // map item id string to a pair that indicates a temporary item-cluster assignment
 
-        // vector<int> new_assignments = this->assignments;
-
-        for (int c = 0; c < this->params.clusters; ++c)
+        do
         {
-            // perform Range Search
-            std::vector<std::pair<double, Item *>> r_search;
-            if (params.method == "LSH")
+            balls_changed = 0;
+            for (int c = 0; c < this->params.clusters; ++c)
             {
-                r_search = lsh.RangeSearch(&this->centers[c], radius, 0);
-            }
-            else
-            {
-                cube.R = radius;
-                r_search = cube.RangeSearch(&this->centers[c]);
-            }
-            // if ball found new items
-            if (r_search.size() > 0)
-            {
-                balls_changed++;
-            }
-            for (int i = 0; i < r_search.size(); ++i)
-            {
-                Item *item = r_search[i].second;
-                if (!item->claimed) // if item has not been claimed by a ball
+                // perform Range Search
+                std::vector<std::pair<double, Item *>> r_search;
+                if (params.method == "LSH")
                 {
-                    item->claimed = true;
-
-                    step_assignments[item->id] = make_pair(item, c); // temp assignment of item to cluster of index c
+                    r_search = lsh.RangeSearch(&this->centers[c], radius, 0);
                 }
-                else // else must resolve conflict
+                else
                 {
-                    // if we are her the item has already been assigned to another cluster
-                    int assigned_cluster = step_assignments[item->id].second;
+                    r_search = cube.RangeSearch(&this->centers[c], radius);
+                }
+                // if ball found new items
+                if (r_search.size() > 0)
+                {
+                    balls_changed++;
+                }
+                for (int i = 0; i < r_search.size(); ++i)
+                {
+                    Item *item = r_search[i].second;
+                    if (item->claimed==false) // if item has not been claimed by a ball
+                    {
+                        item->claimed = true;
 
-                    double dist_to_assigned = EuclideanDistance(&centers[assigned_cluster], item, dimension);
-                    double dist_to_curr = EuclideanDistance(&centers[c], item, dimension);
-                    /* if the distance to the current cluster is smaller that the distance to the previously closest */
-                    if (dist_to_curr < dist_to_assigned)
                         step_assignments[item->id] = make_pair(item, c); // temp assignment of item to cluster of index c
+                    }
+                    else // else must resolve conflict
+                    {
+                        // if we are her the item has already been assigned to another cluster
+                        int assigned_cluster = step_assignments[item->id].second;
+
+                        double dist_to_assigned = EuclideanDistance(&centers[assigned_cluster], item, dimension);
+                        double dist_to_curr = EuclideanDistance(&centers[c], item, dimension);
+                        /* if the distance to the current cluster is smaller that the distance to the previously closest */
+                        if (dist_to_curr < dist_to_assigned)
+                            step_assignments[item->id] = make_pair(item, c); // temp assignment of item to cluster of index c
+                    }
                 }
+                r_search.clear();
             }
-        }
-        /* traverse the unordered map, */
-        for (auto x : step_assignments)
-        {
-            /* get the closest cluster found */
-            int closest_cluster = x.second.second;
-            /* get the item */
-            Item *item = x.second.first;
+            radius *= 2;
+            iter++;
 
-            item->claimed = false;
-            /* mark the item because it will be added in a cluster */
-            item->marked = true;
-            /* assign point to its closest cluster */
-            item->cluster = closest_cluster;
-            clusters[closest_cluster].push_back(*item);
+            /* traverse the unordered map, */
+            for (auto x : step_assignments)
+            {
+                /* get the closest cluster found */
+                int closest_cluster = x.second.second;
+                /* get the item */
+                Item *item = x.second.first;
 
-            // this->assignments[i] = nearest_cntr;
-            // dataset[i].second=second_nearest;
-        }
-        return balls_changed;
+                item->claimed = false;
+                /* mark the item because it will be added in a cluster */
+                item->marked = true;
+                /* assign point to its closest cluster */
+                item->cluster = closest_cluster;
+                clusters[closest_cluster].push_back(*item);
+            }
+            step_assignments.clear();
+        
+        }while(balls_changed >= params.clusters * 0.2 || iter < 5);
+
+        Lloyds_assign_centers();
     }
 
     // Silhouette of object at index i
     double silhouette(Item *item)
     {
-        // vector<Item> *cluster = &(this->clusters[this->assignments[i]]); // find out at which cluster this item is assigned to
-        //  int cluster_index = assignments_map[item].first;
-        vector<Item> *cluster = &clusters[item->cluster];
+        vector<Item> *cluster = &clusters[item->cluster]; // find out at which cluster this item is assigned to
 
         //  calculate a(i) = average distance of i to objects in same cluster
         vector<double> distances;
-        int dimension = (*cluster)[0].xij.size();
 
         for (int j = 0; j < (*cluster).size(); ++j)
         {
@@ -398,9 +374,6 @@ public:
                 }
             }
         }
-
-        // int best = assignments_map[item].second;
-        //  int best = item->second;
 
         // now perform the calculations
         distances.clear();
@@ -432,14 +405,6 @@ public:
         double average = 0.0;
         double s = 0.0;
         int n = this->clusters[c_index].size();
-        // for (int i = 0; i < this->dataset.size(); ++i)
-        // {
-        //     if (this->assignments[i] == c_index)
-        //     {
-        //         s = silhouette(i);
-        //         average += s / (double)n;
-        //     }
-        // }
         for (int i = 0; i < n; i++)
         {
             s = silhouette(&clusters[c_index][i]);

@@ -1,8 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "utilities.hpp"
-#include "Clustering_ui.hpp"
-#include "Clustering.hpp"
+#include "../misc/utilities.hpp"
+#include "CLUST.hpp"
 #include <map>
 #include <random>
 #include <chrono>
@@ -29,31 +28,42 @@ int main(int argc, char *argv[])
 
     vector<Item> dataset;
     read_items(dataset, params.input_file);
-    Clustering *cluster = new Clustering(params, dataset);
+    Clustering *clustering = new Clustering(params, dataset);
     int dimension = dataset[0].xij.size();
 
-    cluster->initialize_pp();
+    clustering->initialize_pp();
 
     clock_t begin;
     clock_t end;
 
+    cout << "[PERFORMING CLUSTERING]" << endl;
+
+    // here we can adjust the max iterations of each clustering algorithm
     if (params.method == "Classic")
     {
         begin = clock();
-        cluster->Lloyds(1000);
+        clustering->Lloyds(1000);
         end = clock();
     }
-    else
+    else if (params.method == "LSH")
     {
         begin = clock();
-        cluster->Reverse_Assignment_Cluestering();
+        clustering->Reverse_Assignment_Cluestering(50);
+        end = clock();
+    }
+    else if (params.method == "Hypercube")
+    {
+        begin = clock();
+        clustering->Reverse_Assignment_Cluestering(500);
         end = clock();
     }
 
     double elapsed = double(end - begin) / CLOCKS_PER_SEC;
 
     ofstream output_file;
-    output_file.open("CLUSTERING_output.txt");
+    output_file.open(params.out_file);
+
+    cout << "[BUILDING OUTPUT]" << endl;
 
     if (params.complete)
     {
@@ -62,12 +72,12 @@ int main(int argc, char *argv[])
             output_file << "CLUSTER-" << i + 1 << " {centroid: [";
             for (int j = 0; j < dimension; j++)
             {
-                output_file << cluster->centers[i].xij[j] << ",";
+                output_file << clustering->centers[i].xij[j] << ",";
             }
             output_file << "]";
-            for (int j = 0; j < cluster->clusters[i].size(); j++)
+            for (int j = 0; j < clustering->clusters[i].size(); j++)
             {
-                output_file << ", " << cluster->clusters[i][j].id;
+                output_file << ", " << clustering->clusters[i][j].id;
             }
             output_file << "}" << endl;
         }
@@ -76,24 +86,26 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < params.clusters; i++)
         {
-            output_file << "CLUSTER-" << i + 1 << " {size: " << cluster->clusters[i].size() << ", centroid: [";
+            output_file << "CLUSTER-" << i + 1 << " {size: " << clustering->clusters[i].size() << ", centroid: [";
             for (int j = 0; j < dimension; j++)
             {
-                output_file << cluster->centers[i].xij[j] << ",";
+                output_file << clustering->centers[i].xij[j] << ",";
             }
             output_file << "]}" << endl;
         }
     }
-    if (cluster->centers.size() > 1)
+
+    cout << "[CALCULATING SILHOUETTE]" << endl;
+    if (clustering->centers.size() > 1)
     {
         output_file << "clustering_time: " << elapsed << endl;
         output_file << "Silhouette: [";
         for (int i = 0; i < params.clusters; i++)
         {
             // cout << i << endl;
-            output_file << cluster->eval_specific_cluster(i) << ", ";
+            output_file << clustering->eval_specific_cluster(i) << ", ";
         }
-        output_file << cluster->eval_clustering() << "]" << endl;
+        output_file << clustering->eval_clustering() << "]" << endl;
     }
     else
     {
@@ -102,6 +114,6 @@ int main(int argc, char *argv[])
 
     output_file.close();
 
-    delete cluster;
+    delete clustering;
     return 0;
 }

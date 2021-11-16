@@ -1,6 +1,6 @@
 #ifndef LSH_HPP
 #define LSH_HPP
-#include "hashing.hpp"
+#include "../misc/hashing.hpp"
 #include "LSH_ui.hpp"
 #include <algorithm>
 #include <cmath>
@@ -94,6 +94,9 @@ public:
         int item_index_2;
         double distance = 0;
 
+        /* For dataset.size()/4 samples we randomly choose two points of the dataset and calculate their Euclidean distance.
+            We sum these disances and calculate the average. Then we multiply that average distance by a factor of our choice and we 
+            get the windowsize. That factor can be adjusted at LSH.cpp at the initialization of the LSH instance */
         for (int i = 0; i < dataset.size() / 4; i++)
         {
             item_index_1 = uni(rng);
@@ -231,7 +234,7 @@ public:
                 /* In the "reverse assignment with range search using LSH" clustering algorithm we mark items when they are
                 assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
                 has no effect */
-                if (alreadyExists || hashTables[i][bucket][j]->marked)
+                if (alreadyExists || hashTables[i][bucket][j]->marked==true)
                     continue;
 
                 double distance = EuclideanDistance(query, hashTables[i][bucket][j], dimension);
@@ -247,7 +250,7 @@ public:
                 itemsSearched++;
                 if (thresh != 0 && itemsSearched >= thresh)
                 {
-                    std::sort(d.begin(), d.end(), comparePairs);
+                    // std::sort(d.begin(), d.end(), comparePairs);
                     return d;
                 }
             }

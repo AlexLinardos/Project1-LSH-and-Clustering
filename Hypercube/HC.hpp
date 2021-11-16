@@ -1,16 +1,15 @@
-#ifndef CUBE_HPP
-#define CUBE_HPP
+#ifndef HC_HPP
+#define HC_HPP
 #include <iostream>
 #include <string>
-#include <vector>
 #include <unordered_map>
 #include <random>
 #include <algorithm>
 #include <typeinfo>
 #include <chrono>
-#include "hashing.hpp"
-#include "Cube_ui.hpp"
-#include "utilities.hpp"
+#include "../misc/hashing.hpp"
+#include "HC_ui.hpp"
+#include "../misc/utilities.hpp"
 
 using namespace std;
 
@@ -255,7 +254,7 @@ public:
     }
 
     // performs the Range Search algorithm using Hypercube randomized projection
-    std::vector<std::pair<double, Item *>> RangeSearch(Item *query)
+    std::vector<std::pair<double, Item *>> RangeSearch(Item *query, double radius)
     {
         // At first initalize the result vector of <distanceFromQuery, item> pairs
         std::vector<std::pair<double, Item *>> rns;
@@ -282,14 +281,14 @@ public:
                 /* In the "reverse assignment with range search" clustering algorithm we mark items when they are
                 assigned to a cluster so the next range search doesn't check them. In ANN all items are unmarked so this
                 has no effect */
-                if (hash_table[curr_bucket][j]->marked)
+                if (hash_table[curr_bucket][j]->marked==true)
                     continue;
 
                 // cout << "Item " << hash_table[curr_bucket][j].id << " in ";
                 double dist = EuclideanDistance(query, hash_table[curr_bucket][j], d);
                 // cout << "distance " << dist << " | ";
 
-                if (dist < this->R)
+                if (dist < radius)
                 {
                     std::pair<double, Item *> tmp_pair = std::make_pair(dist, hash_table[curr_bucket][j]);
                     rns.push_back(tmp_pair);

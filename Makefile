@@ -2,28 +2,31 @@ CC=g++
 
 CFLAGS=-O3
 
-all: lsh cube cluster clean
+all: LSH HC CLUST clean1
 
-lsh: LSH.o
-	$(CC) LSH.o -o lsh $(CFLAGS)
+LSH: LSH.o
+	$(CC) LSH.o -o bin/LSH $(CFLAGS)
 
-LSH.o: LSH.cpp utilities.hpp LSH_ui.hpp hashing.hpp
-	$(CC) -c LSH.cpp $(CFLAGS)
+LSH.o: ./LSHashing/LSH.cpp misc/utilities.hpp LSHashing/LSH_ui.hpp misc/hashing.hpp LSHashing/LSH.hpp
+	$(CC) -c ./LSHashing/LSH.cpp $(CFLAGS)
 
-cube: Cube.o
-	$(CC) Cube.o -o cube $(CFLAGS)
+HC: HC.o
+	$(CC) HC.o -o bin/HC $(CFLAGS)
 
-Cube.o: Cube.cpp utilities.hpp Cube_ui.hpp hashing.hpp
-	$(CC) -c Cube.cpp $(CFLAGS)
+HC.o: Hypercube/HC.cpp misc/utilities.hpp Hypercube/HC_ui.hpp misc/hashing.hpp Hypercube/HC.hpp
+	$(CC) -c Hypercube/HC.cpp $(CFLAGS)
 
-cluster: Clustering.o
-	$(CC) Clustering.o -o cluster $(CFLAGS)
+CLUST: CLUST.o
+	$(CC) CLUST.o -o bin/CLUST $(CFLAGS)
 
-Clustering.o: Clustering.cpp utilities.hpp Clustering_ui.hpp Clustering.hpp
-	$(CC) -c Clustering.cpp $(CFLAGS)
+CLUST.o: Clustering/CLUST.cpp misc/utilities.hpp Clustering/CLUST_ui.hpp Clustering/CLUST.hpp
+	$(CC) -c Clustering/CLUST.cpp $(CFLAGS)
 
 clean:
-	rm *.o
+	rm bin/*
 	rm *.txt
-	ls | grep -v "\." | grep -v Makefile | grep -v LICENSE | grep -v datasets | grep -v draft_files | xargs rm
-    # rm *.exe
+
+clean1:
+	rm *.o
+
+

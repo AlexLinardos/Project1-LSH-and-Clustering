@@ -1,5 +1,5 @@
-#ifndef CUBE_UI_HPP
-#define CUBE_UI_HPP
+#ifndef HC_UI_HPP
+#define HC_UI_HPP
 #include <iostream>
 #include <string>
 #include <vector>

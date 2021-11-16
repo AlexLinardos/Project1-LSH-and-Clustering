@@ -1,10 +1,10 @@
-#ifndef CLUSTERING_UI_HPP
-#define CLUSTERING_UI_HPP
+#ifndef CLUST_UI_HPP
+#define CLUST_UI_HPP
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-#include "utilities.hpp"
+#include "../misc/utilities.hpp"
 
 using namespace std;
 

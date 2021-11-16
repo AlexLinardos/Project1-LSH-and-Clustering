@@ -197,7 +197,7 @@ std::vector<std::pair<double, Item *>> brute_force_search(vector<Item> &dataset,
     std::vector<std::pair<double, Item *>> knns;
     // Then initialize each pair with distance -> (max integer) and a null item
     for (int i = 0; i < N; i++)
-        knns.push_back(std::make_pair(std::numeric_limits<double>::max(), new Item()));
+        knns.push_back(std::make_pair(std::numeric_limits<double>::max(), new Item("null")));
 
     // For each item in dataset
     for (int j = 0; j < dataset.size(); j++)
