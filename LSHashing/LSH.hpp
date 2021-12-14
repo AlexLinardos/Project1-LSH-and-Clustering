@@ -14,11 +14,17 @@ class G
     long unsigned int m;
     default_random_engine eng;
     uniform_int_distribution<int> uid;
+    vector<int> r;
 
 public:
     G(int k, int tableSize, int window, int dimensions) : k(k), tableSize(tableSize), w(window), d(dimensions), eng(time(0) + clock()), uid(0, w - 1)
     {
         m = (long unsigned int)(((long long)1 << 32) - (long long)5);
+        // create a vector v whose points follow the uniform real distribution
+        for (int i = 0; i < k; i++)
+        {
+            this->r.push_back(uid(eng));
+        }
     };
 
     unsigned int produce_g(const Item &p)
@@ -31,14 +37,6 @@ public:
         // }
         // cout << endl;
 
-        vector<int> r;
-
-        // create a vector v whose points follow the uniform real distribution
-        for (int i = 0; i < k; i++)
-        {
-            r.push_back(uid(eng));
-        }
-
         long unsigned int sum = 0;
         for (int i = 0; i < k; i++)
         {
@@ -48,7 +46,7 @@ public:
             $ represents {+, -, *, /}
             */
             // Calculate a mod M
-            long unsigned int amodm = (long unsigned)r[i] % m;
+            long unsigned int amodm = (long unsigned)this->r[i] % m;
 
             // Calculate b mod M
             long unsigned int bmodm = (long unsigned)h[i] % m;
